@@ -1,0 +1,56 @@
+#+TITLE: Crates 2 - Puzzle Game
+
+* About
+
+~crates2~ is a puzzle game. More information
+is to be added.
+
+* Getting Started
+
+Prerequisites:
+
+At this stage: =Common Lisp= implementation (tested with SBCL), =Quicklisp= and =make=.
+
+Get sources and build by issuing commands:
+
+#+begin_src shell
+git clone https://github.com/octaspire/crates2.git
+cd crates2
+make
+#+end_src
+
+If you haven't cloned into directory that is known
+to Quicklisp, you can tell about it by linking
+or copying file ~etc/crates2.conf~ to
+~$HOME/.config/common-lisp/source-registry.conf.d/crates2.conf~.
+But please note, that the path given in that file probably
+has to be changed to match the location of the cloned directory
+on your machine.
+
+* Development
+
+GNU Emacs with slime, having crates2 loaded,
+can be launched by issuing the following command:
+
+#+begin_src shell
+make slime
+#+end_src
+
+* License
+
+#+begin_example
+   Octaspire Crates 2 - Puzzle Game
+   Copyright 2020 octaspire.com
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+#+end_example
