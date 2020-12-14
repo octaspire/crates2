@@ -44,9 +44,10 @@
   (when (> *verbose* 0)
     (format t fmt args)))
 
-(defun run ()
+(defun run (level)
   (unless *errors*
-    (ui-render)))
+    (loop while (update level)
+          do (ui-render level))))
 
 (defun usage ()
   (opts:describe
@@ -75,6 +76,7 @@
 
 (setf *level* (cons (make-instance 'wall   :x 2 :y 2 :z 0) *level*))
 (setf *level* (cons (make-instance 'player :x 5 :y 4 :z 0) *level*))
+(setf (v (car *level*)) :west)
 
 (defun main ()
   (let ((options (handler-case
@@ -84,4 +86,4 @@
     (cond-option options
                  (:help (usage))
                  (:version (version))
-                 (otherwise (run)))))
+                 (otherwise (run *level*)))))

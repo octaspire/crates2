@@ -29,10 +29,10 @@
           do (setf (aref a i) (empty-line)))
     a))
 
-(defun ui-render ()
+(defun ui-render (level)
   (let ((lines (empty-level))
         (bar (format nil "~v@{~A~:*~}" *level-width* #\-)))
-    (loop for crate in *level*
+    (loop for crate in level
           do (progn
                (let* ((x (x crate))
                       (y (y crate))

@@ -15,7 +15,7 @@
 LISP  ?= sbcl
 EVAL  ?= "--eval"
 LOAD  ?= "--load
-SOURCES = $(wildcard *.lisp)
+SOURCES = $(wildcard src/*.lisp)
 
 .PHONY: slime clean help
 

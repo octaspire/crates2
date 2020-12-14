@@ -14,6 +14,7 @@
 ;; limitations under the License.
 (in-package :crates2)
 
+(defparameter *running* t)
 (defparameter *level* (list))
 (defparameter *level-width* 32)
 (defparameter *level-height* 24)
@@ -21,7 +22,9 @@
 ;; Methods
 
 (defmethod update ((obj list))
-  (format t "update level"))
+  (when *running* (loop for crate in *level*
+                        do (update crate)))
+  *running*)
 
 (defmethod render ((obj list))
   (loop for crate in *level*
