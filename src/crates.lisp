@@ -56,8 +56,9 @@
          :initform nil)))
 
 (defclass moving (crate)
-  ((v :initarg :v
-      :accessor v)
+  ((velocity :initarg :velocity
+             :initform :zero
+             :accessor velocity)
    (active :initarg :active
            :initform t
            :accessor active)))
@@ -66,6 +67,9 @@
   ((lamented :initarg lamented
              :initform nil
              :accessor lamented)))
+
+(defclass pushed (moving)
+  ())
 
 ;; Generic functions
 
@@ -87,23 +91,20 @@
 (defgeneric visual (self)
   (:documentation "Get visual representation for a crate"))
 
-(defgeneric escape (crate)
+(defgeneric escape (self)
   (:documentation "Handle CRATE flying out of the level"))
 
-(defgeneric collide (target crate)
-  (:documentation "Handle CRATE colliding into TARGET"))
+(defgeneric collide (moving target)
+  (:documentation "Handle MOVING crate colliding into TARGET"))
 
 ;; Methods
 
-(defmethod update ((self crate))
-  (format t "update crate "))
+(defmethod update ((self crate)))
 
 (defmethod update ((self wall))
-  (format t "update wall ")
   (call-next-method))
 
 (defmethod update ((self vacuum))
-  (format t "update vacuum ")
   (let ((crate (find-at-of-type (x self) (y self) 0 'moving)))
     (when crate
       (setf (active crate) nil)
@@ -113,17 +114,17 @@
   (call-next-method))
 
 (defmethod update ((self moving))
-  (format t "update moving ")
   (when (active self)
-    (let ((v (v self)))
-      (ecase v (:east  (east self))
-             (:west  (west self))
-             (:north (north self))
-             (:south (south self)))))
+    (let ((v (velocity self)))
+      (ecase v
+        (:east  (east self))
+        (:west  (west self))
+        (:north (north self))
+        (:south (south self))
+        (:zero))))
   (call-next-method))
 
 (defmethod update ((self player))
-  (format t "update player ")
   (call-next-method))
 
 (defmethod visual ((self crate))
@@ -143,8 +144,10 @@
       #\V
       #\v))
 
+(defmethod visual ((self pushed))
+  #\p)
+
 (defmethod west ((self moving))
-  (format t "west~%")
   (let* ((x (- (x self) 1))
          (crate (find-at x (y self) (z self))))
     (if (< x 0)
@@ -184,3 +187,25 @@
   (setf (active self) nil)
   (when (typep self 'player)
     (setf (lamented self) t)))
+
+(defmethod collide ((self moving) (target crate))
+  (setf (velocity self) :zero))
+
+(defmethod collide ((self player) (target crate))
+  (call-next-method))
+
+(defun stopsp (v1 v2)
+  (ecase v1
+    (:east  (if (eq v2 :west)  t nil))
+    (:west  (if (eq v2 :east)  t nil))
+    (:north (if (eq v2 :south) t nil))
+    (:south (if (eq v2 :north) t nil))
+    (:zero  nil)))
+
+(defmethod collide ((self player) (target pushed))
+  (let ((vplayer (velocity self))
+        (vpulled (velocity target)))
+    (if (eq vpulled :zero)
+        (setf (velocity target) vplayer)
+        (setf (velocity target) (if (stopsp vplayer vpulled) :zero vplayer))))
+  (call-next-method))

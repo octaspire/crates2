@@ -48,7 +48,8 @@
   (unless *errors*
     (loop while *running*
           do (ui-render level)
-             (update level))))
+             (update level)
+             (sleep 2))))
 
 (defun usage ()
   (opts:describe
@@ -76,9 +77,10 @@
              do (case ,option ,@clauses)))))
 
 (setf *level* (cons (make-instance 'wall   :x 1 :y 1 :z 0) *level*))
-(setf *level* (cons (make-instance 'vacuum :x 2 :y 1 :z -1) *level*))
-(setf *level* (cons (make-instance 'player :x 4 :y 1 :z 0) *level*))
-(setf (v (car *level*)) :west)
+;; (setf *level* (cons (make-instance 'vacuum :x 2 :y 1 :z -1) *level*))
+(setf *level* (cons (make-instance 'pushed :x 3 :y 1 :z 0) *level*))
+(setf *level* (cons (make-instance 'player :x 5 :y 1 :z 0) *level*))
+(setf (velocity (car *level*)) :west)
 
 (defun main ()
   (let ((options (handler-case

@@ -2,8 +2,10 @@
 
 * About
 
-~crates2~ is a puzzle game. More information
+~crates2~ is a WIP puzzle game. More information
 is to be added.
+
+*Please note that this is still Work In Progress.*
 
 * Getting Started
 
