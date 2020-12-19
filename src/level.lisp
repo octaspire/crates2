@@ -16,16 +16,20 @@
 
 (defparameter *running* t)
 (defparameter *level* (list))
-(defparameter *level-width* 32)
-(defparameter *level-height* 24)
+(defparameter *level-width* 8)
+(defparameter *level-height* 4)
 
 ;; Methods
 
-(defmethod update ((obj list))
+(defmethod update ((self list))
   (when *running* (loop for crate in *level*
-                        do (update crate)))
+                        do (update crate)
+                           (when (and (typep crate 'player)
+                                      (lamented crate))
+                             (setf *running* nil))))
   *running*)
 
-(defmethod render ((obj list))
-  (loop for crate in *level*
-        do (render crate)))
+(defmethod render ((self list))
+  (when *running*
+    (loop for crate in *level*
+          do (render crate))))

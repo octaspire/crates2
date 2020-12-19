@@ -26,6 +26,15 @@
                    nil))
            *level*))
 
+(defun find-at-of-type (x y z type)
+  "Get crate of TYPE at (X,Y,Z) or NIL if location is empty or crate is not of TYPE."
+  (let ((crate (find-at x y z)))
+    (if crate
+        (if (subtypep (type-of crate) type)
+            crate
+            nil)
+        nil)))
+
 ;; Classes
 
 (defclass crate ()
@@ -34,36 +43,48 @@
    (y :initarg :y
       :accessor y)
    (z :initarg :z
-      :accessor z)))
+      :accessor z)
+   (visible :initarg :visible
+      :accessor visible)))
 
 (defclass wall (crate)
   ())
 
+(defclass vacuum (crate)
+  ((full :initarg :full
+         :accessor full
+         :initform nil)))
+
 (defclass moving (crate)
   ((v :initarg :v
-      :accessor v)))
+      :accessor v)
+   (active :initarg :active
+           :initform t
+           :accessor active)))
 
 (defclass player (moving)
-  ())
+  ((lamented :initarg lamented
+             :initform nil
+             :accessor lamented)))
 
 ;; Generic functions
 
-(defgeneric update (obj)
+(defgeneric update (self)
   (:documentation "Update a crate"))
 
-(defgeneric east (obj)
+(defgeneric east (self)
   (:documentation "Move crate east"))
 
-(defgeneric west (obj)
+(defgeneric west (self)
   (:documentation "Move crate west"))
 
-(defgeneric north (obj)
+(defgeneric north (self)
   (:documentation "Move crate north"))
 
-(defgeneric south (obj)
+(defgeneric south (self)
   (:documentation "Move crate south"))
 
-(defgeneric visual (obj)
+(defgeneric visual (self)
   (:documentation "Get visual representation for a crate"))
 
 (defgeneric escape (crate)
@@ -74,68 +95,92 @@
 
 ;; Methods
 
-(defmethod update ((obj crate))
+(defmethod update ((self crate))
   (format t "update crate "))
 
-(defmethod update ((obj wall))
+(defmethod update ((self wall))
   (format t "update wall ")
   (call-next-method))
 
-(defmethod update ((obj moving))
-  (format t "update moving ")
-  (let ((v (v obj)))
-    (ecase v (:east  (east obj))
-             (:west  (west obj))
-             (:north (north obj))
-             (:south (south obj))))
+(defmethod update ((self vacuum))
+  (format t "update vacuum ")
+  (let ((crate (find-at-of-type (x self) (y self) 0 'moving)))
+    (when crate
+      (setf (active crate) nil)
+      (when (typep crate 'player)
+        (setf (lamented crate) t)
+        (setf (full self) t))))
   (call-next-method))
 
-(defmethod update ((obj player))
+(defmethod update ((self moving))
+  (format t "update moving ")
+  (when (active self)
+    (let ((v (v self)))
+      (ecase v (:east  (east self))
+             (:west  (west self))
+             (:north (north self))
+             (:south (south self)))))
+  (call-next-method))
+
+(defmethod update ((self player))
   (format t "update player ")
   (call-next-method))
 
-(defmethod visual ((obj wall))
+(defmethod visual ((self crate))
+  (when (visible self)
+    (call-next-method)))
+
+(defmethod visual ((self wall))
   #\x)
 
-(defmethod visual ((obj player))
-  #\o)
+(defmethod visual ((self player))
+  (if (active self)
+      #\o
+      nil))
 
-(defmethod west ((obj moving))
+(defmethod visual ((self vacuum))
+  (if (full self)
+      #\V
+      #\v))
+
+(defmethod west ((self moving))
   (format t "west~%")
-  (let* ((x (- (x obj) 1))
-         (crate (find-at x (y obj) (z obj))))
+  (let* ((x (- (x self) 1))
+         (crate (find-at x (y self) (z self))))
     (if (< x 0)
-        (escape obj)
+        (escape self)
         (if crate
-            (collide obj crate)
-            (setf (x obj) x)))))
+            (collide self crate)
+            (setf (x self) x)))))
 
-(defmethod east ((obj moving))
-  (let* ((x (+ (x obj) 1))
-         (crate (find-at x (y obj) (z obj))))
+(defmethod east ((self moving))
+  (let* ((x (+ (x self) 1))
+         (crate (find-at x (y self) (z self))))
     (if (>= x *level-width*)
-        (escape obj)
+        (escape self)
         (if crate
-            (collide obj crate)
-            (setf (x obj) x)))))
+            (collide self crate)
+            (setf (x self) x)))))
 
-(defmethod north ((obj moving))
-  (let* ((y (+ (y obj) 1))
-         (crate (find-at (x obj) y (z obj))))
+(defmethod north ((self moving))
+  (let* ((y (+ (y self) 1))
+         (crate (find-at (x self) y (z self))))
     (if (>= y *level-height*)
-        (escape obj)
+        (escape self)
         (if crate
-            (collide obj crate)
-            (setf (y obj) y)))))
+            (collide self crate)
+            (setf (y self) y)))))
 
-(defmethod south ((obj moving))
-  (let* ((y (- (y obj) 1))
-         (crate (find-at (x obj) y (z obj))))
+(defmethod south ((self moving))
+  (let* ((y (- (y self) 1))
+         (crate (find-at (x self) y (z self))))
     (if (< y 0)
-        (escape obj)
+        (escape self)
         (if crate
-            (collide obj crate)
-            (setf (y obj) y)))))
+            (collide self crate)
+            (setf (y self) y)))))
 
-(defmethod escape ((crate player))
-  (setf *running* nil))
+(defmethod escape ((self moving))
+  (setf (active self) nil)
+  (when (typep self 'player)
+    (setf (lamented self) t)))

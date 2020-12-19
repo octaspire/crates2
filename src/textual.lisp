@@ -39,7 +39,8 @@
                       (z (z crate))
                       (v (visual crate))
                       (line (aref lines y)))
-                 (setf (aref line x) v))))
+                 (when v
+                   (setf (aref line x) v)))))
     (format t "~%+~A+~%" bar)
     (loop for line across lines
           do (format t "|~A|~%" line))

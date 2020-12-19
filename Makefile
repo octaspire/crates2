@@ -27,6 +27,9 @@ crates2: Makefile crates2.asd $(SOURCES)
 slime:
 	@etc/slime.sh &
 
+run: crates2
+	@./crates2
+
 clean:
 	@rm -f crates2
 
@@ -36,6 +39,7 @@ help:
 	@echo ""
 	@echo "Targets:"
 	@echo "  crates2  build standalone binary executable for crates2 (default target)"
+	@echo "  run      build standalone binary and run it"
 	@echo "  slime    start Emacs/slime (if needed) with crates2 loaded"
 	@echo "  clean    remove build artifacts"
 	@echo "  help     show this help"

@@ -46,8 +46,9 @@
 
 (defun run (level)
   (unless *errors*
-    (loop while (update level)
-          do (ui-render level))))
+    (loop while *running*
+          do (ui-render level)
+             (update level))))
 
 (defun usage ()
   (opts:describe
@@ -74,8 +75,9 @@
        (loop for (,option ,value) on ,opts-not-empty by #'cddr
              do (case ,option ,@clauses)))))
 
-(setf *level* (cons (make-instance 'wall   :x 2 :y 2 :z 0) *level*))
-(setf *level* (cons (make-instance 'player :x 5 :y 4 :z 0) *level*))
+(setf *level* (cons (make-instance 'wall   :x 1 :y 1 :z 0) *level*))
+(setf *level* (cons (make-instance 'vacuum :x 2 :y 1 :z -1) *level*))
+(setf *level* (cons (make-instance 'player :x 4 :y 1 :z 0) *level*))
 (setf (v (car *level*)) :west)
 
 (defun main ()
