@@ -29,19 +29,36 @@
           do (setf (aref a i) (empty-line)))
     a))
 
+(defparameter *fake-input* (list :west :west))
+
+(defun ui-input ()
+  (let ((input (car *fake-input*)))
+    (setf *fake-input* (cdr *fake-input*))
+    input))
+
+(defun x-axis (length)
+  (let ((result ""))
+    (loop for i from 0 to (- length 1)
+          do (let ((num (mod i 10)))
+               (setf result (concatenate 'string result (write-to-string num)))))
+    result))
+
 (defun ui-render (level)
   (let ((lines (empty-level))
+        (x-axis (x-axis *level-width*))
         (bar (format nil "~v@{~A~:*~}" *level-width* #\-)))
     (loop for crate in level
           do (progn
-               (let* ((x (x crate))
-                      (y (y crate))
-                      (z (z crate))
+               (let* ((x (crate-x crate))
+                      (y (crate-y crate))
+                      (z (crate-z crate))
                       (v (visual crate))
                       (line (aref lines y)))
                  (when v
                    (setf (aref line x) v)))))
-    (format t "~%+~A+~%" bar)
+    (format t "~%  ~A~%" x-axis)
+    (format t " +~A+ Level ~A~%" bar *level-number*)
     (loop for line across lines
-          do (format t "|~A|~%" line))
-    (format t "+~A+~%" bar)))
+          for y from 0
+          do (format t "~A|~A|~%" (mod y 10) line))
+    (format t " +~A+~%" bar)))

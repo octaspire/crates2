@@ -19,12 +19,12 @@
 (defun find-at (x y z)
   "Get crate at (X,Y,Z) or NIL if location is empty."
   (find-if #'(lambda (crate)
-               (if (and (= (x crate) x)
-                        (= (y crate) y)
-                        (= (z crate) z))
+               (if (and (= (crate-x crate) x)
+                        (= (crate-y crate) y)
+                        (= (crate-z crate) z))
                    crate
                    nil))
-           *level*))
+           (get-current-level)))
 
 (defun find-at-of-type (x y z type)
   "Get crate of TYPE at (X,Y,Z) or NIL if location is empty or crate is not of TYPE."
@@ -39,16 +39,21 @@
 
 (defclass crate ()
   ((x :initarg :x
-      :accessor x)
+      :accessor crate-x)
    (y :initarg :y
-      :accessor y)
+      :accessor crate-y)
    (z :initarg :z
-      :accessor z)
+      :accessor crate-z)
    (visible :initarg :visible
-      :accessor visible)))
+            :accessor crate-visible)))
 
 (defclass wall (crate)
   ())
+
+(defclass exit (crate)
+  ((activated :initarg :activated
+              :accessor exit-activated
+              :initform nil)))
 
 (defclass vacuum (crate)
   ((full :initarg :full
@@ -97,6 +102,15 @@
 (defgeneric collide (moving target)
   (:documentation "Handle MOVING crate colliding into TARGET"))
 
+(defgeneric movingp (self)
+  (:documentation "Predicate telling whether moving SELF is in motion"))
+
+(defgeneric stationaryp (self)
+  (:documentation "Predicate telling whether moving SELF is not moving"))
+
+(defgeneric handle-input (self input)
+  (:documentation "React to input"))
+
 ;; Methods
 
 (defmethod update ((self crate)))
@@ -105,9 +119,9 @@
   (call-next-method))
 
 (defmethod update ((self vacuum))
-  (let ((crate (find-at-of-type (x self) (y self) 0 'moving)))
+  (let ((crate (find-at-of-type (crate-x self) (crate-y self) 0 'moving)))
     (when crate
-      (setf (active crate) nil)
+      (crate-active! crate nil)
       (when (typep crate 'player)
         (setf (lamented crate) t)
         (setf (full self) t))))
@@ -125,14 +139,22 @@
   (call-next-method))
 
 (defmethod update ((self player))
+  (let ((input (car *input*)))
+    (when (and input (stationaryp self))
+      (handle-input self input)))
   (call-next-method))
 
 (defmethod visual ((self crate))
-  (when (visible self)
+  (when (crate-visible self)
     (call-next-method)))
 
 (defmethod visual ((self wall))
   #\x)
+
+(defmethod visual ((self exit))
+  (if (exit-activated self)
+      #\E
+      #\e))
 
 (defmethod visual ((self player))
   (if (active self)
@@ -148,40 +170,40 @@
   #\p)
 
 (defmethod west ((self moving))
-  (let* ((x (- (x self) 1))
-         (crate (find-at x (y self) (z self))))
+  (let* ((x (- (crate-x self) 1))
+         (crate (find-at x (crate-y self) (crate-z self))))
     (if (< x 0)
         (escape self)
         (if crate
             (collide self crate)
-            (setf (x self) x)))))
+            (setf (crate-x self) x)))))
 
 (defmethod east ((self moving))
-  (let* ((x (+ (x self) 1))
-         (crate (find-at x (y self) (z self))))
+  (let* ((x (+ (crate-x self) 1))
+         (crate (find-at x (crate-y self) (crate-z self))))
     (if (>= x *level-width*)
         (escape self)
         (if crate
             (collide self crate)
-            (setf (x self) x)))))
+            (setf (crate-x self) x)))))
 
 (defmethod north ((self moving))
-  (let* ((y (+ (y self) 1))
-         (crate (find-at (x self) y (z self))))
-    (if (>= y *level-height*)
-        (escape self)
-        (if crate
-            (collide self crate)
-            (setf (y self) y)))))
-
-(defmethod south ((self moving))
-  (let* ((y (- (y self) 1))
-         (crate (find-at (x self) y (z self))))
+  (let* ((y (- (crate-y self) 1))
+         (crate (find-at (crate-x self) y (crate-z self))))
     (if (< y 0)
         (escape self)
         (if crate
             (collide self crate)
-            (setf (y self) y)))))
+            (setf (crate-y self) y)))))
+
+(defmethod south ((self moving))
+  (let* ((y (+ (crate-y self) 1))
+         (crate (find-at (crate-x self) y (crate-z self))))
+    (if (>= y *level-height*)
+        (escape self)
+        (if crate
+            (collide self crate)
+            (setf  (crate-y self) y)))))
 
 (defmethod escape ((self moving))
   (setf (active self) nil)
@@ -193,6 +215,23 @@
 
 (defmethod collide ((self player) (target crate))
   (call-next-method))
+
+(defmethod collide ((self player) (target exit))
+  (request-next-level)
+  (call-next-method))
+
+(defmethod movingp ((self moving))
+  (not (stationaryp self)))
+
+(defmethod stationaryp ((self moving))
+  (eq (velocity self) :zero))
+
+(defmethod handle-input ((self player) input)
+  (ecase input
+    (:east  (setf (velocity self) input))
+    (:west  (setf (velocity self) input))
+    (:north (setf (velocity self) input))
+    (:south (setf (velocity self) input))))
 
 (defun head-on-collision-p (v1 v2)
   "Predicate telling whether velocities V1 and V2 can cause

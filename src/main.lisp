@@ -19,9 +19,27 @@
 (defparameter *version-minor* 1)
 (defparameter *version-patch* 0)
 (defparameter *errors* nil)
+(defparameter *input* nil)
+(defparameter *level-number* -1)
+(defparameter *running* t)
+(defparameter *level* nil)
+(defparameter *next-level* nil)
+(defparameter *level-width* 20)
+(defparameter *level-height* 10)
 
 (defun verbose-parser (x)
   (setf *verbose* (parse-integer x)))
+
+(defun get-current-level()
+  (unless *level*
+    (load-next-level))
+  *level*)
+
+(defun runningp ()
+  *running*)
+
+(defun running (value)
+  (setf *running* value))
 
 (opts:define-opts
   (:name :help
@@ -44,12 +62,18 @@
   (when (> *verbose* 0)
     (format t fmt args)))
 
-(defun run (level)
+(defun run ()
   (unless *errors*
-    (loop while *running*
-          do (ui-render level)
-             (update level)
-             (sleep 2))))
+    (request-next-level)
+    (loop while (runningp)
+            do (ui-render *level*)
+               (let ((input (ui-input)))
+                 (when input
+                   (setf *input* (cons input *input*))))
+               (update *level*)
+               (when *next-level*
+                 (load-next-level))
+               (sleep 2))))
 
 (defun usage ()
   (opts:describe
@@ -76,11 +100,22 @@
        (loop for (,option ,value) on ,opts-not-empty by #'cddr
              do (case ,option ,@clauses)))))
 
-(setf *level* (cons (make-instance 'wall   :x 1 :y 1 :z 0) *level*))
-;; (setf *level* (cons (make-instance 'vacuum :x 2 :y 1 :z -1) *level*))
-(setf *level* (cons (make-instance 'pushed :x 3 :y 1 :z 0) *level*))
-(setf *level* (cons (make-instance 'player :x 5 :y 1 :z 0) *level*))
-(setf (velocity (car *level*)) :west)
+(defun load-next-level ()
+  (let ((level-number (mod *next-level* *num-levels*)))
+    (setf *next-level* nil)
+    (setf *level-number* level-number)
+    (format t "LEVEL ~A~%" *level-number*)
+    (setf *level* nil)
+    (setf *level* (load-level *level-number*))))
+
+(defun request-next-level ()
+  (setf *next-level* (+ *level-number* 1)))
+
+(defun request-restart-level ()
+  (setf *next-level* *level-number*))
+
+(defun request-previous-level ()
+  (setf *next-level* (- *level-number* 1)))
 
 (defun main ()
   (let ((options (handler-case
@@ -90,4 +125,4 @@
     (cond-option options
                  (:help (usage))
                  (:version (version))
-                 (otherwise (run *level*)))))
+                 (otherwise (run)))))

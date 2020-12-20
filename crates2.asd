@@ -21,6 +21,7 @@
                  (:file "crates")
                  (:file "level")
                  (:file "textual")
+                 (:file "levels")
                  (:file "main"))))
   :build-operation program-op
   :build-pathname "crates2"
