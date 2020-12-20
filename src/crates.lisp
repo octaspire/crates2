@@ -194,7 +194,10 @@
 (defmethod collide ((self player) (target crate))
   (call-next-method))
 
-(defun stopsp (v1 v2)
+(defun head-on-collision-p (v1 v2)
+  "Predicate telling whether velocities V1 and V2 can cause
+head on collision - i.e. if the velocities are in opposite
+directions."
   (ecase v1
     (:east  (if (eq v2 :west)  t nil))
     (:west  (if (eq v2 :east)  t nil))
@@ -207,5 +210,5 @@
         (vpulled (velocity target)))
     (if (eq vpulled :zero)
         (setf (velocity target) vplayer)
-        (setf (velocity target) (if (stopsp vplayer vpulled) :zero vplayer))))
+        (setf (velocity target) (if (head-on-collision-p vplayer vpulled) :zero vplayer))))
   (call-next-method))

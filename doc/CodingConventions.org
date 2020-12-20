@@ -1,0 +1,31 @@
+#+TITLE: Coding Conventions for Crates2
+
+* Naming
+
+Use all lower case in code. When mentioning
+names in comments or documentation, use all
+upper case.
+
+Example:
+
+#+begin_src lisp
+(defun head-on-collision-p (v1 v2)
+  "Predicate telling whether velocities V1 and V2 can cause
+head on collision - i.e. if the velocities are in opposite
+directions.")
+#+end_src
+
+** Predicate Names
+
+Names of predicate functions must end with ~P~.
+If the function name is one word, the ~P~ is to
+be added right to the end of the word. If the
+name consists of multiple words, the ~P~ must
+be added as a separate last word to the name.
+
+Example:
+
+#+begin_src lisp
+(defun head-on-collision-p (v1 v2))
+(defun runningp ())
+#+end_src
