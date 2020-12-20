@@ -121,9 +121,10 @@
 (defmethod update ((self vacuum))
   (let ((crate (find-at-of-type (crate-x self) (crate-y self) 0 'moving)))
     (when crate
-      (crate-active! crate nil)
+      (setf (active crate) nil)
       (when (typep crate 'player)
         (setf (lamented crate) t)
+        (request-restart-level)
         (setf (full self) t))))
   (call-next-method))
 
@@ -208,7 +209,8 @@
 (defmethod escape ((self moving))
   (setf (active self) nil)
   (when (typep self 'player)
-    (setf (lamented self) t)))
+    (setf (lamented self) t)
+    (request-restart-level)))
 
 (defmethod collide ((self moving) (target crate))
   (setf (velocity self) :zero))

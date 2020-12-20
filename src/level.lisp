@@ -19,10 +19,7 @@
 (defmethod update ((self list))
   (let ((level (get-current-level)))
     (when (runningp) (loop for crate in level
-                           do (update crate)
-                              (when (and (typep crate 'player)
-                                         (lamented crate))
-                                (request-restart-level))))))
+                           do (update crate)))))
 
 (defmethod render ((self list))
   (when (runningp)

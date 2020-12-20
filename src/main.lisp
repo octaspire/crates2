@@ -112,6 +112,7 @@
   (setf *next-level* (+ *level-number* 1)))
 
 (defun request-restart-level ()
+  (format t "RESTART~%")
   (setf *next-level* *level-number*))
 
 (defun request-previous-level ()

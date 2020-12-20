@@ -27,5 +27,5 @@
 
 (defun load-level-1 ()
   (list (make-instance 'exit     :x 1 :y 2 :z 0)
-        (make-instance 'vacuum   :x 3 :y 2 :z 0)
+        (make-instance 'vacuum   :x 3 :y 2 :z -1)
         (make-instance 'player   :x 5 :y 2 :z 0)))
