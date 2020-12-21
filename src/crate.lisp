@@ -14,24 +14,6 @@
 ;; limitations under the License.
 (in-package :crates2)
 
-;; Classes
-
-(defclass crate ()
-  ((x :initarg :x
-      :initform 0
-      :accessor crate-x)
-   (y :initarg :y
-      :initform 0
-      :accessor crate-y)
-   (z :initarg :z
-      :initform 0
-      :accessor crate-z)
-   (visible :initarg :visible
-            :accessor crate-visible)
-   (state :initarg :state
-          :initform :idle
-          :accessor crate-state)))
-
 ;; Generic functions
 
 (defgeneric update (self)

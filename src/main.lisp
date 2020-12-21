@@ -66,14 +66,15 @@
   (unless *errors*
     (request-next-level)
     (loop while (runningp)
-            do (ui-render *level*)
-               (let ((input (ui-input)))
-                 (when input
-                   (setf *input* (cons input *input*))))
-               (update *level*)
-               (when *next-level*
-                 (load-next-level))
-               (sleep 2))))
+          do (setf *input* nil)
+             (ui-render *level*)
+             (let ((input (ui-input)))
+               (when input
+                 (setf *input* (cons input *input*))))
+             (update *level*)
+             (when *next-level*
+               (load-next-level))
+             (sleep 2))))
 
 (defun usage ()
   (opts:describe

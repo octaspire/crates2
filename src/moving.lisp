@@ -14,16 +14,6 @@
 ;; limitations under the License.
 (in-package :crates2)
 
-;; Classes
-
-(defclass moving (crate)
-  ((velocity :initarg :velocity
-             :initform :zero
-             :accessor velocity)
-   (active :initarg :active
-           :initform t
-           :accessor active)))
-
 ;; Generic functions
 
 (defgeneric movingp (self)
@@ -60,7 +50,7 @@
     (if (< x 0)
         (escape self)
         (if crate
-            (collide self crate)
+            (handle-collision self crate)
             (setf (crate-x self) x)))))
 
 (defmethod east ((self moving))
@@ -69,7 +59,7 @@
     (if (>= x *level-width*)
         (escape self)
         (if crate
-            (collide self crate)
+            (handle-collision self crate)
             (setf (crate-x self) x)))))
 
 (defmethod north ((self moving))
@@ -78,7 +68,7 @@
     (if (< y 0)
         (escape self)
         (if crate
-            (collide self crate)
+            (handle-collision self crate)
             (setf (crate-y self) y)))))
 
 (defmethod south ((self moving))
@@ -87,7 +77,7 @@
     (if (>= y *level-height*)
         (escape self)
         (if crate
-            (collide self crate)
+            (handle-collision self crate)
             (setf  (crate-y self) y)))))
 
 (defmethod escape ((self moving))
@@ -99,4 +89,14 @@
 (defmethod collide ((self moving) (target crate))
   (setf (velocity self) :zero))
 
+(defmethod collide ((self moving) (target vacuum))
+  (setf (crate-x target) (crate-x self))
+  (setf (crate-y target) (crate-y self))
+  (setf (crate-z target) (crate-z self)))
+
+;; Functions
+
+(defun handle-collision (c1 c2)
+  (collide c1 c2)
+  (collide c2 c1))
 

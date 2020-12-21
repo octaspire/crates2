@@ -14,25 +14,20 @@
 ;; limitations under the License.
 (in-package :crates2)
 
-;; Classes
-
-(defclass vacuum (crate)
-  ((full :initarg :full
-         :accessor full
-         :initform nil)))
-
 ;; Methods
 
 (defmethod update ((self vacuum))
   (let ((crate (find-at-of-type (crate-x self) (crate-y self) 0 'moving)))
     (when crate
-      (setf (active crate) nil)
-      (when (typep crate 'player)
-        (setf (lamented crate) t)
-        (setf (full self) t))))
+      (collide self crate)
+      (collide crate self)))
   (call-next-method))
 
 (defmethod visual ((self vacuum))
   (if (full self)
       #\V
       #\v))
+
+(defmethod collide ((self vacuum) (target player))
+  (setf (crate-state self) :activated)
+  (setf (full self) t))

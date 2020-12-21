@@ -19,6 +19,7 @@
                 :components
                 ((:file "package")
                  (:file "utils")
+                 (:file "classes")
                  (:file "crate")
                  (:file "moving")
                  (:file "simple-crates")

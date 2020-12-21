@@ -14,16 +14,6 @@
 ;; limitations under the License.
 (in-package :crates2)
 
-;; Classes
-
-(defclass exit (crate)
-  ((activated :initarg :activated
-              :accessor exit-activated
-              :initform nil)
-   (delay :initarg :delay
-              :accessor exit-delay
-              :initform 0)))
-
 ;; Methods
 
 (defmethod update ((self exit))
@@ -39,3 +29,7 @@
   (if (exit-activated self)
       #\E
       #\e))
+
+(defmethod collide ((self exit) (target player))
+  (setf (exit-activated self) t)
+  (setf (crate-state self) :activated))

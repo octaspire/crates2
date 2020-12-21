@@ -14,14 +14,6 @@
 ;; limitations under the License.
 (in-package :crates2)
 
-;; Classes
-
-(defclass wall (crate)
-  ())
-
-(defclass pushed (moving)
-  ())
-
 ;; Generic functions
 
 ;; Methods

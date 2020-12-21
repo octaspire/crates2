@@ -29,11 +29,13 @@
           do (setf (aref a i) (empty-line)))
     a))
 
-(defparameter *fake-input* (list :west :west))
+(defparameter *fake-input* (list :west nil nil nil nil nil nil nil :west))
+(defparameter *last-fake-input* nil)
 
 (defun ui-input ()
   (let ((input (car *fake-input*)))
     (setf *fake-input* (cdr *fake-input*))
+    (setf *last-fake-input* input)
     input))
 
 (defun x-axis (length)
@@ -60,5 +62,9 @@
     (format t " +~A+ Level ~A~%" bar *level-number*)
     (loop for line across lines
           for y from 0
-          do (format t "~A|~A|~%" (mod y 10) line))
-    (format t " +~A+~%" bar)))
+          do (format t "~A|~A|" (mod y 10) line)
+             (if (= y 0)
+                 (format t " Input: ~@[~A~]~%" *last-fake-input*)
+                 (format t "~%")))
+    (format t " +~A+~%" bar))
+  (setf *last-fake-input* nil))

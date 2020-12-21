@@ -14,25 +14,12 @@
 ;; limitations under the License.
 (in-package :crates2)
 
-;; Classes
-
-(defclass player (moving)
-  ((lamented :initarg lamented
-             :initform nil
-             :accessor lamented)))
-
-
 ;; Methods
 
 (defmethod update ((self player))
   (ecase (crate-state self)
-    (:idle)
-    (:lamented))
-  (if (lamented self)
-      (request-restart-level)
-      (let ((input (car *input*)))
-        (when (and input (stationaryp self))
-          (handle-input self input))))
+    (:idle (player-update-idle self))
+    (:lamented (player-update-lamented self)))
   (call-next-method))
 
 (defmethod visual ((self player))
@@ -44,9 +31,12 @@
   (call-next-method))
 
 (defmethod collide ((self player) (target exit))
-  (setf (exit-activated target) t)
-  (setf (crate-state target) :activated)
+  (setf (active self) nil))
+
+(defmethod collide ((self player) (target vacuum))
   (setf (active self) nil)
+  (setf (crate-state self) :lamented)
+  (setf (lamented self) t)
   (call-next-method))
 
 (defmethod handle-input ((self player) input)
@@ -65,3 +55,14 @@
         (setf (velocity target) (if (head-on-collision-p vplayer vpulled) :zero vplayer))))
   (call-next-method))
 
+;; Functions
+
+(defun player-update-idle (self)
+  (let ((input (car *input*)))
+    (when (and input (stationaryp self))
+      (handle-input self input))))
+
+(defun player-update-lamented (self)
+  (incf (player-delay self))
+  (when (> (player-delay self) 3)
+    (request-restart-level)))
