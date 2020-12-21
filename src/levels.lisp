@@ -23,7 +23,8 @@
 
 (defun load-level-0 ()
   (list (make-instance 'exit     :x 1 :y 3 :z 0)
-        (make-instance 'player   :x 5 :y 3 :z 0)))
+        (make-instance 'player   :x 3 :y 3 :z 0)
+        (make-instance 'pushed   :x 5 :y 3 :z 0)))
 
 (defun load-level-1 ()
   (list (make-instance 'exit     :x 1 :y 2 :z 0)

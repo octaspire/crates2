@@ -16,6 +16,9 @@
 
 ;; Generic functions
 
+(defgeneric collide (self other)
+  (:documentation "Collide SELF with OTHER"))
+
 (defgeneric movingp (self)
   (:documentation "Predicate telling whether moving SELF is in motion"))
 
@@ -82,8 +85,8 @@
 
 (defmethod escape ((self moving))
   (setf (active self) nil)
+  (setf (lamented self) t)
   (when (typep self 'player)
-    (setf (lamented self) t)
     (request-restart-level)))
 
 (defmethod collide ((self moving) (target crate))

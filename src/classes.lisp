@@ -36,7 +36,10 @@
              :accessor velocity)
    (active :initarg :active
            :initform t
-           :accessor active)))
+           :accessor active)
+   (lamented :initarg lamented
+             :initform nil
+             :accessor lamented)))
 
 (defclass wall (crate)
   ())
@@ -53,10 +56,7 @@
           :initform 0)))
 
 (defclass player (moving)
-  ((lamented :initarg lamented
-             :initform nil
-             :accessor lamented)
-   (delay :initform 0
+  ((delay :initform 0
           :accessor player-delay)))
 
 (defclass vacuum (crate)

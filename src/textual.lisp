@@ -29,7 +29,10 @@
           do (setf (aref a i) (empty-line)))
     a))
 
-(defparameter *fake-input* (list :west nil nil nil nil nil nil nil :west))
+(defparameter *fake-input*
+  (list nil :east nil nil nil nil nil nil nil nil nil nil nil nil nil nil
+        :west nil nil nil nil nil nil nil ; 1
+        :west))
 (defparameter *last-fake-input* nil)
 
 (defun ui-input ()
@@ -65,6 +68,8 @@
           do (format t "~A|~A|" (mod y 10) line)
              (if (= y 0)
                  (format t " Input: ~@[~A~]~%" *last-fake-input*)
-                 (format t "~%")))
+                 (if (= y 1)
+                     (format t " #updates: ~A~%" *update-counter*)
+                     (format t "~%"))))
     (format t " +~A+~%" bar))
   (setf *last-fake-input* nil))

@@ -34,9 +34,6 @@
 (defgeneric visual (self)
   (:documentation "Get visual representation for a crate"))
 
-(defgeneric collide (moving target)
-  (:documentation "Handle MOVING crate colliding into TARGET"))
-
 (defgeneric handle-input (self input)
   (:documentation "React to input"))
 

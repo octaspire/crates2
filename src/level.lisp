@@ -18,11 +18,22 @@
 
 (defmethod update ((self list))
   (let ((level (get-current-level)))
-    (when (runningp) (loop for crate in level
-                           do (update crate)))))
+    (when (runningp)
+      (loop for crate in level
+            do (update crate))
+      (purge-lamented))))
 
 (defmethod render ((self list))
   (when (runningp)
     (let ((level (get-current-level)))
       (loop for crate in level
             do (render crate)))))
+
+;; Functions
+
+(defun purge-lamented ()
+  (setf *level* (remove-if #'(lambda (crate)
+                               (let ((type (type-of crate)))
+                                 (and (subtypep type 'moving)
+                                      (not (eq type 'player))
+                                      (lamented crate)))) *level*)))

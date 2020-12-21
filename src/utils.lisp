@@ -45,3 +45,22 @@ directions."
     (:north (if (eq v2 :south) t nil))
     (:south (if (eq v2 :north) t nil))
     (:zero  nil)))
+
+(defun on-which-side-i-am (i other)
+  (let ((ix (crate-x i))
+        (iy (crate-y i))
+        (ox (crate-x other))
+        (oy (crate-y other)))
+    (if (= iy oy)
+        (if (= ix (- ox 1))
+            :west
+            (if (= ix (+ ox 1))
+                :east
+                :zero))
+        (if (= ix ox)
+            (if (= iy (- oy 1))
+                :north
+                (if (= iy (+ oy 1))
+                    :south
+                    :zero))
+            :zero))))

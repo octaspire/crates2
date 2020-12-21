@@ -19,6 +19,7 @@
 (defparameter *version-minor* 1)
 (defparameter *version-patch* 0)
 (defparameter *errors* nil)
+(defparameter *update-counter* 0)
 (defparameter *input* nil)
 (defparameter *level-number* -1)
 (defparameter *running* t)
@@ -74,6 +75,7 @@
              (update *level*)
              (when *next-level*
                (load-next-level))
+             (incf *update-counter*)
              (sleep 2))))
 
 (defun usage ()

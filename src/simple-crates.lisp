@@ -24,6 +24,9 @@
 (defmethod visual ((self wall))
   #\x)
 
+(defmethod collide ((self pushed) (target moving))
+  (setf (velocity self) (on-which-side-i-am self target)))
+
 (defmethod visual ((self pushed))
   #\p)
 
