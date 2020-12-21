@@ -39,13 +39,19 @@
 
 (defclass crate ()
   ((x :initarg :x
+      :initform 0
       :accessor crate-x)
    (y :initarg :y
+      :initform 0
       :accessor crate-y)
    (z :initarg :z
+      :initform 0
       :accessor crate-z)
    (visible :initarg :visible
-            :accessor crate-visible)))
+            :accessor crate-visible)
+   (state :initarg :state
+          :initform :idle
+          :accessor crate-state)))
 
 (defclass wall (crate)
   ())
@@ -53,7 +59,10 @@
 (defclass exit (crate)
   ((activated :initarg :activated
               :accessor exit-activated
-              :initform nil)))
+              :initform nil)
+   (delay :initarg :delay
+              :accessor exit-delay
+              :initform 0)))
 
 (defclass vacuum (crate)
   ((full :initarg :full
@@ -116,6 +125,15 @@
 (defmethod update ((self crate)))
 
 (defmethod update ((self wall))
+  (call-next-method))
+
+(defmethod update ((self exit))
+  (ecase (crate-state self)
+    (:idle nil)
+    (:activated
+     (if (< (exit-delay self) 3)
+         (incf (exit-delay self))
+         (request-next-level))))
   (call-next-method))
 
 (defmethod update ((self vacuum))
@@ -219,7 +237,9 @@
   (call-next-method))
 
 (defmethod collide ((self player) (target exit))
-  (request-next-level)
+  (setf (exit-activated target) t)
+  (setf (crate-state target) :activated)
+  (setf (active self) nil)
   (call-next-method))
 
 (defmethod movingp ((self moving))
@@ -229,11 +249,12 @@
   (eq (velocity self) :zero))
 
 (defmethod handle-input ((self player) input)
-  (ecase input
-    (:east  (setf (velocity self) input))
-    (:west  (setf (velocity self) input))
-    (:north (setf (velocity self) input))
-    (:south (setf (velocity self) input))))
+  (when (active self)
+    (ecase input
+      (:east  (setf (velocity self) input))
+      (:west  (setf (velocity self) input))
+      (:north (setf (velocity self) input))
+      (:south (setf (velocity self) input)))))
 
 (defun head-on-collision-p (v1 v2)
   "Predicate telling whether velocities V1 and V2 can cause
