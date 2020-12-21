@@ -18,7 +18,13 @@
   :components ((:module src
                 :components
                 ((:file "package")
-                 (:file "crates")
+                 (:file "utils")
+                 (:file "crate")
+                 (:file "moving")
+                 (:file "simple-crates")
+                 (:file "exit")
+                 (:file "player")
+                 (:file "vacuum")
                  (:file "level")
                  (:file "textual")
                  (:file "levels")
