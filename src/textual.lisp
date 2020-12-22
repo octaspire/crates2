@@ -30,9 +30,11 @@
     a))
 
 (defparameter *fake-input*
-  (list nil :east nil nil nil nil nil nil nil nil nil nil nil nil nil nil
+  (list nil :east nil nil nil nil nil nil nil nil nil nil nil nil nil nil ; 0
         :west nil nil nil nil nil nil nil ; 1
-        :west))
+        :west nil nil nil nil nil nil nil ; 2
+        :west))                           ; 3
+
 (defparameter *last-fake-input* nil)
 
 (defun ui-input ()

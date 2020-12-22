@@ -64,3 +64,26 @@ directions."
                     :south
                     :zero))
             :zero))))
+
+(defun on-which-side-is-other (i other)
+  (let ((side (on-which-side-i-am i other)))
+    (ecase side
+      (:north :south)
+      (:south :north)
+      (:east  :west)
+      (:west  :east)
+      (:zero  :zero))))
+
+(defun move-to (crate x y z)
+  (setf (crate-x crate) x)
+  (setf (crate-y crate) y)
+  (setf (crate-z crate) z))
+
+(defun move-other-to-my-side (i other side)
+  "Move crate OTHER to SIDE of crate I"
+  (ecase side
+    (:north (move-to other (crate-x i) (- (crate-y i) 1) (crate-z i)))
+    (:south (move-to other (crate-x i) (+ (crate-y i) 1) (crate-z i)))
+    (:east  (move-to other (+ (crate-x i) 1) (crate-y i) (crate-z i)))
+    (:west  (move-to other (- (crate-x i) 1) (crate-y i) (crate-z i)))
+    (:zero  nil)))

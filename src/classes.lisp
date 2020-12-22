@@ -44,6 +44,18 @@
 (defclass wall (crate)
   ())
 
+(defclass slope-en (crate)
+  ())
+
+(defclass slope-es (crate)
+  ())
+
+(defclass slope-wn (crate)
+  ())
+
+(defclass slope-ws (crate)
+  ())
+
 (defclass pushed (moving)
   ())
 

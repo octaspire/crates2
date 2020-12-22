@@ -76,7 +76,7 @@
              (when *next-level*
                (load-next-level))
              (incf *update-counter*)
-             (sleep 2))))
+             (sleep 0.5))))
 
 (defun usage ()
   (opts:describe

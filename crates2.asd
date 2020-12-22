@@ -25,6 +25,7 @@
                  (:file "simple-crates")
                  (:file "exit")
                  (:file "player")
+                 (:file "slopes")
                  (:file "vacuum")
                  (:file "level")
                  (:file "textual")
