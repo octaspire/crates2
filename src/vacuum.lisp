@@ -25,8 +25,8 @@
 
 (defmethod visual ((self vacuum))
   (if (full self)
-      #\V
-      #\v))
+      "VVVVVV"
+      "vvvvvv"))
 
 (defmethod collide ((self vacuum) (target player))
   (setf (crate-state self) :activated)

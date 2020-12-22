@@ -59,6 +59,18 @@
 (defclass pushed (moving)
   ())
 
+(defclass turnstile-e1 (crate)
+  ())
+
+(defclass turnstile-w1 (crate)
+  ())
+
+(defclass turnstile-n1 (crate)
+  ())
+
+(defclass turnstile-s1 (crate)
+  ())
+
 (defclass exit (crate)
   ((activated :initarg :activated
               :accessor exit-activated

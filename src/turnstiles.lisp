@@ -16,20 +16,17 @@
 
 ;; Methods
 
-(defmethod update ((self exit))
-  (ecase (crate-state self)
-    (:idle nil)
-    (:activated
-     (if (< (exit-delay self) 3)
-         (incf (exit-delay self))
-         (request-next-level))))
+;; E1
+
+(defmethod update ((self turnstile-e1))
   (call-next-method))
 
-(defmethod visual ((self exit))
-  (if (exit-activated self)
-      "EEEEEE"
-      "eeeeee"))
+(defmethod visual ((self turnstile-e1))
+  "...111")
 
-(defmethod collide ((self exit) (target player))
-  (setf (exit-activated self) t)
-  (setf (crate-state self) :activated))
+(defmethod collide ((self turnstile-e1) (target moving))
+  (let ((side (on-which-side-is-other self target)))
+    (case side
+      (:east
+       (move-other-to-my-side self target :west)))))
+

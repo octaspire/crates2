@@ -26,6 +26,7 @@
                  (:file "exit")
                  (:file "player")
                  (:file "slopes")
+                 (:file "turnstiles")
                  (:file "vacuum")
                  (:file "level")
                  (:file "textual")
