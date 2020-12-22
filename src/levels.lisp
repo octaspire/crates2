@@ -28,9 +28,12 @@
         (make-instance 'pushed   :x 5 :y 3 :z 0)))
 
 (defun load-level-1 ()
-  (list (make-instance 'exit     :x 2 :y 2 :z 0)
-        (make-instance 'slope-en :x 2 :y 4 :z 0)
-        (make-instance 'player   :x 5 :y 4 :z 0)))
+  (list (make-instance 'exit     :x 10 :y 6  :z 0)
+        (make-instance 'slope-en :x 3  :y 6  :z 0)
+        (make-instance 'slope-es :x 3  :y 2  :z 0)
+        (make-instance 'slope-ws :x 14 :y 2  :z 0)
+        (make-instance 'slope-wn :x 14 :y 6  :z 0)
+        (make-instance 'player   :x 8  :y 6 :z 0)))
 
 (defun load-level-2 ()
   (list (make-instance 'exit     :x 1 :y 2 :z 0)

@@ -22,7 +22,7 @@
   (call-next-method))
 
 (defmethod visual ((self slope-en))
-  #\1)
+  #\\)
 
 (defmethod collide ((self slope-en) (target moving))
   (let ((side (on-which-side-is-other self target)))
@@ -40,7 +40,7 @@
   (call-next-method))
 
 (defmethod visual ((self slope-es))
-  #\2)
+  #\/)
 
 (defmethod collide ((self slope-es) (target moving))
   (let ((side (on-which-side-is-other self target)))
@@ -58,7 +58,7 @@
   (call-next-method))
 
 (defmethod visual ((self slope-wn))
-  #\3)
+  #\/)
 
 (defmethod collide ((self slope-wn) (target moving))
   (let ((side (on-which-side-is-other self target)))
@@ -76,7 +76,7 @@
   (call-next-method))
 
 (defmethod visual ((self slope-ws))
-  #\4)
+  #\\)
 
 (defmethod collide ((self slope-ws) (target moving))
   (let ((side (on-which-side-is-other self target)))
