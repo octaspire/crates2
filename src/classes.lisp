@@ -71,6 +71,18 @@
 (defclass turnstile-s1 (crate)
   ())
 
+(defclass turnstile-e (turnstile-e1)
+  ())
+
+(defclass turnstile-w (turnstile-w1)
+  ())
+
+(defclass turnstile-n (turnstile-n1)
+  ())
+
+(defclass turnstile-s (turnstile-s1)
+  ())
+
 (defclass exit (crate)
   ((activated :initarg :activated
               :accessor exit-activated

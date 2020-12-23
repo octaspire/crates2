@@ -30,11 +30,7 @@
           do (setf (aref a i) (empty-line)))
     a))
 
-(defparameter *fake-input*
-  (list nil :east nil nil nil nil nil nil nil nil nil nil nil nil nil nil ; 0
-        :west nil nil nil nil nil nil nil ; 1
-        :west nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil ; 2
-        :west))                           ; 3
+(defparameter *fake-input* nil)
 
 (defparameter *last-fake-input* nil)
 

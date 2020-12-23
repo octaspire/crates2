@@ -22,11 +22,115 @@
   (call-next-method))
 
 (defmethod visual ((self turnstile-e1))
-  "...111")
+  ">>1>>1")
 
 (defmethod collide ((self turnstile-e1) (target moving))
   (let ((side (on-which-side-is-other self target)))
     (case side
+      (:west
+       (move-other-to-my-side self target :east)))))
+
+
+;; W1
+
+(defmethod update ((self turnstile-w1))
+  (call-next-method))
+
+(defmethod visual ((self turnstile-w1))
+  "1<<1<<")
+
+(defmethod collide ((self turnstile-w1) (target moving))
+  (let ((side (on-which-side-is-other self target)))
+    (case side
       (:east
        (move-other-to-my-side self target :west)))))
+
+;; N1
+
+(defmethod update ((self turnstile-n1))
+  (call-next-method))
+
+(defmethod visual ((self turnstile-n1))
+  "^^^111")
+
+(defmethod collide ((self turnstile-n1) (target moving))
+  (let ((side (on-which-side-is-other self target)))
+    (case side
+      (:south
+       (move-other-to-my-side self target :north)))))
+
+;; S1
+
+(defmethod update ((self turnstile-s1))
+  (call-next-method))
+
+(defmethod visual ((self turnstile-s1))
+  "...111")
+
+(defmethod collide ((self turnstile-s1) (target moving))
+  (let ((side (on-which-side-is-other self target)))
+    (case side
+      (:north
+       (move-other-to-my-side self target :south)))))
+
+;; E
+
+(defmethod update ((self turnstile-e))
+  (call-next-method))
+
+(defmethod visual ((self turnstile-e))
+  ">>>>>>")
+
+(defmethod collide ((self turnstile-e) (target moving))
+  (let ((side (on-which-side-is-other self target)))
+    (case side
+      (:west
+       (call-next-method)
+       (setf (velocity target) :east)))))
+
+
+;; W
+
+(defmethod update ((self turnstile-w))
+  (call-next-method))
+
+(defmethod visual ((self turnstile-w))
+  "<<<<<<")
+
+(defmethod collide ((self turnstile-w) (target moving))
+  (let ((side (on-which-side-is-other self target)))
+    (case side
+      (:east
+       (call-next-method)
+       (setf (velocity target) :west)))))
+
+;; N
+
+(defmethod update ((self turnstile-n))
+  (call-next-method))
+
+(defmethod visual ((self turnstile-n))
+  "^^^^^^")
+
+(defmethod collide ((self turnstile-n) (target moving))
+  (let ((side (on-which-side-is-other self target)))
+    (case side
+      (:south
+       (call-next-method)
+       (setf (velocity target) :north)))))
+
+;; S
+
+(defmethod update ((self turnstile-s))
+  (call-next-method))
+
+(defmethod visual ((self turnstile-s))
+  "......")
+
+(defmethod collide ((self turnstile-s) (target moving))
+  (let ((side (on-which-side-is-other self target)))
+    (case side
+      (:north
+       (call-next-method)
+       (setf (velocity target) :south)))))
 
