@@ -14,6 +14,8 @@
 ;; limitations under the License.
 (in-package :crates2)
 
+;; Classes
+
 (defclass crate ()
   ((x :initarg :x
       :initform 0
@@ -24,6 +26,9 @@
    (z :initarg :z
       :initform 0
       :accessor crate-z)
+   (lamented :initarg lamented
+             :initform nil
+             :accessor lamented)
    (visible :initarg :visible
             :accessor crate-visible)
    (state :initarg :state
@@ -36,10 +41,7 @@
              :accessor velocity)
    (active :initarg :active
            :initform t
-           :accessor active)
-   (lamented :initarg lamented
-             :initform nil
-             :accessor lamented)))
+           :accessor active)))
 
 (defclass wall (crate)
   ())
@@ -83,6 +85,20 @@
 (defclass turnstile-s (turnstile-s1)
   ())
 
+(defclass block-timer (crate)
+  ((state :initarg :state
+          :initform :idle
+          :accessor block-timer-state)
+   (time :initarg :time
+         :accessor block-timer-time
+         :initform 10)
+   (uptime :initarg :time
+           :accessor block-timer-uptime
+           :initform 0)
+   (durable :initarg :durable
+           :accessor block-timer-durable
+           :initform t)))
+
 (defclass exit (crate)
   ((activated :initarg :activated
               :accessor exit-activated
@@ -99,3 +115,11 @@
   ((full :initarg :full
          :accessor full
          :initform nil)))
+
+;; Generic functions
+
+(defgeneric time-left (self)
+  (:documentation "Calculate time left in crate SELF") )
+
+(defgeneric lament (self)
+  (:documentation "Make crate SELF lamented") )

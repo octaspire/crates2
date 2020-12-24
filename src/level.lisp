@@ -34,6 +34,5 @@
 (defun purge-lamented ()
   (setf *level* (remove-if #'(lambda (crate)
                                (let ((type (type-of crate)))
-                                 (and (subtypep type 'moving)
-                                      (not (eq type 'player))
-                                      (lamented crate)))) *level*)))
+                                 (unless (eq type 'player)
+                                   (lamented crate)))) *level*)))

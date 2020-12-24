@@ -27,6 +27,7 @@
                  (:file "player")
                  (:file "slopes")
                  (:file "turnstiles")
+                 (:file "block-timer")
                  (:file "vacuum")
                  (:file "level")
                  (:file "textual")
