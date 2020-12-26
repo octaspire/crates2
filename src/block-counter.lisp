@@ -16,23 +16,18 @@
 
 ;; Methods
 
-(defmethod update ((self list))
-  (let ((level (get-current-level)))
-    (when (runningp)
-      (loop for crate in level
-            do (update crate))
-      (purge-lamented))))
+(defmethod touches-left ((self block-counter))
+  (- (block-counter-count self)
+     (block-counter-touches self)))
 
-(defmethod render ((self list))
-  (when (runningp)
-    (let ((level (get-current-level)))
-      (loop for crate in level
-            do (render crate)))))
+(defmethod visual ((self block-counter))
+  (let ((str (format nil "~2,'0d" (touches-left self))))
+    (format nil "BC||~A" str)))
 
-;; Functions
+(defmethod collide ((self block-counter) (target moving))
+  (ecase (crate-state self)
+    (:idle (incf (block-counter-touches self))
+     (when (<= (touches-left self) 0)
+       (lament self)))
+    (:lamented nil)))
 
-(defun purge-lamented ()
-  (setf *level* (remove-if #'(lambda (crate)
-                               (let ((type (type-of crate)))
-                                 (unless (eq type 'player)
-                                   (lamentedp crate)))) *level*)))

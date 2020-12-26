@@ -26,9 +26,6 @@
    (z :initarg :z
       :initform 0
       :accessor crate-z)
-   (lamented :initarg lamented
-             :initform nil
-             :accessor lamented)
    (visible :initarg :visible
             :accessor crate-visible)
    (state :initarg :state
@@ -86,10 +83,7 @@
   ())
 
 (defclass block-timer (crate)
-  ((state :initarg :state
-          :initform :idle
-          :accessor block-timer-state)
-   (time :initarg :time
+  ((time :initarg :time
          :accessor block-timer-time
          :initform 10)
    (uptime :initarg :time
@@ -97,7 +91,15 @@
            :initform 0)
    (durable :initarg :durable
            :accessor block-timer-durable
-           :initform t)))
+            :initform t)))
+
+(defclass block-counter (crate)
+  ((count :initarg :count
+          :accessor block-counter-count
+          :initform 10)
+   (touches :initarg :touches
+            :accessor block-counter-touches
+            :initform 0)))
 
 (defclass exit (crate)
   ((activated :initarg :activated
@@ -119,7 +121,21 @@
 ;; Generic functions
 
 (defgeneric time-left (self)
-  (:documentation "Calculate time left in crate SELF") )
+  (:documentation "Calculate time left in crate SELF"))
+
+(defgeneric touches-left (self)
+  (:documentation "Calculate number of touches left in crate SELF"))
 
 (defgeneric lament (self)
-  (:documentation "Make crate SELF lamented") )
+  (:documentation "Make crate SELF lamented"))
+
+(defgeneric lamentedp (self)
+  (:documentation "Tell whether crate SELF lamented or not"))
+
+;; Methods
+
+(defmethod lament ((self crate))
+  (setf (crate-state self) :lamented))
+
+(defmethod lamentedp ((self crate))
+  (eq (crate-state self) :lamented))

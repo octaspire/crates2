@@ -25,9 +25,6 @@
 (defgeneric stationaryp (self)
   (:documentation "Predicate telling whether moving SELF is not moving"))
 
-(defgeneric escape (self)
-  (:documentation "Handle crate SELF flying out of the level"))
-
 ;; Methods
 
 (defmethod movingp ((self moving))
@@ -51,7 +48,7 @@
   (let* ((x (- (crate-x self) 1))
          (crate (find-at x (crate-y self) (crate-z self))))
     (if (< x 0)
-        (escape self)
+        (lament self)
         (if crate
             (handle-collision self crate)
             (setf (crate-x self) x)))))
@@ -60,7 +57,7 @@
   (let* ((x (+ (crate-x self) 1))
          (crate (find-at x (crate-y self) (crate-z self))))
     (if (>= x *level-width*)
-        (escape self)
+        (lament self)
         (if crate
             (handle-collision self crate)
             (setf (crate-x self) x)))))
@@ -69,7 +66,7 @@
   (let* ((y (- (crate-y self) 1))
          (crate (find-at (crate-x self) y (crate-z self))))
     (if (< y 0)
-        (escape self)
+        (lament self)
         (if crate
             (handle-collision self crate)
             (setf (crate-y self) y)))))
@@ -78,16 +75,10 @@
   (let* ((y (+ (crate-y self) 1))
          (crate (find-at (crate-x self) y (crate-z self))))
     (if (>= y *level-height*)
-        (escape self)
+        (lament self)
         (if crate
             (handle-collision self crate)
             (setf  (crate-y self) y)))))
-
-(defmethod escape ((self moving))
-  (setf (active self) nil)
-  (setf (lamented self) t)
-  (when (typep self 'player)
-    (request-restart-level)))
 
 (defmethod collide ((self moving) (target crate))
   (setf (velocity self) :zero))

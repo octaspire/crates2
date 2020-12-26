@@ -1,3 +1,1 @@
-- Remove the lamented slot from the crate class and use only the
-  lamented state to represent removed crates. Now information is
-  stored in two places.
+Empty.

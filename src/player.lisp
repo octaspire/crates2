@@ -34,9 +34,7 @@
   (setf (active self) nil))
 
 (defmethod collide ((self player) (target vacuum))
-  (setf (active self) nil)
-  (setf (crate-state self) :lamented)
-  (setf (lamented self) t)
+  (lament self)
   (call-next-method))
 
 (defmethod handle-input ((self player) input)

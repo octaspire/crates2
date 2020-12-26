@@ -28,6 +28,7 @@
                  (:file "slopes")
                  (:file "turnstiles")
                  (:file "block-timer")
+                 (:file "block-counter")
                  (:file "vacuum")
                  (:file "level")
                  (:file "textual")

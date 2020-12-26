@@ -17,7 +17,7 @@
 ;; Methods
 
 (defmethod update ((self block-timer))
-  (ecase (block-timer-state self)
+  (ecase (crate-state self)
     (:idle nil)
     (:active
      (incf (block-timer-uptime self) 0.5)
@@ -30,19 +30,15 @@
   (ceiling (- (block-timer-time self)
               (block-timer-uptime self))))
 
-(defmethod lament ((self block-timer))
-  (setf (block-timer-state self) :lamented)
-  (setf (lamented self) t))
-
 (defmethod visual ((self block-timer))
   (let ((durstr (if (block-timer-durable self) "D" "|"))
-        (statstr (if (eq (block-timer-state self) :idle) "|" "X"))
+        (statstr (if (eq (crate-state self) :idle) "|" "X"))
         (timestr (format nil "~2,'0d" (time-left self))))
     (format nil "BT~A~A~A" durstr statstr timestr)))
 
 (defmethod collide ((self block-timer) (target moving))
-  (ecase (block-timer-state self)
-    (:idle (setf (block-timer-state self) :active))
+  (ecase (crate-state self)
+    (:idle (setf (crate-state self) :active))
     (:active (unless (block-timer-durable self)
                (lament self)))
     (:lamented nil)))
