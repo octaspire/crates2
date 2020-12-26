@@ -21,8 +21,13 @@
 (defmethod update ((self slope-en))
   (call-next-method))
 
+
+;; +--+  
+;; |   \ 
+;; +----+
+
 (defmethod visual ((self slope-en))
-  "|  |__")
+  "slope-en")
 
 (defmethod collide ((self slope-en) (target moving))
   (let ((side (on-which-side-is-other self target)))
@@ -39,8 +44,12 @@
 (defmethod update ((self slope-es))
   (call-next-method))
 
+;; +----+
+;; |   / 
+;; +--+  
+
 (defmethod visual ((self slope-es))
-  "|--|  ")
+  "slope-es")
 
 (defmethod collide ((self slope-es) (target moving))
   (let ((side (on-which-side-is-other self target)))
@@ -57,8 +66,12 @@
 (defmethod update ((self slope-wn))
   (call-next-method))
 
+;;   +--+
+;;  /   |
+;; +----+
+
 (defmethod visual ((self slope-wn))
-  "  |__|")
+  "slope-wn")
 
 (defmethod collide ((self slope-wn) (target moving))
   (let ((side (on-which-side-is-other self target)))
@@ -75,8 +88,12 @@
 (defmethod update ((self slope-ws))
   (call-next-method))
 
+;; +----+
+;;  \   |
+;;   +--+
+
 (defmethod visual ((self slope-ws))
-  "--|  |")
+  "slope-ws")
 
 (defmethod collide ((self slope-ws) (target moving))
   (let ((side (on-which-side-is-other self target)))

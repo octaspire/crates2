@@ -31,10 +31,12 @@
               (block-timer-uptime self))))
 
 (defmethod visual ((self block-timer))
-  (let ((durstr (if (block-timer-durable self) "D" "|"))
-        (statstr (if (eq (crate-state self) :idle) "|" "X"))
+  (let ((result "block-timer-")
         (timestr (format nil "~2,'0d" (time-left self))))
-    (format nil "BT~A~A~A" durstr statstr timestr)))
+    (when (block-timer-durable self)
+      (setf result (concatenate 'string result "durable-")))
+    (setf result (concatenate 'string result timestr))
+    result))
 
 (defmethod collide ((self block-timer) (target moving))
   (ecase (crate-state self)

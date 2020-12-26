@@ -24,8 +24,8 @@
 
 (defmethod visual ((self player))
   (if (active self)
-      "OOOOOO"
-      "      "))
+      "player-active"
+      "player-hidden"))
 
 (defmethod collide ((self player) (target crate))
   (call-next-method))

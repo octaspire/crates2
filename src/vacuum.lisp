@@ -25,8 +25,8 @@
 
 (defmethod visual ((self vacuum))
   (if (full self)
-      "VVVVVV"
-      "vvvvvv"))
+      "vacuum-full"
+      "vacuum-idle"))
 
 (defmethod collide ((self vacuum) (target player))
   (setf (crate-state self) :activated)

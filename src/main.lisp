@@ -25,8 +25,8 @@
 (defparameter *running* t)
 (defparameter *level* nil)
 (defparameter *next-level* nil)
-(defparameter *level-width* 20)
-(defparameter *level-height* 10)
+(defparameter *level-width* 18)
+(defparameter *level-height* 12)
 
 (defun verbose-parser (x)
   (setf *verbose* (parse-integer x)))
@@ -65,6 +65,7 @@
 
 (defun run ()
   (unless *errors*
+    (init-visual-hash)
     (request-next-level)
     (loop while (runningp)
           do (setf *input* nil)

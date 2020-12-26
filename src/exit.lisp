@@ -27,8 +27,8 @@
 
 (defmethod visual ((self exit))
   (if (exit-activated self)
-      "EEEEEE"
-      "eeeeee"))
+      "exit-active"
+      "exit-idle"))
 
 (defmethod collide ((self exit) (target player))
   (setf (exit-activated self) t)

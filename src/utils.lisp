@@ -16,6 +16,13 @@
 
 ;; Functions
 
+(defun replace-substr-at (input index new)
+  "Replace part of INPUT starting at INDEX using sub string NEW"
+  (let ((substring-len (length new)))
+    (loop for i from 0 to (- substring-len 1)
+          do (setf (aref input (+ index i)) (aref new i))))
+  input)
+
 (defun find-at (x y z)
   "Get crate at (X,Y,Z) or NIL if location is empty."
   (find-if #'(lambda (crate)
