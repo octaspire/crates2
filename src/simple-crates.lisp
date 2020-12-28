@@ -24,6 +24,9 @@
 (defmethod visual ((self wall))
   "wall-idle")
 
+(defmethod collide ((self wall) (target moving))
+  )
+
 (defmethod collide ((self pushed) (target moving))
   (setf (velocity self) (on-which-side-i-am self target)))
 

@@ -19,6 +19,7 @@
 (defmethod update ((self list))
   (let ((level (get-current-level)))
     (when (runningp)
+      (attach-created)
       (loop for crate in level
             do (update crate))
       (purge-lamented))))
@@ -36,3 +37,13 @@
                                (let ((type (type-of crate)))
                                  (unless (eq type 'player)
                                    (lamentedp crate)))) *level*)))
+
+(defun attach-created ()
+  (let ((l (last *level*)))
+    (loop for crate in *created*
+          do (push crate (cdr l))
+          (setf l crate)))
+  (setf *created* nil))
+
+(defun request-attaching (crate)
+  (setf *created* (cons crate *created*)))

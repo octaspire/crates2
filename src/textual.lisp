@@ -22,12 +22,12 @@
 
 (defun init-visual-hash ()
   ;; VACUUM
-  (setf (gethash "vacuum-idle" *visual-hash*) #("+----+" "|suck|" "+----+"))
-  (setf (gethash "vacuum-full" *visual-hash*) #("+----+" "|SUCK|" "+----+"))
+  (setf (gethash "vacuum-idle" *visual-hash*)            #("+----+" "|suck|" "+----+"))
+  (setf (gethash "vacuum-full" *visual-hash*)            #("+----+" "|SUCK|" "+----+"))
   ;; WALL
-  (setf (gethash "wall-idle"   *visual-hash*) #("+----+" "|XXXX|" "+----+"))
+  (setf (gethash "wall-idle" *visual-hash*)              #("+----+" "|XXXX|" "+----+"))
   ;; PUSHED
-  (setf (gethash "pushed-idle" *visual-hash*) #("+----+" "|PUSH|" "+----+"))
+  (setf (gethash "pushed-idle" *visual-hash*)            #("+----+" "|PUSH|" "+----+"))
   ;; BLOCK-TIMER
   (setf (gethash "block-timer-durable-10" *visual-hash*) #("+----+" "BTXX10" "+----+"))
   (setf (gethash "block-timer-durable-09" *visual-hash*) #("+----+" "BTXX09" "+----+"))
@@ -82,7 +82,19 @@
   (setf (gethash "block-counter-03"       *visual-hash*) #("+----+" "BCXX03" "+----+"))
   (setf (gethash "block-counter-02"       *visual-hash*) #("+----+" "BCXX02" "+----+"))
   (setf (gethash "block-counter-01"       *visual-hash*) #("+----+" "BCXX01" "+----+"))
-  (setf (gethash "block-counter-00"       *visual-hash*) #("+----+" "BCXX00" "+----+")))
+  (setf (gethash "block-counter-00"       *visual-hash*) #("+----+" "BCXX00" "+----+"))
+  ;; PASS-COUNTER
+  (setf (gethash "pass-counter-10"        *visual-hash*) #("+----+" "PC  10" "+----+"))
+  (setf (gethash "pass-counter-09"        *visual-hash*) #("+----+" "PC  09" "+----+"))
+  (setf (gethash "pass-counter-08"        *visual-hash*) #("+----+" "PC  08" "+----+"))
+  (setf (gethash "pass-counter-07"        *visual-hash*) #("+----+" "PC  07" "+----+"))
+  (setf (gethash "pass-counter-06"        *visual-hash*) #("+----+" "PC  06" "+----+"))
+  (setf (gethash "pass-counter-05"        *visual-hash*) #("+----+" "PC  05" "+----+"))
+  (setf (gethash "pass-counter-04"        *visual-hash*) #("+----+" "PC  04" "+----+"))
+  (setf (gethash "pass-counter-03"        *visual-hash*) #("+----+" "PC  03" "+----+"))
+  (setf (gethash "pass-counter-02"        *visual-hash*) #("+----+" "PC  02" "+----+"))
+  (setf (gethash "pass-counter-01"        *visual-hash*) #("+----+" "PC  01" "+----+"))
+  (setf (gethash "pass-counter-00"        *visual-hash*) #("+----+" "PC  00" "+----+")))
 
 (defun empty-line ()
   (let* ((w *level-width*)

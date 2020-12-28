@@ -29,6 +29,7 @@
                  (:file "turnstiles")
                  (:file "block-timer")
                  (:file "block-counter")
+                 (:file "pass-counter")
                  (:file "vacuum")
                  (:file "level")
                  (:file "textual")
