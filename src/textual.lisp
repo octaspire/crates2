@@ -18,7 +18,7 @@
 (defconstant cw 6)
 (defconstant ch 3)
 
-(defparameter *visual-hash* (make-hash-table))
+(defparameter *visual-hash* (make-hash-table :test 'equal))
 
 (defun init-visual-hash ()
   ;; VACUUM

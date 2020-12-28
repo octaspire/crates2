@@ -61,7 +61,7 @@
              (list (make-instance 'exit :x 1 :y 2 :z 0)
                    (make-instance 'vacuum :x 3 :y 2 :z -1)
                    (make-instance 'player :x 5 :y 2 :z 0))))
-    (10 (list (list nil nil nil nil :west nil nil nil nil :west nil nil nil nil)
+    (10 (list (list nil nil nil nil :west nil nil nil nil :west nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil :west)
               (list (make-instance 'exit        :x 1 :y 3 :z 0)
                     (make-instance 'block-timer :x 4 :y 3 :z 0)
                     (make-instance 'player      :x 8 :y 3 :z 0))))
