@@ -125,6 +125,9 @@
           :accessor exit-delay
           :initform 0)))
 
+(defclass key (crate)
+  ())
+
 (defclass player (moving)
   ((delay :initform 0
           :accessor player-delay)))

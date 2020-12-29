@@ -54,6 +54,8 @@
   ;; EXIT
   (setf (gethash "exit-idle"              *visual-hash*) #("+----+" "|exit|" "+----+"))
   (setf (gethash "exit-active"            *visual-hash*) #("+----+" "|EXIT|" "+----+"))
+  ;; KEY
+  (setf (gethash "key-idle"               *visual-hash*) #("+----+" " KEY  " "+----+"))
   ;; PLAYER
   (setf (gethash "player-active"          *visual-hash*) #("+----+" "|oooo|" "+----+"))
   (setf (gethash "player-hidden"          *visual-hash*) #("      " "      " "      "))

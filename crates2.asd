@@ -24,6 +24,7 @@
                  (:file "moving")
                  (:file "simple-crates")
                  (:file "exit")
+                 (:file "key")
                  (:file "player")
                  (:file "slopes")
                  (:file "turnstiles")

@@ -16,22 +16,12 @@
 
 ;; Methods
 
-(defmethod update ((self exit))
+(defmethod visual ((self key))
+  "key-idle")
+
+(defmethod collide ((self key) (target player))
   (ecase (crate-state self)
-    (:idle nil)
-    (:activated
-     (if (< (exit-delay self) 3)
-         (incf (exit-delay self))
-         (if (contains-keys-p)
-             (request-restart-level)
-             (request-next-level)))))
-  (call-next-method))
-
-(defmethod visual ((self exit))
-  (if (exit-activated self)
-      "exit-active"
-      "exit-idle"))
-
-(defmethod collide ((self exit) (target player))
-  (setf (exit-activated self) t)
-  (setf (crate-state self) :activated))
+    (:idle
+     (setf (velocity target) (on-which-side-i-am self target))
+     (lament self))
+    (:lamented nil)))

@@ -32,6 +32,10 @@
 
 ;; Functions
 
+(defun contains-keys-p ()
+  (find-if #'(lambda (crate)
+               (eq (type-of crate) 'key)) *level*))
+
 (defun purge-lamented ()
   (setf *level* (remove-if #'(lambda (crate)
                                (let ((type (type-of crate)))
