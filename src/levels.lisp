@@ -14,7 +14,7 @@
 ;; limitations under the License.
 (in-package :crates2)
 
-(defparameter *num-levels* 13)
+(defparameter *num-levels* 14)
 
 (defun load-level (index)
   (ecase index
@@ -75,5 +75,11 @@
                     (make-instance 'exit         :x 3 :y 5 :z 0)
                     (make-instance 'pass-counter :x 4 :y 3 :z 1 :count 3)
                     (make-instance 'player       :x 5 :y 3 :z 0)
+                    (make-instance 'wall         :x 8 :y 3 :z 0))))
+    (13 (list (list nil nil nil nil :west nil nil nil nil :east nil nil nil nil nil :west nil nil nil nil nil nil nil nil nil :east nil nil nil nil nil nil :west nil nil nil :south)
+              (list (make-instance 'wall         :x 1 :y 3 :z 0)
+                    (make-instance 'exit         :x 5 :y 5 :z 0)
+                    (make-instance 'pass-timer   :x 4 :y 3 :z 1 :time 10)
+                    (make-instance 'player       :x 6 :y 3 :z 0)
                     (make-instance 'wall         :x 8 :y 3 :z 0))))))
 

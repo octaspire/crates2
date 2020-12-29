@@ -30,6 +30,7 @@
                  (:file "block-timer")
                  (:file "block-counter")
                  (:file "pass-counter")
+                 (:file "pass-timer")
                  (:file "vacuum")
                  (:file "level")
                  (:file "textual")

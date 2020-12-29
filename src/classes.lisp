@@ -101,13 +101,21 @@
             :accessor block-counter-touches
             :initform 0)))
 
+(defclass pass-timer (crate)
+  ((time :initarg :time
+         :accessor pass-timer-time
+         :initform 10)
+   (uptime :initarg :uptime
+           :accessor pass-timer-uptime
+           :initform 0)))
+
 (defclass pass-counter (crate)
   ((count :initarg :count
           :accessor pass-counter-count
           :initform 10)
    (passes :initarg :passes
-            :accessor pass-counter-passes
-            :initform 0)))
+           :accessor pass-counter-passes
+           :initform 0)))
 
 (defclass exit (crate)
   ((activated :initarg :activated
