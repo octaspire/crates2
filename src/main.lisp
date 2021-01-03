@@ -21,11 +21,11 @@
 (defparameter *errors* nil)
 (defparameter *update-counter* 0)
 (defparameter *input* nil)
-(defparameter *level-number* 13)
+(defparameter *level-number* 14)
 (defparameter *running* t)
 (defparameter *level* nil)
 (defparameter *created* nil)
-(defparameter *next-level* 14)
+(defparameter *next-level* 15)
 (defparameter *level-width* 18)
 (defparameter *level-height* 12)
 

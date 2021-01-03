@@ -24,7 +24,7 @@
 
 
 (defmethod visual ((self turnstile-e1))
-  "turnstile-e1")
+  (list "turnstile-e1"))
 
 (defmethod collide ((self turnstile-e1) (target moving))
   (let ((side (on-which-side-is-other self target)))
@@ -39,7 +39,7 @@
   (call-next-method))
 
 (defmethod visual ((self turnstile-w1))
-  "turnstile-w1")
+  (list "turnstile-w1"))
 
 (defmethod collide ((self turnstile-w1) (target moving))
   (let ((side (on-which-side-is-other self target)))
@@ -53,7 +53,7 @@
   (call-next-method))
 
 (defmethod visual ((self turnstile-n1))
-  "turnstile-n1")
+  (list "turnstile-n1"))
 
 (defmethod collide ((self turnstile-n1) (target moving))
   (let ((side (on-which-side-is-other self target)))
@@ -67,7 +67,7 @@
   (call-next-method))
 
 (defmethod visual ((self turnstile-s1))
-  "turnstile-s1")
+  (list "turnstile-s1"))
 
 (defmethod collide ((self turnstile-s1) (target moving))
   (let ((side (on-which-side-is-other self target)))
@@ -81,7 +81,7 @@
   (call-next-method))
 
 (defmethod visual ((self turnstile-e))
-  "turnstile-e")
+  (list "turnstile-e"))
 
 (defmethod collide ((self turnstile-e) (target moving))
   (let ((side (on-which-side-is-other self target)))
@@ -97,7 +97,7 @@
   (call-next-method))
 
 (defmethod visual ((self turnstile-w))
-  "turnstile-w")
+  (list "turnstile-w"))
 
 (defmethod collide ((self turnstile-w) (target moving))
   (let ((side (on-which-side-is-other self target)))
@@ -112,7 +112,7 @@
   (call-next-method))
 
 (defmethod visual ((self turnstile-n))
-  "turnstile-n")
+  (list "turnstile-n"))
 
 (defmethod collide ((self turnstile-n) (target moving))
   (let ((side (on-which-side-is-other self target)))
@@ -127,7 +127,7 @@
   (call-next-method))
 
 (defmethod visual ((self turnstile-s))
-  "turnstile-s")
+  (list "turnstile-s"))
 
 (defmethod collide ((self turnstile-s) (target moving))
   (let ((side (on-which-side-is-other self target)))

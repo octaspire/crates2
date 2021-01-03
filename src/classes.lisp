@@ -128,6 +128,23 @@
 (defclass key (crate)
   ())
 
+(defclass pulled (moving)
+  ((puller :initarg :puller
+           :accessor pulled-puller
+           :initform nil)
+   (east :initarg :east
+           :accessor pulled-east
+         :initform nil)
+   (west :initarg :east
+         :accessor pulled-west
+         :initform nil)
+   (north :initarg :north
+          :accessor pulled-north
+         :initform nil)
+   (south :initarg :south
+          :accessor pulled-south
+          :initform nil)))
+
 (defclass player (moving)
   ((delay :initform 0
           :accessor player-delay)))

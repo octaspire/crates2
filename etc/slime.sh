@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Octaspire Crates 2 - Puzzle Game
 # Copyright 2020 octaspire.com
 #
@@ -15,7 +15,7 @@
 # limitations under the License.
 EMACS=emacs
 EMACSCLIENT=emacsclient
-EMACS_SERVER_ON=$(lsof -c emacs | grep server)
+EMACS_SERVER_ON=$(fstat | grep emacs | grep server)
 PROGRAM="(progn (slime)                                    \
          (while (not (slime-connected-p)) (sleep-for 0.5)) \
          (slime-repl-eval-string                           \

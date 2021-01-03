@@ -24,7 +24,7 @@
   (let ((result "pass-counter-")
         (passstr (format nil "~2,'0d" (passes-left self))))
     (setf result (concatenate 'string result passstr))
-    result))
+    (list result)))
 
 (defmethod update ((self pass-counter))
   (ecase (crate-state self)

@@ -1,5 +1,5 @@
 ;; Octaspire Crates 2 - Puzzle Game
-;; Copyright 2020 octaspire.com
+;; Copyright 2020, 2021 octaspire.com
 ;;
 ;; Licensed under the Apache License, Version 2.0 (the "License");
 ;; you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 ;; limitations under the License.
 (in-package :crates2)
 
-(defparameter *num-levels* 15)
+(defparameter *num-levels* 16)
 
 (defun load-level (index)
   (ecase index
@@ -87,5 +87,12 @@
                     (make-instance 'exit         :x 6 :y 5 :z 0)
                     (make-instance 'exit         :x 2 :y 5 :z 0)
                     (make-instance 'key          :x 4 :y 3 :z 0)
-                    (make-instance 'player       :x 6 :y 3 :z 0))))))
+                    (make-instance 'player       :x 6 :y 3 :z 0))))
+    (15 (list (list nil nil nil nil :west nil nil nil nil nil nil nil nil :south nil nil nil nil nil :north nil nil nil nil nil :east nil nil nil nil nil nil :south)
+              (list (make-instance 'wall         :x 1 :y 3 :z 0)
+                    (make-instance 'wall         :x 2 :y 0 :z 0)
+                    (make-instance 'wall         :x 7 :y 1 :z 0)
+                    (make-instance 'exit         :x 6 :y 5 :z 0)
+                    (make-instance 'player       :x 6 :y 3 :z 0)
+                    (make-instance 'pulled       :x 2 :y 5 :z 0 :north t))))))
 

@@ -22,7 +22,7 @@
   (call-next-method))
 
 (defmethod visual ((self wall))
-  "wall-idle")
+  (list "wall-idle"))
 
 (defmethod collide ((self wall) (target moving))
   )
@@ -31,5 +31,5 @@
   (setf (velocity self) (on-which-side-i-am self target)))
 
 (defmethod visual ((self pushed))
-  "pushed-idle")
+  (list "pushed-idle"))
 

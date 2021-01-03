@@ -36,7 +36,7 @@
     (when (block-timer-durable self)
       (setf result (concatenate 'string result "durable-")))
     (setf result (concatenate 'string result timestr))
-    result))
+    (list result)))
 
 (defmethod collide ((self block-timer) (target moving))
   (ecase (crate-state self)

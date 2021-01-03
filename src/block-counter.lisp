@@ -24,7 +24,7 @@
   (let ((result "block-counter-")
         (touchstr (format nil "~2,'0d" (touches-left self))))
     (setf result (concatenate 'string result touchstr))
-    result))
+    (list result)))
 
 (defmethod collide ((self block-counter) (target moving))
   (ecase (crate-state self)

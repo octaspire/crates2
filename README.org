@@ -29,6 +29,34 @@ But please note, that the path given in that file probably
 has to be changed to match the location of the cloned directory
 on your machine.
 
+You can also build and run by issuing command:
+
+#+begin_src shell
+make run
+#+end_src
+
+** Platform Specific Notes
+
+*** OpenBSD
+
+To use crates2 in OpenBSD without Common Lisp REPL - i.e. by running the generated
+=crates2= executable directly - the =crates2= executable must be first
+copied into ~/usr/local/bin~. This is because of the ~W^X~ protection
+that OpenBSD uses. Command ~make run~ does this automagically in =OpenBSD=,
+if file ~/etc/doas.conf~ has a line:
+
+#+begin_src shell
+permit nopass USERNAME as root cmd /bin/cp args crates2 /usr/local/bin/
+#+end_src
+
+where ~USERNAME~ is your username. If you are getting error message
+
+#+begin_src shell
+RWX mmap not supported, is the current filesystem mounted with wxallowed?
+#+end_src
+
+in OpenBSD, then copying the executable to ~/usr/local/bin~ should fix the issue.
+
 * Development
 
 GNU Emacs with slime, having crates2 loaded,

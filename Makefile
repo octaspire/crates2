@@ -28,7 +28,7 @@ slime:
 	@etc/slime.sh &
 
 run: crates2
-	@./crates2
+	@etc/run.sh
 
 clean:
 	@rm -f crates2

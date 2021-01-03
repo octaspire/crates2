@@ -29,8 +29,8 @@
 
 (defmethod visual ((self exit))
   (if (exit-activated self)
-      "exit-active"
-      "exit-idle"))
+      (list "exit-active")
+      (list "exit-idle")))
 
 (defmethod collide ((self exit) (target player))
   (setf (exit-activated self) t)

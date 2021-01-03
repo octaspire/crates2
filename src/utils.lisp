@@ -16,11 +16,14 @@
 
 ;; Functions
 
-(defun replace-substr-at (input index new)
+(defun replace-substr-at-transparent-whitespace (input index new)
   "Replace part of INPUT starting at INDEX using sub string NEW"
   (let ((substring-len (length new)))
     (loop for i from 0 to (- substring-len 1)
-          do (setf (aref input (+ index i)) (aref new i))))
+          do (let ((new-char (aref new i)))
+               (when
+                   (not (equal new-char #\Space))
+                 (setf (aref input (+ index i)) new-char)))))
   input)
 
 (defun find-at (x y z)
@@ -54,32 +57,36 @@ directions."
     (:zero  nil)))
 
 (defun on-which-side-i-am (i other)
-  (let ((ix (crate-x i))
-        (iy (crate-y i))
-        (ox (crate-x other))
-        (oy (crate-y other)))
-    (if (= iy oy)
-        (if (= ix (- ox 1))
-            :west
-            (if (= ix (+ ox 1))
-                :east
-                :zero))
-        (if (= ix ox)
-            (if (= iy (- oy 1))
-                :north
-                (if (= iy (+ oy 1))
-                    :south
+  (if other
+      (let ((ix (crate-x i))
+            (iy (crate-y i))
+            (ox (crate-x other))
+            (oy (crate-y other)))
+        (if (= iy oy)
+            (if (= ix (- ox 1))
+                :west
+                (if (= ix (+ ox 1))
+                    :east
                     :zero))
-            :zero))))
+            (if (= ix ox)
+                (if (= iy (- oy 1))
+                    :north
+                    (if (= iy (+ oy 1))
+                        :south
+                        :zero))
+                :zero)))
+      :zero))
 
 (defun on-which-side-is-other (i other)
-  (let ((side (on-which-side-i-am i other)))
-    (ecase side
-      (:north :south)
-      (:south :north)
-      (:east  :west)
-      (:west  :east)
-      (:zero  :zero))))
+  (if other
+      (let ((side (on-which-side-i-am i other)))
+        (ecase side
+          (:north :south)
+          (:south :north)
+          (:east  :west)
+          (:west  :east)
+          (:zero  :zero)))
+      :zero))
 
 (defun move-to (crate x y z)
   (setf (crate-x crate) x)

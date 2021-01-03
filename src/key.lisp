@@ -17,7 +17,7 @@
 ;; Methods
 
 (defmethod visual ((self key))
-  "key-idle")
+  (list "key-idle"))
 
 (defmethod collide ((self key) (target player))
   (ecase (crate-state self)
