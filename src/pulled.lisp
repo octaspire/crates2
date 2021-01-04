@@ -20,29 +20,51 @@
   (ecase (crate-state self)
     (:idle
      nil)
-    (:pulled
+    (:attached
      (let* ((puller (pulled-puller self))
-            (side (on-which-side-is-other self puller)))
+            (side (on-which-side-is-other self puller 1)))
        (ecase side
          (:east
-          (let ((on (pulled-east self)))
+          (let ((on (and (pulled-east self) (eq (velocity puller) side))))
+            (when on
+              (setf (crate-state self) :pulled))))
+         (:west
+          (let ((on (and (pulled-west self) (eq (velocity puller) side))))
+            (when on
+              (setf (crate-state self) :pulled))))
+         (:north
+          (let ((on (and (pulled-north self) (eq (velocity puller) side))))
+            (when on
+              (setf (crate-state self) :pulled))))
+         (:south
+          (let ((on (and (pulled-south self) (eq (velocity puller) side))))
+            (when on
+              (setf (crate-state self) :pulled))))
+         (:zero nil))))
+    (:pulled
+     (let* ((puller (pulled-puller self))
+            (side (on-which-side-is-other self puller 1)))
+       (ecase side
+         (:east
+          (let ((on (and (pulled-east self) (eq (velocity puller) side))))
             (pulled-set-pull-on self puller on)))
          (:west
-          (let ((on (pulled-west self)))
+          (let ((on (and (pulled-west self) (eq (velocity puller) side))))
             (pulled-set-pull-on self puller on)))
          (:north
-          (let ((on (pulled-north self)))
+          (let ((on (and (pulled-north self) (eq (velocity puller) side))))
             (pulled-set-pull-on self puller on)))
          (:south
-          (let ((on (pulled-south self)))
+          (let ((on (and (pulled-south self) (eq (velocity puller) side))))
             (pulled-set-pull-on self puller on)))
-         (:zero nil))))
+         (:zero
+          (pulled-set-pull-on self puller nil)))))
     (:lamented nil))
   (call-next-method))
 
 (defmethod visual ((self pulled))
   (let ((result (list "pulled-idle"))
-        (side   (on-which-side-is-other self (pulled-puller self))))
+        (side   (on-which-side-is-other self (pulled-puller self) 1)))
     ;; EAST
     (if (pulled-east self)
         (nconc result (list (if (eq side :east)
@@ -70,20 +92,21 @@
     result))
 
 (defmethod pulled-set-pull-on ((self pulled) (puller moving) on)
-  (setf (crate-state self) (if on :pulled :idle))
+  (setf (crate-state self) (if on :attached :idle))
   (setf (pulled-puller self) (if on puller nil))
-  (let ((side (on-which-side-is-other self puller)))
+  (let ((side (on-which-side-is-other self puller 1)))
     (setf (velocity self) (if on side :zero))))
 
 (defmethod collide ((self pulled) (target player))
-  (let ((side (on-which-side-is-other self target)))
-    (ecase side
-      (:east (when (pulled-east self)
-               (pulled-set-pull-on self target t)))
-      (:west (when (pulled-west self)
-               (pulled-set-pull-on self target t)))
-      (:north (when (pulled-north self)
-                (pulled-set-pull-on self target t)))
-      (:south (when (pulled-south self)
-                (pulled-set-pull-on self target t)))
-      (:zero nil))))
+  (when (eq (crate-state self) :idle)
+    (let ((side (on-which-side-is-other self target)))
+      (ecase side
+        (:east (when (pulled-east self)
+                 (pulled-set-pull-on self target t)))
+        (:west (when (pulled-west self)
+                 (pulled-set-pull-on self target t)))
+        (:north (when (pulled-north self)
+                  (pulled-set-pull-on self target t)))
+        (:south (when (pulled-south self)
+                  (pulled-set-pull-on self target t)))
+        (:zero nil)))))

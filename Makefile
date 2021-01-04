@@ -15,11 +15,10 @@
 LISP  ?= sbcl
 EVAL  ?= "--eval"
 LOAD  ?= "--load
-SOURCES = $(wildcard src/*.lisp)
 
 .PHONY: slime clean help
 
-crates2: Makefile crates2.asd $(SOURCES)
+crates2: Makefile crates2.asd src/*.lisp
 	@$(LISP) $(EVAL) '(ql:quickload :crates2)' \
                  $(EVAL) '(asdf:make :crates2)'    \
                  $(EVAL) '(quit)'

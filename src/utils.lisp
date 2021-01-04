@@ -56,30 +56,38 @@ directions."
     (:south (if (eq v2 :north) t nil))
     (:zero  nil)))
 
-(defun on-which-side-i-am (i other)
+(defun between-inclusive-p (n a b)
+  "Predicate telling whether N is in range [A, B]."
+  (if (< n a)
+      nil
+      (if (> n b)
+          nil
+          t)))
+
+(defun on-which-side-i-am (i other &optional (slack 0))
   (if other
       (let ((ix (crate-x i))
             (iy (crate-y i))
             (ox (crate-x other))
             (oy (crate-y other)))
         (if (= iy oy)
-            (if (= ix (- ox 1))
+            (if (between-inclusive-p ix (- ox 1) (- ox 1 slack))
                 :west
-                (if (= ix (+ ox 1))
+                (if (between-inclusive-p ix (+ ox 1) (+ ox 1 slack))
                     :east
                     :zero))
             (if (= ix ox)
-                (if (= iy (- oy 1))
+                (if (between-inclusive-p iy (- oy 1) (- oy 1 slack))
                     :north
-                    (if (= iy (+ oy 1))
+                    (if (between-inclusive-p iy (+ oy 1) (+ oy 1 slack))
                         :south
                         :zero))
                 :zero)))
       :zero))
 
-(defun on-which-side-is-other (i other)
+(defun on-which-side-is-other (i other &optional (slack 0))
   (if other
-      (let ((side (on-which-side-i-am i other)))
+      (let ((side (on-which-side-i-am i other slack)))
         (ecase side
           (:north :south)
           (:south :north)
