@@ -135,7 +135,7 @@
    (east :initarg :east
            :accessor pulled-east
          :initform nil)
-   (west :initarg :east
+   (west :initarg :west
          :accessor pulled-west
          :initform nil)
    (north :initarg :north

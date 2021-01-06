@@ -58,11 +58,9 @@ directions."
 
 (defun between-inclusive-p (n a b)
   "Predicate telling whether N is in range [A, B]."
-  (if (< n a)
-      nil
-      (if (> n b)
-          nil
-          t)))
+  (let ((aa (min a b))
+        (bb (max a b)))
+    (and (>= n aa) (<= n bb))))
 
 (defun on-which-side-i-am (i other &optional (slack 0))
   (if other

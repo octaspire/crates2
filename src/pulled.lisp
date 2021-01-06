@@ -40,7 +40,8 @@
           (let ((on (and (pulled-south self) (eq (velocity puller) side))))
             (when on
               (setf (crate-state self) :pulled))))
-         (:zero nil))))
+         (:zero
+          (pulled-set-pull-on self puller nil)))))
     (:pulled
      (let* ((puller (pulled-puller self))
             (side (on-which-side-is-other self puller 1)))
@@ -92,7 +93,12 @@
     result))
 
 (defmethod pulled-set-pull-on ((self pulled) (puller moving) on)
-  (setf (crate-state self) (if on :attached :idle))
+  (setf (crate-state self)
+        (if on
+            (if (eq (crate-state self) :pulled)
+                :pulled
+                :attached)
+            :idle))
   (setf (pulled-puller self) (if on puller nil))
   (let ((side (on-which-side-is-other self puller 1)))
     (setf (velocity self) (if on side :zero))))

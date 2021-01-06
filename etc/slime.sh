@@ -16,10 +16,11 @@
 EMACS=emacs
 EMACSCLIENT=emacsclient
 EMACS_SERVER_ON=$(fstat | grep emacs | grep server)
-PROGRAM="(progn (slime)                                    \
-         (while (not (slime-connected-p)) (sleep-for 0.5)) \
-         (slime-repl-eval-string                           \
-           \"(progn (ql:quickload :crates2)                \
+PROGRAM="(progn (slime)                                      \
+         (while (not (slime-connected-p)) (sleep-for 0.5))   \
+         (slime-repl-eval-string                             \
+           \"(progn (declaim (optimize (speed 0) (debug 3))) \
+                    (ql:quickload :crates2)                  \
                     (in-package :crates2))\"))"
 
 if [ -z "${EMACS_SERVER_ON}" ]
