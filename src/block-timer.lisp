@@ -20,7 +20,7 @@
   (ecase (crate-state self)
     (:idle nil)
     (:active
-     (incf (block-timer-uptime self) 0.5)
+     (incf (block-timer-uptime self) *frame-duration*)
      (when (<= (time-left self) 0)
        (lament self)))
     (:lamented nil))
@@ -31,12 +31,11 @@
               (block-timer-uptime self))))
 
 (defmethod visual ((self block-timer))
-  (let ((result "block-timer-")
-        (timestr (format nil "~2,'0d" (time-left self))))
-    (when (block-timer-durable self)
-      (setf result (concatenate 'string result "durable-")))
-    (setf result (concatenate 'string result timestr))
-    (list result)))
+  (let ((timestr (format nil "count-~2,'0d" (time-left self))))
+    (list (if (block-timer-durable self)
+              "block-timer-durable"
+              "block-timer")
+          timestr)))
 
 (defmethod collide ((self block-timer) (target moving))
   (ecase (crate-state self)

@@ -86,7 +86,7 @@
   ((time :initarg :time
          :accessor block-timer-time
          :initform 10)
-   (uptime :initarg :time
+   (uptime :initarg :uptime
            :accessor block-timer-uptime
            :initform 0)
    (durable :initarg :durable
