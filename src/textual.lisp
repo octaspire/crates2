@@ -154,10 +154,12 @@
 (defparameter *last-fake-input* nil)
 
 (defun ui-input ()
-  (let ((input (car *fake-input*)))
-    (setf *fake-input* (cdr *fake-input*))
-    (setf *last-fake-input* input)
-    input))
+  (if *test-run*
+      (let ((input (car *fake-input*)))
+        (setf *fake-input* (cdr *fake-input*))
+        (setf *last-fake-input* input)
+        input)
+      nil))
 
 (defun x-axis (length)
   (let ((result ""))

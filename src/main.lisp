@@ -21,17 +21,25 @@
 (defparameter *errors* nil)
 (defparameter *update-counter* 0)
 (defparameter *input* nil)
-(defparameter *level-number* 16)
+(defparameter *level-number* 0)
 (defparameter *running* t)
 (defparameter *level* nil)
 (defparameter *created* nil)
-(defparameter *next-level* 17)
+(defparameter *next-level* nil)
 (defparameter *level-width* 18)
 (defparameter *level-height* 12)
 (defparameter *frame-duration* 0.25)
+(defparameter *test-run* nil)
 
 (defun verbose-parser (x)
   (setf *verbose* (parse-integer x)))
+
+(defun test-parser (x)
+  (setf *test-run* t)
+  (let ((num (parse-integer x)))
+    (setf *level-number* num)
+    (setf *next-level* nil)
+    (setf *frame-duration* 0)))
 
 (defun get-current-level()
   (unless *level*
@@ -57,6 +65,10 @@
   (:name :version
    :description "Show version information"
    :long "version")
+  (:name :test
+   :description "Do a test run starting from the given level"
+   :long "test"
+   :arg-parser #'test-parser)
   (:name :fullscreen
    :description "Run in fullscreen mode"
    :long "fullscreen"))
@@ -107,15 +119,17 @@
              do (case ,option ,@clauses)))))
 
 (defun load-next-level ()
-  (let ((level-number (mod *next-level* *num-levels*)))
-    (setf *next-level* nil)
-    (setf *fake-input* nil)
-    (setf *level-number* level-number)
-    (format t "LEVEL ~A~%" *level-number*)
-    (setf *level* nil)
-    (let ((loaded (load-level *level-number*)))
-      (setf *level* (cadr loaded))
-      (setf *fake-input* (car loaded)))))
+  (if (and *test-run* (>= *next-level* *num-levels*))
+      (running nil)
+      (let ((level-number (mod *next-level* *num-levels*)))
+        (setf *next-level* nil)
+        (setf *fake-input* nil)
+        (setf *level-number* level-number)
+        (format t "LEVEL ~A~%" *level-number*)
+        (setf *level* nil)
+        (let ((loaded (load-level *level-number*)))
+          (setf *level* (cadr loaded))
+          (setf *fake-input* (car loaded))))))
 
 (defun request-next-level ()
   (setf *next-level* (+ *level-number* 1)))

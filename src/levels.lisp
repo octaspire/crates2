@@ -14,7 +14,7 @@
 ;; limitations under the License.
 (in-package :crates2)
 
-(defparameter *num-levels* 18)
+(defparameter *num-levels* 19)
 
 (defun load-level (index)
   (ecase index
@@ -57,13 +57,13 @@
                    (make-instance 'slope-ws :x 14 :y 2  :z 0)
                    (make-instance 'slope-wn :x 14 :y 6  :z 0)
                    (make-instance 'player   :x 8  :y 6 :z 0))))
-    (9 (list (list :west nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil)
+    (9 (list (list :west nil nil nil nil nil nil nil nil nil nil nil)
              (list (make-instance 'exit :x 1 :y 2 :z 0)
-                   (make-instance 'vacuum :x 3 :y 2 :z -1)
+                   ;; (make-instance 'vacuum :x 3 :y 2 :z -1)
                    (make-instance 'player :x 5 :y 2 :z 0))))
     (10 (list (list nil nil nil nil :west nil nil nil nil :west nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil :west)
               (list (make-instance 'exit        :x 1 :y 3 :z 0)
-                    (make-instance 'block-timer :x 4 :y 3 :z 0)
+                    ;; (make-instance 'block-timer :x 4 :y 3 :z 0)
                     (make-instance 'player      :x 8 :y 3 :z 0))))
     (11 (list (list nil nil nil nil :west nil nil nil :east nil nil nil :west nil nil nil :east nil nil nil :west)
               (list (make-instance 'exit          :x 1 :y 3 :z 0)
@@ -76,11 +76,11 @@
                     (make-instance 'pass-counter :x 4 :y 3 :z 1 :count 3)
                     (make-instance 'player       :x 5 :y 3 :z 0)
                     (make-instance 'wall         :x 8 :y 3 :z 0))))
-    (13 (list (list nil nil nil nil :west nil nil nil nil :east nil nil nil nil nil :west nil nil nil nil nil nil nil nil nil :east nil nil nil nil nil nil :west nil nil nil :south)
+    (13 (list (list nil nil nil nil :west)
               (list (make-instance 'wall         :x 1 :y 3 :z 0)
                     (make-instance 'exit         :x 5 :y 5 :z 0)
-                    (make-instance 'pass-timer   :x 4 :y 3 :z 1 :time 10)
-                    (make-instance 'player       :x 6 :y 3 :z 0)
+                    ;; (make-instance 'pass-timer   :x 4 :y 3 :z 1 :time 10)
+                    (make-instance 'player       :x 6 :y 5 :z 0)
                     (make-instance 'wall         :x 8 :y 3 :z 0))))
     (14 (list (list nil nil nil nil :west nil nil nil nil nil nil nil nil :south)
               (list (make-instance 'wall         :x 1 :y 3 :z 0)
@@ -144,5 +144,62 @@
                     (make-instance 'wall         :x 3  :y 8 :z 0)
                     (make-instance 'slope-en     :x 6  :y 8 :z 0)
                     (make-instance 'slope-wn     :x 11 :y 8 :z 0)
-                    (make-instance 'wall         :x 5  :y 9 :z 0))))))
+                    (make-instance 'wall         :x 5  :y 9 :z 0))))
+    (18 (list (list nil nil
+                    :west nil nil nil nil nil nil
+                    :south nil nil nil nil
+                    :east nil nil nil nil
+                    :north nil nil nil
+                    :south nil nil nil
+                    :east nil nil nil nil nil
+                    :north nil nil nil
+                    :west nil nil
+                    :east nil nil nil nil
+                    :north nil nil nil nil nil
+                    :west nil nil nil nil
+                    :south nil nil nil
+                    :north nil nil nil nil
+                    :west nil nil nil nil nil nil
+                    :south nil nil nil
+                    :east nil nil
+                    :west nil nil nil nil
+                    :south)
+              (list (make-instance 'wall          :x 5  :y 0 :z 0)
+                    (make-instance 'block-counter :x 7  :y 0 :count 1)
+                    (make-instance 'block-counter :x 1  :y 1 :count 1)
+                    (make-instance 'block-counter :x 9  :y 1 :count 1)
+                    (make-instance 'wall          :x 4  :y 2)
+                    (make-instance 'wall          :x 6  :y 2)
+                    (make-instance 'block-counter :x 0  :y 3 :count 1)
+                    (make-instance 'key           :x 3  :y 3)
+                    (make-instance 'wall          :x 4  :y 3)
+                    (make-instance 'wall          :x 6  :y 3)
+                    (make-instance 'key           :x 7  :y 3)
+                    (make-instance 'wall          :x 2  :y 4)
+                    (make-instance 'wall          :x 3  :y 4)
+                    (make-instance 'wall          :x 4  :y 4)
+                    (make-instance 'wall          :x 6  :y 4)
+                    (make-instance 'wall          :x 7  :y 4)
+                    (make-instance 'wall          :x 8  :y 4)
+                    (make-instance 'wall          :x 0  :y 5)
+                    (make-instance 'player        :x 5  :y 5)
+                    (make-instance 'wall          :x 10 :y 5)
+                    (make-instance 'wall          :x 2  :y 6)
+                    (make-instance 'wall          :x 3  :y 6)
+                    (make-instance 'wall          :x 4  :y 6)
+                    (make-instance 'wall          :x 6  :y 6)
+                    (make-instance 'wall          :x 7  :y 6)
+                    (make-instance 'wall          :x 8  :y 6)
+                    (make-instance 'key           :x 3  :y 7)
+                    (make-instance 'wall          :x 4  :y 7)
+                    (make-instance 'wall          :x 6  :y 7)
+                    (make-instance 'key           :x 7  :y 7)
+                    (make-instance 'block-counter :x 10 :y 7 :count 1)
+                    (make-instance 'wall          :x 4  :y 8)
+                    (make-instance 'wall          :x 6  :y 8)
+                    (make-instance 'block-counter :x 1  :y 9 :count 1)
+                    (make-instance 'block-counter :x 9  :y 9 :count 1)
+                    (make-instance 'exit          :x 1  :y 10)
+                    (make-instance 'block-counter :x 3  :y 10 :count 1)
+                    (make-instance 'wall          :x 5  :y 10))))))
 

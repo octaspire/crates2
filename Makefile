@@ -16,7 +16,7 @@ LISP  ?= sbcl
 EVAL  ?= "--eval"
 LOAD  ?= "--load
 
-.PHONY: slime clean help
+.PHONY: slime clean help test
 
 crates2: Makefile crates2.asd src/*.lisp
 	@$(LISP) $(EVAL) '(ql:quickload :crates2)' \
@@ -32,13 +32,17 @@ run: crates2
 clean:
 	@rm -f crates2
 
+test: crates2
+	@etc/test.sh
+
 help:
-	@echo "Usage:"
-	@echo "  make <target>"
-	@echo ""
-	@echo "Targets:"
-	@echo "  crates2  build standalone binary executable for crates2 (default target)"
-	@echo "  run      build standalone binary and run it"
-	@echo "  slime    start Emacs/slime (if needed) with crates2 loaded"
-	@echo "  clean    remove build artifacts"
-	@echo "  help     show this help"
+	@echo 'Usage:'
+	@echo '  make <target>'
+	@echo ''
+	@echo 'Targets:'
+	@echo '  crates2  build standalone binary executable for crates2 (default target)'
+	@echo '  run      build standalone binary and run it'
+	@echo '  slime    start Emacs/slime (if needed) with crates2 loaded'
+	@echo '  clean    remove build artifacts'
+	@echo '  test     build and do a play test'
+	@echo '  help     show this help'
