@@ -11,6 +11,7 @@ tasks:
         sbcl --load quicklisp.lisp --eval '(quicklisp-quickstart:install)' --eval '(ql-util:without-prompting (ql:add-to-init-file))' --eval '(quit)'
         mkdir -p ~/.config/common-lisp/source-registry.conf.d/
         cp crates2/etc/crates2.conf ~/.config/common-lisp/source-registry.conf.d/crates2.conf
+        sed -i 's/octaspire/build/' "$HOME/.config/common-lisp/source-registry.conf.d/crates2.conf"
     - test: |
         cd crates2
         make test
