@@ -14,7 +14,7 @@
 ;; limitations under the License.
 (in-package :crates2)
 
-(defparameter *num-levels* 19)
+(defparameter *num-levels* 20)
 
 (defun load-level (index)
   (ecase index
@@ -114,37 +114,94 @@
                     (make-instance 'pulled       :x 8 :y 9 :z 0 :north t)
                     (make-instance 'exit         :x 8 :y 2 :z 0))))
     (17 (list (list nil nil
-                    :north nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil
-                    nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil
-                    nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil
-                    :west nil nil nil nil nil nil nil nil nil nil nil
-                    :south nil nil nil nil nil nil
-                    :north nil nil nil nil nil nil
-                    :east nil nil nil nil nil nil nil nil nil nil
-                    :south nil nil nil
-                    :west nil nil nil nil nil
+                    :east nil nil nil nil nil nil
+                    :north nil nil nil nil nil nil nil nil
+                    :east nil nil nil
+                    :north nil nil
+                    :west nil nil
                     :south nil nil nil nil
                     :west nil nil nil nil
-                    :north nil nil nil
+                    :north nil nil nil nil nil
+                    :east nil nil nil
+                    :north nil nil
+                    :east nil nil nil nil nil nil
+                    :south nil nil nil
+                    :west nil nil nil nil
+                    :south nil nil nil nil nil
+                    :west nil nil nil nil
+                    :south nil nil nil
+                    :west nil nil nil nil
+                    :south nil nil
                     :west nil nil nil
                     :north nil nil nil
-                    :west)
-              (list (make-instance 'slope-es     :x 6  :y 0 :z 0)
-                    (make-instance 'slope-ws     :x 11 :y 0 :z 0)
-                    (make-instance 'block-timer  :x 2  :y 2 :z 0 :time 18)
-                    (make-instance 'exit         :x 0  :y 3 :z 0 )
-                    (make-instance 'turnstile-s  :x 3  :y 3 :z 0 )
-                    (make-instance 'player       :x 6  :y 3 :z 0 )
-                    (make-instance 'pass-counter :x 11 :y 3 :z 1 :count 2)
-                    (make-instance 'wall         :x 9  :y 4 :z 0)
-                    (make-instance 'wall         :x 4  :y 5 :z 0)
-                    (make-instance 'wall         :x 1  :y 6 :z 0)
-                    (make-instance 'wall         :x 8  :y 6 :z 0)
-                    (make-instance 'key          :x 3  :y 7 :z 0)
-                    (make-instance 'wall         :x 3  :y 8 :z 0)
-                    (make-instance 'slope-en     :x 6  :y 8 :z 0)
-                    (make-instance 'slope-wn     :x 11 :y 8 :z 0)
-                    (make-instance 'wall         :x 5  :y 9 :z 0))))
+                    :west nil nil
+                    :north nil nil
+                    :west nil nil
+                    :north nil nil nil nil nil nil nil
+                    :east nil nil nil nil
+                    :south nil nil nil
+                    :east nil nil
+                    :south nil nil nil nil nil
+                    :north nil nil nil nil
+                    :east nil nil nil nil
+                    :north nil nil
+                    :west nil nil nil
+                    :north nil nil nil nil nil nil
+                    :south nil nil nil nil nil nil nil
+                    :west nil nil
+                    :north nil nil nil nil
+                    :west nil nil nil nil nil ; this takes us out from the heart to (0,5)
+                    :east nil
+                    :south nil nil
+                    :east nil nil
+                    :south nil nil nil
+                    :east nil nil nil nil nil
+                    :north nil nil
+                    :east nil nil
+                    :north nil nil
+                    :east nil nil nil nil nil
+                    :east)
+              (list (make-instance 'wall        :x 1  :y 0 :z 0)
+                    (make-instance 'wall        :x 6  :y 1 :z 0)
+                    (make-instance 'key         :x 7  :y 1 :z 0)
+                    (make-instance 'slope-ws    :x 10 :y 1 :z 0)
+                    (make-instance 'wall        :x 13 :y 2 :z 0)
+                    (make-instance 'wall        :x 3  :y 3 :z 0)
+                    (make-instance 'wall        :x 4  :y 3 :z 0)
+                    (make-instance 'wall        :x 8  :y 3 :z 0)
+                    (make-instance 'wall        :x 9  :y 3 :z 0)
+                    (make-instance 'wall        :x 2  :y 4 :z 0)
+                    (make-instance 'key         :x 4  :y 4 :z 0)
+                    (make-instance 'turnstile-e :x 5  :y 4 :z 0)
+                    (make-instance 'turnstile-s :x 7  :y 4 :z 0)
+                    (make-instance 'key         :x 8  :y 4 :z 0)
+                    (make-instance 'wall        :x 10 :y 4 :z 0)
+                    (make-instance 'slope-es    :x 0  :y 5 :z 0)
+                    (make-instance 'turnstile-w :x 2  :y 5 :z 0)
+                    (make-instance 'wall        :x 6  :y 5 :z 0)
+                    (make-instance 'turnstile-e :x 10 :y 5 :z 0)
+                    (make-instance 'turnstile-e :x 12 :y 5 :z 0)
+                    (make-instance 'block-timer :x 14 :y 5 :z 0 :time 18)
+                    (make-instance 'wall        :x 2  :y 6 :z 0)
+                    (make-instance 'wall        :x 10 :y 6 :z 0)
+                    (make-instance 'exit        :x 16 :y 6 :z 0)
+                    (make-instance 'wall        :x 2  :y 7 :z 0)
+                    (make-instance 'wall        :x 10 :y 7 :z 0)
+                    (make-instance 'wall        :x 0  :y 8 :z 0)
+                    (make-instance 'wall        :x 3  :y 8 :z 0)
+                    (make-instance 'wall        :x 9  :y 8 :z 0)
+                    (make-instance 'slope-wn    :x 14 :y 8 :z 0)
+                    (make-instance 'wall        :x 4  :y 9 :z 0)
+                    (make-instance 'wall        :x 8  :y 9 :z 0)
+                    (make-instance 'wall        :x 1  :y 10 :z 0)
+                    (make-instance 'wall        :x 5  :y 10 :z 0)
+                    (make-instance 'wall        :x 7  :y 10 :z 0)
+                    (make-instance 'wall        :x 11 :y 10 :z 0)
+                    (make-instance 'turnstile-n :x 6  :y 11 :z 0)
+                    (make-instance 'wall        :x 9  :y 12 :z 0)
+                    (make-instance 'wall        :x 3  :y 13 :z 0)
+                    (make-instance 'wall        :x 7  :y 14 :z 0)
+                    (make-instance 'player      :x 0  :y 14 :z 0))))
     (18 (list (list nil nil
                     :west nil nil nil nil nil nil
                     :south nil nil nil nil
@@ -201,5 +258,40 @@
                     (make-instance 'block-counter :x 9  :y 9 :count 1)
                     (make-instance 'exit          :x 1  :y 10)
                     (make-instance 'block-counter :x 3  :y 10 :count 1)
-                    (make-instance 'wall          :x 5  :y 10))))))
+                    (make-instance 'wall          :x 5  :y 10))))
+    (19 (list (list nil nil
+                    :north nil nil nil nil nil nil nil nil nil nil
+                    nil nil nil nil nil nil nil nil nil nil
+                    nil nil nil nil nil nil nil nil nil nil
+                    nil nil nil nil nil nil nil nil nil nil
+                    nil nil nil nil nil nil nil nil nil nil
+                    nil nil nil nil nil nil nil nil nil nil
+                    :west nil nil nil nil nil nil nil nil nil nil
+                    :south nil nil nil nil nil
+                    :north nil nil nil nil nil
+                    :east nil nil nil nil nil
+                    :south nil nil nil nil nil
+                    :west nil nil nil nil nil
+                    :south nil nil nil nil nil
+                    :west nil nil nil nil nil
+                    :north nil nil nil nil nil
+                    :west nil nil nil nil nil
+                    :north nil nil nil nil nil
+                    :west)
+              (list (make-instance 'slope-es      :x 6  :y 0 :z 0)
+                    (make-instance 'slope-ws      :x 11 :y 0 :z 0)
+                    (make-instance 'block-timer   :x 2  :y 2 :z 0 :time 18)
+                    (make-instance 'exit          :x 0  :y 3 :z 0)
+                    (make-instance 'turnstile-s   :x 3  :y 3 :z 0)
+                    (make-instance 'player        :x 6  :y 3 :z 0)
+                    (make-instance 'pass-counter  :x 11 :y 3 :z 1 :count 2)
+                    (make-instance 'wall          :x 9  :y 4 :z 0)
+                    (make-instance 'wall          :x 4  :y 5 :z 0)
+                    (make-instance 'wall          :x 1  :y 6 :z 0)
+                    (make-instance 'wall          :x 8  :y 6 :z 0)
+                    (make-instance 'key           :x 3  :y 7 :z 0)
+                    (make-instance 'wall          :x 3  :y 8 :z 0)
+                    (make-instance 'slope-en      :x 6  :y 8 :z 0)
+                    (make-instance 'slope-wn      :x 11 :y 8 :z 0)
+                    (make-instance 'wall          :x 5  :y 9 :z 0))))))
 

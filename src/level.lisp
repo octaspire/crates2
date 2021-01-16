@@ -36,6 +36,10 @@
   (find-if #'(lambda (crate)
                (eq (type-of crate) 'key)) *level*))
 
+(defun find-first-crate-of-type (type)
+  (find-if #'(lambda (crate)
+               (eq (type-of crate) type)) *level*))
+
 (defun purge-lamented ()
   (setf *level* (remove-if #'(lambda (crate)
                                (let ((type (type-of crate)))

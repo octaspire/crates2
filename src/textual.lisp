@@ -151,15 +151,33 @@
 
 (defparameter *fake-input* nil)
 
-(defparameter *last-fake-input* nil)
+(defparameter *last-input* nil)
+
+(defun ui-read-input ()
+  (format t "Input: ")
+  (finish-output)
+  (let ((c (read-char)))
+    (case c
+      (#\w :north)
+      (#\s :south)
+      (#\a :west)
+      (#\d :east)
+      (#\q :back)
+      (otherwise nil))))
+
+(defun ui-maybe-read-input ()
+  (let ((player (find-first-crate-of-type 'player)))
+    (if (and player (movingp player))
+        nil                    ; No input while player moves, in textual mode.
+        (setf *last-input* (ui-read-input)))))
 
 (defun ui-input ()
   (if *test-run*
       (let ((input (car *fake-input*)))
         (setf *fake-input* (cdr *fake-input*))
-        (setf *last-fake-input* input)
+        (setf *last-input* input)
         input)
-      nil))
+      (ui-maybe-read-input)))
 
 (defun x-axis (length)
   (let ((result ""))
@@ -195,9 +213,9 @@
                  (format t "~2d|~A|" (floor y ch) line)
                  (format t "  |~A|" line))
              (if (= y 0)
-                 (format t " Input: ~@[~A~]~%" *last-fake-input*)
+                 (format t " Input: ~@[~A~]~%" *last-input*)
                  (if (= y 1)
                      (format t " #updates: ~A~%" *update-counter*)
                      (format t "~%"))))
     (format t "  +~A+~%" bar))
-  (setf *last-fake-input* nil))
+  (setf *last-input* nil))

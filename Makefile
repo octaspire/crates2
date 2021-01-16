@@ -15,6 +15,7 @@
 LISP  ?= sbcl
 EVAL  ?= "--eval"
 LOAD  ?= "--load
+level ?= 0
 
 .PHONY: slime clean help test
 
@@ -29,6 +30,12 @@ slime:
 run: crates2
 	@etc/run.sh
 
+play: crates2
+	@etc/autoplay.sh $(level)
+
+install: crates2
+	@etc/install.sh
+
 clean:
 	@rm -f crates2 expected.txt.bz2 expected.txt got.txt
 
@@ -42,6 +49,8 @@ help:
 	@echo 'Targets:'
 	@echo '  crates2  build standalone binary executable for crates2 (default target)'
 	@echo '  run      build standalone binary and run it'
+	@echo '  play     build standalone binary and autoplay it from given level'
+	@echo '  install  build standalone binary and install it'
 	@echo '  slime    start Emacs/slime (if needed) with crates2 loaded'
 	@echo '  clean    remove build artifacts'
 	@echo '  test     build and do a play test'

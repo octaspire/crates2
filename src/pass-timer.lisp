@@ -33,7 +33,7 @@
        (when crate
          (setf (crate-state self) :countdown))))
     (:countdown
-     (incf (pass-timer-uptime self) *frame-duration*)
+     (incf (pass-timer-uptime self) *frame-duration-default*)
      (when (<= (time-left self) 0)
        (setf (crate-state self) :triggered)))
     (:triggered

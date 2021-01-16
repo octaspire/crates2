@@ -20,7 +20,7 @@
   (ecase (crate-state self)
     (:idle nil)
     (:active
-     (incf (block-timer-uptime self) *frame-duration*)
+     (incf (block-timer-uptime self) *frame-duration-default*)
      (when (<= (time-left self) 0)
        (lament self)))
     (:lamented nil))

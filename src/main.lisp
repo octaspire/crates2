@@ -1,5 +1,5 @@
 ;; Octaspire Crates 2 - Puzzle Game
-;; Copyright 2020 octaspire.com
+;; Copyright 2020, 2021 octaspire.com
 ;;
 ;; Licensed under the Apache License, Version 2.0 (the "License");
 ;; you may not use this file except in compliance with the License.
@@ -25,21 +25,25 @@
 (defparameter *running* t)
 (defparameter *level* nil)
 (defparameter *created* nil)
-(defparameter *next-level* nil)
+(defparameter *next-level* 19)
 (defparameter *level-width* 18)
-(defparameter *level-height* 12)
-(defparameter *frame-duration* 0.25)
+(defparameter *level-height* 15)
+(defparameter *frame-duration-default* 0.25) ; Not zeroed in test mode.
+(defparameter *frame-duration* *frame-duration-default*) ; Zeroed in test mode.
 (defparameter *test-run* nil)
 
 (defun verbose-parser (x)
   (setf *verbose* (parse-integer x)))
 
 (defun test-parser (x)
+  (autoplay-parser x)
+  (setf *frame-duration* 0))
+
+(defun autoplay-parser (x)
   (setf *test-run* t)
   (let ((num (parse-integer x)))
     (setf *level-number* num)
-    (setf *next-level* nil)
-    (setf *frame-duration* 0)))
+    (setf *next-level* nil)))
 
 (defun get-current-level()
   (unless *level*
@@ -66,9 +70,16 @@
    :description "Show version information"
    :long "version")
   (:name :test
-   :description "Do a test run starting from the given level"
+   :description "Do a test run starting from the given level.
+This is similar to 'autoplay' but runs without delays, i.e. too fast
+to see what happens."
    :long "test"
    :arg-parser #'test-parser)
+  (:name :autoplay
+   :description "Do a autoplay run starting from the given level.
+This is similar to 'test' but runs much slower."
+   :long "autoplay"
+   :arg-parser #'autoplay-parser)
   (:name :fullscreen
    :description "Run in fullscreen mode"
    :long "fullscreen"))
@@ -86,7 +97,8 @@
              (ui-render *level*)
              (let ((input (ui-input)))
                (when input
-                 (setf *input* (cons input *input*))))
+                 (setf *input* (cons input *input*))
+                 (when (eq input :back) (running nil))))
              (update *level*)
              (when *next-level*
                (load-next-level))
@@ -132,7 +144,9 @@
           (setf *fake-input* (car loaded))))))
 
 (defun request-next-level ()
-  (setf *next-level* (+ *level-number* 1)))
+  ;; Don't override previous request, if present.
+  (unless *next-level*
+    (setf *next-level* (+ *level-number* 1))))
 
 (defun request-restart-level ()
   (format t "RESTART~%")
