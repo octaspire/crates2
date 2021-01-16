@@ -47,4 +47,5 @@ fi
 
 
 bunzip2 -fk "$EXPECTED_ARCH"
+echo "Comparing result with expected..."
 diff "$GOT_FILE" "$EXPECTED_FILE"

@@ -1,2 +1,5 @@
 crates2
 .#*
+expected.txt.bz2
+expected.txt
+got.txt

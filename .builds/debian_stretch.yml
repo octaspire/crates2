@@ -9,9 +9,11 @@ tasks:
     - setup: |
         curl -O https://beta.quicklisp.org/quicklisp.lisp
         sbcl --load quicklisp.lisp --eval '(quicklisp-quickstart:install)' --eval '(ql-util:without-prompting (ql:add-to-init-file))' --eval '(quit)'
-        mkdir -p ~/.config/common-lisp/source-registry.conf.d/
-        cp crates2/etc/crates2.conf ~/.config/common-lisp/source-registry.conf.d/crates2.conf
-        sed -i 's/octaspire/build/' "$HOME/.config/common-lisp/source-registry.conf.d/crates2.conf"
+        mkdir -p ~/quicklisp/local-projects/
+        mv crates2 ~/quicklisp/local-projects/
     - test: |
-        cd crates2
+        cd ~/quicklisp/local-projects/crates2
         make test
+    - peek-results: |
+        head -n 42 got.txt
+        tail -n 40 got.txt

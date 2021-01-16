@@ -30,7 +30,7 @@ run: crates2
 	@etc/run.sh
 
 clean:
-	@rm -f crates2
+	@rm -f crates2 expected.txt.bz2 expected.txt got.txt
 
 test: crates2
 	@etc/test.sh
