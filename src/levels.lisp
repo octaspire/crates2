@@ -14,7 +14,7 @@
 ;; limitations under the License.
 (in-package :crates2)
 
-(defparameter *num-levels* 20)
+(defparameter *num-levels* 21)
 
 (defun load-level (index)
   (ecase index
@@ -293,5 +293,168 @@
                     (make-instance 'wall          :x 3  :y 8 :z 0)
                     (make-instance 'slope-en      :x 6  :y 8 :z 0)
                     (make-instance 'slope-wn      :x 11 :y 8 :z 0)
-                    (make-instance 'wall          :x 5  :y 9 :z 0))))))
+                    (make-instance 'wall          :x 5  :y 9 :z 0))))
+    (20 (list (list nil nil
+                    :east nil nil nil nil nil
+                    :west nil nil
+                    :north nil nil
+                    :south nil nil
+                    :east nil nil nil
+                    :north nil nil
+                    :east nil nil nil
+                    :west nil nil
+                    :north nil nil nil
+                    :south nil nil nil
+                    :east nil nil nil nil
+                    :north nil nil nil
+                    :east nil nil nil nil nil
+                    :west nil nil
+                    :north nil nil nil
+                    :south nil nil nil
+                    :east nil nil nil nil
+                    :north nil nil nil
+                    :west nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil
+                    :north nil nil nil
+                    :east nil nil nil nil
+                    :south nil nil nil nil
+                    :north nil nil nil nil
+                    :east nil nil nil nil
+                    :south nil nil nil nil
+                    :north nil nil nil nil
+                    :east nil nil nil nil
+                    :south nil nil nil nil
+                    :north nil nil nil nil nil
+                    :east nil nil nil nil nil
+                    :south nil nil nil nil nil
+                    :west nil nil nil nil
+                    :south nil
+                    :north nil nil nil nil nil
+                    :east nil nil nil nil
+                    :south nil nil nil
+                    :west nil nil nil nil
+                    :north nil
+                    :west nil nil
+                    :south nil
+                    :west nil nil
+                    :south nil
+                    :north nil nil nil
+                    :east nil nil nil nil nil nil nil nil
+                    :south nil nil nil
+                    :west nil nil
+                    :north nil
+                    :west nil nil
+                    :north nil
+                    :west nil nil
+                    :south nil
+                    :west nil nil
+                    :north nil
+                    :west nil nil
+                    :north nil
+                    :west nil nil
+                    :south nil
+                    :west nil nil
+                    :south nil
+                    :north nil nil nil
+                    :east nil nil nil nil nil nil nil nil nil nil nil nil
+                    :south nil nil nil
+                    :west nil nil
+                    :north nil
+                    :west nil nil
+                    :north nil
+                    :west nil nil
+                    :south nil nil nil
+                    :west nil nil
+                    :north nil
+                    :west nil nil
+                    :south nil
+                    :west nil nil
+                    :north nil
+                    :west)
+              (list (make-instance 'wall          :x 0  :y 0 :z 0)
+                    (make-instance 'wall          :x 1  :y 0 :z 0)
+                    (make-instance 'wall          :x 2  :y 0 :z 0)
+                    (make-instance 'wall          :x 3  :y 0 :z 0)
+                    (make-instance 'wall          :x 4  :y 0 :z 0)
+                    (make-instance 'wall          :x 5  :y 0 :z 0)
+                    (make-instance 'wall          :x 6  :y 0 :z 0)
+                    (make-instance 'wall          :x 7  :y 0 :z 0)
+                    (make-instance 'wall          :x 8  :y 0 :z 0)
+                    (make-instance 'wall          :x 9  :y 0 :z 0)
+                    (make-instance 'wall          :x 10 :y 0 :z 0)
+                    (make-instance 'wall          :x 11 :y 0 :z 0)
+                    (make-instance 'wall          :x 12 :y 0 :z 0)
+                    (make-instance 'wall          :x 13 :y 0 :z 0)
+                    (make-instance 'wall          :x 14 :y 0 :z 0)
+                    (make-instance 'wall          :x 15 :y 0 :z 0)
+                    (make-instance 'wall          :x 16 :y 0 :z 0)
+                    (make-instance 'wall          :x 17 :y 0 :z 0)
+                    (make-instance 'wall          :x 18 :y 0 :z 0)
+                    (make-instance 'wall          :x 0  :y 1 :z 0)
+                    (make-instance 'block-counter :x 6  :y 1 :z 0 :count 1)
+                    (make-instance 'block-counter :x 10 :y 1 :z 0 :count 1)
+                    (make-instance 'block-counter :x 14 :y 1 :z 0 :count 1)
+                    (make-instance 'key           :x 17 :y 1 :z 0)
+                    (make-instance 'wall          :x 18 :y 1 :z 0)
+                    (make-instance 'wall          :x 0  :y 2 :z 0)
+                    (make-instance 'wall          :x 2  :y 2 :z 0)
+                    (make-instance 'wall          :x 3  :y 2 :z 0)
+                    (make-instance 'wall          :x 6  :y 2 :z 0)
+                    (make-instance 'wall          :x 7  :y 2 :z 0)
+                    (make-instance 'wall          :x 10 :y 2 :z 0)
+                    (make-instance 'wall          :x 11 :y 2 :z 0)
+                    (make-instance 'wall          :x 14 :y 2 :z 0)
+                    (make-instance 'wall          :x 15 :y 2 :z 0)
+                    (make-instance 'wall          :x 16 :y 2 :z 0)
+                    (make-instance 'turnstile-s   :x 17 :y 2 :z 0)
+                    (make-instance 'wall          :x 18 :y 2 :z 0)
+                    (make-instance 'wall          :x 0  :y 3 :z 0)
+                    (make-instance 'pulled        :x 5  :y 3 :z 0 :north t :south t)
+                    (make-instance 'pulled        :x 9 :y 3 :z 0 :north t :south t)
+                    (make-instance 'pulled        :x 13 :y 3 :z 0 :north t :south t)
+                    (make-instance 'wall          :x 18 :y 3 :z 0)
+                    (make-instance 'wall          :x 0  :y 4 :z 0)
+                    (make-instance 'wall          :x 1  :y 4 :z 0)
+                    (make-instance 'wall          :x 2  :y 4 :z 0)
+                    (make-instance 'wall          :x 3  :y 4 :z 0)
+                    (make-instance 'wall          :x 4  :y 4 :z 0)
+                    (make-instance 'wall          :x 6  :y 4 :z 0)
+                    (make-instance 'wall          :x 7  :y 4 :z 0)
+                    (make-instance 'wall          :x 8  :y 4 :z 0)
+                    (make-instance 'wall          :x 10 :y 4 :z 0)
+                    (make-instance 'wall          :x 11 :y 4 :z 0)
+                    (make-instance 'wall          :x 12 :y 4 :z 0)
+                    (make-instance 'wall          :x 14 :y 4 :z 0)
+                    (make-instance 'wall          :x 15 :y 4 :z 0)
+                    (make-instance 'wall          :x 16 :y 4 :z 0)
+                    (make-instance 'wall          :x 18 :y 4 :z 0)
+                    (make-instance 'exit          :x 0  :y 5 :z 0)
+                    (make-instance 'player        :x 2  :y 5 :z 0)
+                    (make-instance 'slope-ws      :x 6  :y 5 :z 0)
+                    (make-instance 'slope-ws      :x 10 :y 5 :z 0)
+                    (make-instance 'slope-ws      :x 14 :y 5 :z 0)
+                    (make-instance 'wall          :x 18 :y 5 :z 0)
+                    (make-instance 'wall          :x 0  :y 6 :z 0)
+                    (make-instance 'wall          :x 4  :y 6 :z 0)
+                    (make-instance 'wall          :x 8  :y 6 :z 0)
+                    (make-instance 'wall          :x 12 :y 6 :z 0)
+                    (make-instance 'wall          :x 18 :y 6 :z 0)
+                    (make-instance 'wall          :x 0  :y 7 :z 0)
+                    (make-instance 'wall          :x 1  :y 7 :z 0)
+                    (make-instance 'wall          :x 2  :y 7 :z 0)
+                    (make-instance 'wall          :x 3  :y 7 :z 0)
+                    (make-instance 'wall          :x 4  :y 7 :z 0)
+                    (make-instance 'pulled        :x 5  :y 7 :z 0 :north t)
+                    (make-instance 'wall          :x 6  :y 7 :z 0)
+                    (make-instance 'wall          :x 7  :y 7 :z 0)
+                    (make-instance 'wall          :x 8  :y 7 :z 0)
+                    (make-instance 'pulled        :x 9  :y 7 :z 0 :north t)
+                    (make-instance 'wall          :x 10 :y 7 :z 0)
+                    (make-instance 'wall          :x 11 :y 7 :z 0)
+                    (make-instance 'wall          :x 12 :y 7 :z 0)
+                    (make-instance 'pulled        :x 13 :y 7 :z 0 :north t)
+                    (make-instance 'wall          :x 14 :y 7 :z 0)
+                    (make-instance 'wall          :x 15 :y 7 :z 0)
+                    (make-instance 'wall          :x 16 :y 7 :z 0)
+                    (make-instance 'wall          :x 17 :y 7 :z 0)
+                    (make-instance 'wall          :x 18 :y 7 :z 0))))))
 

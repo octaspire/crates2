@@ -101,7 +101,7 @@
             :idle))
   (setf (pulled-puller self) (if on puller nil))
   (let ((side (on-which-side-is-other self puller 1)))
-    (setf (velocity self) (if on side :zero))))
+    (setf (velocity self) side)))
 
 (defmethod collide ((self pulled) (target player))
   (when (eq (crate-state self) :idle)

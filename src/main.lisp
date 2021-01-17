@@ -25,8 +25,8 @@
 (defparameter *running* t)
 (defparameter *level* nil)
 (defparameter *created* nil)
-(defparameter *next-level* 19)
-(defparameter *level-width* 18)
+(defparameter *next-level* 20)
+(defparameter *level-width* 20)
 (defparameter *level-height* 15)
 (defparameter *frame-duration-default* 0.25) ; Not zeroed in test mode.
 (defparameter *frame-duration* *frame-duration-default*) ; Zeroed in test mode.
@@ -98,8 +98,11 @@ This is similar to 'test' but runs much slower."
              (let ((input (ui-input)))
                (when input
                  (setf *input* (cons input *input*))
-                 (when (eq input :back) (running nil))))
-             (update *level*)
+                 (case input
+                   (:back    (running nil))
+                   (:restart (setf *next-level* *level-number*)))))
+             (unless *next-level*
+               (update *level*))
              (when *next-level*
                (load-next-level))
              (incf *update-counter*)

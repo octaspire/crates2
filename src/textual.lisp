@@ -163,6 +163,7 @@
       (#\a :west)
       (#\d :east)
       (#\q :back)
+      (#\r :restart)
       (otherwise nil))))
 
 (defun ui-maybe-read-input ()
