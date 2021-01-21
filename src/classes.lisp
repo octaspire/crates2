@@ -43,6 +43,9 @@
 (defclass wall (crate)
   ())
 
+(defclass stepper (crate)
+  ())
+
 (defclass slope-en (crate)
   ())
 
@@ -143,6 +146,20 @@
          :initform nil)
    (south :initarg :south
           :accessor pulled-south
+          :initform nil)))
+
+(defclass toggle (moving)
+  ((east :initarg :east
+         :accessor toggle-east
+         :initform nil)
+   (west :initarg :west
+         :accessor toggle-west
+         :initform nil)
+   (north :initarg :north
+          :accessor toggle-north
+          :initform nil)
+   (south :initarg :south
+          :accessor toggle-south
           :initform nil)))
 
 (defclass player (moving)

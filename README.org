@@ -70,7 +70,7 @@ make slime
 
 #+begin_example
    Octaspire Crates 2 - Puzzle Game
-   Copyright 2020 octaspire.com
+   Copyright 2020, 2021 octaspire.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

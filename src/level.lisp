@@ -36,6 +36,11 @@
   (find-if #'(lambda (crate)
                (eq (type-of crate) 'key)) *level*))
 
+(defun contains-off-toggles-p ()
+  (find-if #'(lambda (crate)
+               (and (eq (type-of crate) 'toggle)
+                    (not (toggle-on-p crate)))) *level*))
+
 (defun find-first-crate-of-type (type)
   (find-if #'(lambda (crate)
                (eq (type-of crate) type)) *level*))

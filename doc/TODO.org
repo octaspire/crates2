@@ -1,2 +1,1 @@
-- Read regular user input in textual ASCII mode. Fake input
-  is used while testing.
+Empty.

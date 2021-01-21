@@ -14,7 +14,7 @@
 ;; limitations under the License.
 (in-package :crates2)
 
-(defparameter *num-levels* 21)
+(defparameter *num-levels* 22)
 
 (defun load-level (index)
   (ecase index
@@ -456,5 +456,134 @@
                     (make-instance 'wall          :x 15 :y 7 :z 0)
                     (make-instance 'wall          :x 16 :y 7 :z 0)
                     (make-instance 'wall          :x 17 :y 7 :z 0)
-                    (make-instance 'wall          :x 18 :y 7 :z 0))))))
+                    (make-instance 'wall          :x 18 :y 7 :z 0))))
+    (21 (list (list nil nil
+                    :north nil nil nil
+                    :west :west :west
+                    :north nil nil
+                    :south nil nil
+                    :west
+                    :north nil nil
+                    :south nil nil
+                    :west :west
+                    :north :north
+                    :east nil nil nil
+                    :north
+                    :west nil nil nil
+                    :north
+                    :east nil
+                    :west)
+              (list (make-instance 'pulled :x 3  :y 3 :z 0 :north t :south t :east t :west t) ; Top line
+                    (make-instance 'pulled :x 4  :y 3 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 5  :y 3 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 9  :y 3 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 10 :y 3 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 11 :y 3 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 3  :y 4 :z 0 :north t :south t :east t :west t) ; Second line
+                    (make-instance 'toggle :x 4  :y 4 :z 0)
+                    (make-instance 'pulled :x 5  :y 4 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 6  :y 4 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 8  :y 4 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 9  :y 4 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'toggle :x 10 :y 4 :z 0)
+                    (make-instance 'pulled :x 11 :y 4 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 3  :y 5 :z 0 :north t :south t :east t :west t) ; Third line
+                    (make-instance 'pulled :x 4  :y 5 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 5  :y 5 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 6  :y 5 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 7  :y 5 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 8  :y 5 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 9  :y 5 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 10 :y 5 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 11 :y 5 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 4  :y 6 :z 0 :north t :south t :east t :west t) ; Fourth line
+                    (make-instance 'pulled :x 5  :y 6 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 6  :y 6 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 7  :y 6 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 8  :y 6 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 9  :y 6 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 10 :y 6 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 5  :y 6 :z 0 :north t :south t :east t :west t) ; Fifth line
+                    (make-instance 'pulled :x 6  :y 6 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'exit   :x 7  :y 6 :z 0)
+                    (make-instance 'pulled :x 8  :y 6 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 9  :y 6 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 4  :y 7 :z 0 :north t :south t :east t :west t) ; Mirror fourth line
+                    (make-instance 'pulled :x 5  :y 7 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 6  :y 7 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 7  :y 7 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 8  :y 7 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 9  :y 7 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 10 :y 7 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 3  :y 8 :z 0 :north t :south t :east t :west t) ; Mirrored third line
+                    (make-instance 'pulled :x 4  :y 8 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 5  :y 8 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 6  :y 8 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 7  :y 8 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 8  :y 8 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 9  :y 8 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 10 :y 8 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 11 :y 8 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 3  :y 9 :z 0 :north t :south t :east t :west t) ; Mirrored second line
+                    (make-instance 'toggle :x 4 :y 9 :z 0)
+                    (make-instance 'pulled :x 5  :y 9 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 6  :y 9 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 8  :y 9 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 9  :y 9 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'toggle :x 10 :y 9 :z 0)
+                    (make-instance 'pulled :x 11 :y 9 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 3  :y 10 :z 0 :north t :south t :east t :west t) ; Mirrored top line
+                    (make-instance 'pulled :x 4  :y 10 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 5  :y 10 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 9  :y 10 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 10 :y 10 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 11 :y 10 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'player :x 7  :y 13 :z 0)
+                    (make-instance 'stepper :x 1  :y 1 :z -1) ; Top row
+                    (make-instance 'stepper :x 2  :y 1 :z -1)
+                    (make-instance 'stepper :x 3  :y 1 :z -1)
+                    (make-instance 'stepper :x 4  :y 1 :z -1)
+                    (make-instance 'stepper :x 5  :y 1 :z -1)
+                    (make-instance 'stepper :x 6  :y 1 :z -1)
+                    (make-instance 'stepper :x 7  :y 1 :z -1)
+                    (make-instance 'stepper :x 8  :y 1 :z -1)
+                    (make-instance 'stepper :x 9  :y 1 :z -1)
+                    (make-instance 'stepper :x 10 :y 1 :z -1)
+                    (make-instance 'stepper :x 11 :y 1 :z -1)
+                    (make-instance 'stepper :x 12 :y 1 :z -1)
+                    (make-instance 'stepper :x 13 :y 1 :z -1)
+                    (make-instance 'stepper :x 1  :y 2 :z -1) ; West column
+                    (make-instance 'stepper :x 1  :y 3 :z -1)
+                    (make-instance 'stepper :x 1  :y 4 :z -1)
+                    (make-instance 'stepper :x 1  :y 5 :z -1)
+                    (make-instance 'stepper :x 1  :y 6 :z -1)
+                    (make-instance 'stepper :x 1  :y 7 :z -1)
+                    (make-instance 'stepper :x 1  :y 8 :z -1)
+                    (make-instance 'stepper :x 1  :y 9 :z -1)
+                    (make-instance 'stepper :x 1  :y 10 :z -1)
+                    (make-instance 'stepper :x 1  :y 11 :z -1)
+                    (make-instance 'stepper :x 1  :y 12 :z -1)
+                    (make-instance 'stepper :x 1  :y 12 :z -1) ; Bottom row
+                    (make-instance 'stepper :x 2  :y 12 :z -1)
+                    (make-instance 'stepper :x 3  :y 12 :z -1)
+                    (make-instance 'stepper :x 4  :y 12 :z -1)
+                    (make-instance 'stepper :x 5  :y 12 :z -1)
+                    (make-instance 'stepper :x 6  :y 12 :z -1)
+                    (make-instance 'stepper :x 7  :y 12 :z -1)
+                    (make-instance 'stepper :x 8  :y 12 :z -1)
+                    (make-instance 'stepper :x 9  :y 12 :z -1)
+                    (make-instance 'stepper :x 10 :y 12 :z -1)
+                    (make-instance 'stepper :x 11 :y 12 :z -1)
+                    (make-instance 'stepper :x 12 :y 12 :z -1)
+                    (make-instance 'stepper :x 13 :y 12 :z -1)
+                    (make-instance 'stepper :x 13 :y 2 :z -1) ; East column
+                    (make-instance 'stepper :x 13  :y 3 :z -1)
+                    (make-instance 'stepper :x 13  :y 4 :z -1)
+                    (make-instance 'stepper :x 13  :y 5 :z -1)
+                    (make-instance 'stepper :x 13  :y 6 :z -1)
+                    (make-instance 'stepper :x 13  :y 7 :z -1)
+                    (make-instance 'stepper :x 13  :y 8 :z -1)
+                    (make-instance 'stepper :x 13  :y 9 :z -1)
+                    (make-instance 'stepper :x 13  :y 10 :z -1)
+                    (make-instance 'stepper :x 13  :y 11 :z -1))))))
 

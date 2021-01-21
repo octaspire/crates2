@@ -61,7 +61,7 @@
   ;; KEY
   (setf (gethash "key-idle" *visual-hash*) #("+----+" " KEY  " "+----+"))
   ;; PLAYER
-  (setf (gethash "player-active" *visual-hash*) #("+----+" "|oooo|" "+----+"))
+  (setf (gethash "player-active" *visual-hash*) #(" .--. " " |  | " " `--' "))
   (setf (gethash "player-hidden" *visual-hash*) #("      " "      " "      "))
   ;; SLOPES
   (setf (gethash "slope-en" *visual-hash*) #("+--+  " "|   \\ " "+----+"))
@@ -114,23 +114,40 @@
   (setf (gethash "pass-timer-01" *visual-hash*) #("+----+" "PT  01" "+----+"))
   (setf (gethash "pass-timer-00" *visual-hash*) #("+----+" "PT  00" "+----+"))
   ;; PULLED
-  (setf (gethash "pulled-idle"               *visual-hash*) #("-- ---" "      " "-- ---"))
+  (setf (gethash "pulled-idle"               *visual-hash*) #(".-  -." "|    |" "`-  -'"))
   ;; east
-  (setf (gethash "pulled-east-handle-active" *visual-hash*) #("      " "     o" "      "))
-  (setf (gethash "pulled-east-handle-idle"   *visual-hash*) #("      " "     +" "      "))
-  (setf (gethash "pulled-east-no-handle"     *visual-hash*) #("      " "     |" "      "))
+  (setf (gethash "pulled-east-handle-active" *visual-hash*) #("      " "    o " "      "))
+  (setf (gethash "pulled-east-handle-idle"   *visual-hash*) #("      " "    = " "      "))
+  (setf (gethash "pulled-east-no-handle"     *visual-hash*) #("      " "      " "      "))
   ;; west
-  (setf (gethash "pulled-west-handle-active" *visual-hash*) #("      " "o     " "      "))
-  (setf (gethash "pulled-west-handle-idle"   *visual-hash*) #("      " "+     " "      "))
-  (setf (gethash "pulled-west-no-handle"     *visual-hash*) #("      " "|     " "      "))
+  (setf (gethash "pulled-west-handle-active" *visual-hash*) #("      " " o    " "      "))
+  (setf (gethash "pulled-west-handle-idle"   *visual-hash*) #("      " " =    " "      "))
+  (setf (gethash "pulled-west-no-handle"     *visual-hash*) #("      " "      " "      "))
   ;; north
-  (setf (gethash "pulled-north-handle-active" *visual-hash*) #("  o   " "      " "      "))
-  (setf (gethash "pulled-north-handle-idle"   *visual-hash*) #("  +   " "      " "      "))
-  (setf (gethash "pulled-north-no-handle"     *visual-hash*) #("  -   " "      " "      "))
+  (setf (gethash "pulled-north-handle-active" *visual-hash*) #("  oo  " "      " "      "))
+  (setf (gethash "pulled-north-handle-idle"   *visual-hash*) #("  ==  " "      " "      "))
+  (setf (gethash "pulled-north-no-handle"     *visual-hash*) #("  --  " "      " "      "))
   ;; south
-  (setf (gethash "pulled-south-handle-active" *visual-hash*) #("      " "      " "  o   "))
-  (setf (gethash "pulled-south-handle-idle"   *visual-hash*) #("      " "      " "  +   "))
-  (setf (gethash "pulled-south-no-handle"     *visual-hash*) #("      " "      " "  -   ")))
+  (setf (gethash "pulled-south-handle-active" *visual-hash*) #("      " "      " "  oo  "))
+  (setf (gethash "pulled-south-handle-idle"   *visual-hash*) #("      " "      " "  ==  "))
+  (setf (gethash "pulled-south-no-handle"     *visual-hash*) #("      " "      " "  --  "))
+  ;; STEPPER
+  (setf (gethash "stepper-idle"               *visual-hash*) #("      " "   +  " "      "))
+  (setf (gethash "stepper-active"             *visual-hash*) #("      " "   o  " "      "))
+  ;; TOGGLE
+  (setf (gethash "toggle-idle"                *visual-hash*) #("+-  -+" "|    |" "+-  -+"))
+  ;; east
+  (setf (gethash "toggle-east-on"             *visual-hash*) #("      " "    o " "      "))
+  (setf (gethash "toggle-east-off"            *visual-hash*) #("      " "    | " "      "))
+  ;; west
+  (setf (gethash "toggle-west-on"             *visual-hash*) #("      " " o    " "      "))
+  (setf (gethash "toggle-west-off"            *visual-hash*) #("      " " |    " "      "))
+  ;; north
+  (setf (gethash "toggle-north-on"            *visual-hash*) #("  oo  " "      " "      "))
+  (setf (gethash "toggle-north-off"           *visual-hash*) #("  __  " "      " "      "))
+  ;; south
+  (setf (gethash "toggle-south-on"            *visual-hash*) #("      " "      " "  oo  "))
+  (setf (gethash "toggle-south-off"           *visual-hash*) #("      " "      " "  ''  ")))
 
 (defun empty-line ()
   (let* ((w *level-width*)

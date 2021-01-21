@@ -25,7 +25,7 @@
 (defparameter *running* t)
 (defparameter *level* nil)
 (defparameter *created* nil)
-(defparameter *next-level* 20)
+(defparameter *next-level* 21)
 (defparameter *level-width* 20)
 (defparameter *level-height* 15)
 (defparameter *frame-duration-default* 0.25) ; Not zeroed in test mode.

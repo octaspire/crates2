@@ -1,5 +1,5 @@
 ;; Octaspire Crates 2 - Puzzle Game
-;; Copyright 2020 octaspire.com
+;; Copyright 2020, 2021 octaspire.com
 ;;
 ;; Licensed under the Apache License, Version 2.0 (the "License");
 ;; you may not use this file except in compliance with the License.
@@ -16,23 +16,19 @@
 
 ;; Methods
 
-(defmethod update ((self exit))
-  (ecase (crate-state self)
-    (:idle nil)
-    (:activated
-     (if (< (exit-delay self) 3)
-         (incf (exit-delay self))
-         (if (or (contains-keys-p)
-                 (contains-off-toggles-p))
-             (request-restart-level)
-             (request-next-level)))))
+(defmethod update ((self stepper))
+  (let ((crate (find-at-of-type (crate-x self) (crate-y self) 0 'moving)))
+    (case (crate-state self)
+        (:idle
+         (when crate
+           (setf (crate-state self) :active)
+           (setf (velocity crate) :zero)))
+        (:active
+         (unless crate
+           (setf (crate-state self) :idle)))))
   (call-next-method))
 
-(defmethod visual ((self exit))
-  (if (exit-activated self)
-      (list "exit-active")
-      (list "exit-idle")))
-
-(defmethod collide ((self exit) (target player))
-  (setf (exit-activated self) t)
-  (setf (crate-state self) :activated))
+(defmethod visual ((self stepper))
+  (if (eq (crate-state self) :active)
+      (list "stepper-active")
+      (list "stepper-idle")))
