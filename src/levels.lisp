@@ -472,7 +472,234 @@
                     :west nil nil nil
                     :north
                     :east nil
-                    :west)
+                    :west nil
+                    :south :south :south
+                    :east :east :east :east
+                    :north nil nil
+                    :west nil nil
+                    :north nil nil
+                    :east
+                    :south nil
+                    :east nil nil nil nil nil
+                    :south nil nil
+                    :west :west :west
+                    :north nil nil
+                    :south nil nil
+                    :east
+                    :north nil nil
+                    :south nil nil
+                    :east
+                    :north nil nil nil
+                    :west nil nil nil
+                    :east nil nil nil
+                    :south nil nil nil
+                    :west :west :west :west :west
+                    :north nil
+                    :west nil
+                    :north :north :north
+                    :east nil nil
+                    :west nil nil
+                    :north
+                    :east nil nil nil
+                    :south nil nil
+                    :east nil
+                    :south nil
+                    :west nil
+                    :north nil nil nil
+                    :west nil
+                    :south :south :south :south :south :south
+                    :east nil
+                    :north nil
+                    :south nil
+                    :east :east :east :east :east :east :east :east
+                    :north nil
+                    :south nil
+                    :east
+                    :north nil
+                    :south nil
+                    :east :east
+                    :north :north
+                    :west nil nil nil
+                    :north nil
+                    :east nil nil nil
+                    :north
+                    :west nil
+                    :east nil
+                    :south :south :south
+                    :west :west :west :west
+                    :north nil nil
+                    :east nil nil
+                    :north nil
+                    :west nil
+                    :south nil
+                    :west nil nil nil nil nil nil nil nil nil
+                    :south :south
+                    :east :east :east :east :east :east :east
+                    :north nil nil nil
+                    :south nil nil nil
+                    :east
+                    :north nil nil nil
+                    :south nil nil nil
+                    :west :west
+                    :north nil nil nil
+                    :east nil nil nil
+                    :south nil
+                    :west nil nil nil nil nil nil nil nil
+                    :south :south
+                    :east :east :east :east :east :east :east :east :east :east :east
+                    :north nil
+                    :east nil
+                    :north :north :north
+                    :west nil nil nil
+                    :east nil nil nil
+                    :north
+                    :west nil nil nil
+                    :south nil nil nil
+                    :west nil
+                    :south
+                    :east nil
+                    :north nil nil nil
+                    :east nil nil
+                    :north :north :north :north :north
+                    :west :west
+                    :south nil nil
+                    :north nil nil
+                    :west
+                    :south nil nil
+                    :north nil nil
+                    :east :east :east
+                    :south :south
+                    :west nil nil nil
+                    :south
+                    :west
+                    :east nil nil nil
+                    :south
+                    :west nil
+                    :east nil
+                    :north :north
+                    :west nil
+                    :north nil
+                    :west :west :west
+                    :south nil nil nil
+                    :east nil nil
+                    :south nil
+                    :west
+                    :north nil nil
+                    :west nil nil nil nil nil
+                    :north nil nil nil
+                    :east :east :east :east :east :east
+                    :south nil nil
+                    :north nil nil
+                    :east
+                    :south :south :south :south
+                    :west nil nil
+                    :east nil nil
+                    :south
+                    :west nil nil
+                    :east nil nil
+                    :south
+                    :west nil nil nil
+                    :north nil nil nil
+                    :west nil nil
+                    :north nil nil nil
+                    :south nil nil nil
+                    :east nil nil nil
+                    :north :north :north :north
+                    :west nil nil nil nil nil nil nil
+                    :north nil nil
+                    :east :east :east
+                    :south nil nil
+                    :north nil nil
+                    :west
+                    :south nil nil
+                    :north nil nil
+                    :west :west :west :west
+                    :south nil nil
+                    :north nil nil
+                    :west
+                    :south nil nil
+                    :north nil nil
+                    :west :west
+                    :south :south
+                    :east nil nil nil
+                    :south nil
+                    :west nil nil nil
+                    :south
+                    :east nil nil nil
+                    :west nil nil nil
+                    :north :north
+                    :east nil nil
+                    :north nil nil
+                    :east :east :east
+                    :south nil nil nil
+                    :west nil nil
+                    :south nil
+                    :east nil
+                    :north nil
+                    :east nil nil nil nil nil nil nil nil nil nil
+                    :north :north
+                    :west :west :west :west :west :west :west
+                    :south nil nil nil
+                    :north nil nil nil
+                    :west
+                    :south nil nil nil
+                    :north nil nil nil
+                    :east :east
+                    :south nil nil nil
+                    :west nil nil nil nil
+                    :east nil nil nil nil
+                    :north nil nil
+                    :east nil nil nil nil
+                    :north :north
+                    :west :west :west :west :west :west :west :west :west :west :west :west
+                    :south :south :south :south
+                    :east nil nil
+                    :west nil nil
+                    :south
+                    :east nil nil
+                    :west nil nil
+                    :south
+                    :east nil nil nil
+                    :north nil nil nil
+                    :south nil nil
+                    :east nil
+                    :west nil nil nil
+                    :north :north :north :north :north
+                    :east nil
+                    :north nil
+                    :east :east :east :east :east
+                    :south nil nil nil nil
+                    :west nil nil
+                    :south nil
+                    :north nil
+                    :east nil nil nil nil nil nil nil nil
+                    :north :north
+                    :west :west :west :west :west :west
+                    :south nil nil nil
+                    :west nil nil
+                    :east nil nil nil
+                    :north nil
+                    :east nil nil nil nil
+                    :north :north
+                    :west :west :west :west :west :west
+                    :south nil nil nil nil
+                    :west nil nil nil
+                    :south nil nil
+                    :north nil nil
+                    :east nil nil nil nil nil nil nil nil
+                    :north :north
+                    :west :west :west :west :west :west :west :west :west :west :west :west
+                    :south :south :south :south :south :south :south
+                    :east nil nil
+                    :north nil nil nil nil
+                    :east nil nil
+                    :south nil nil
+                    :east nil
+                    :west nil nil
+                    :north nil nil nil
+                    :east nil nil
+                    :south nil nil
+                    :east)
               (list (make-instance 'pulled :x 3  :y 3 :z 0 :north t :south t :east t :west t) ; Top line
                     (make-instance 'pulled :x 4  :y 3 :z 0 :north t :south t :east t :west t)
                     (make-instance 'pulled :x 5  :y 3 :z 0 :north t :south t :east t :west t)
@@ -503,42 +730,42 @@
                     (make-instance 'pulled :x 8  :y 6 :z 0 :north t :south t :east t :west t)
                     (make-instance 'pulled :x 9  :y 6 :z 0 :north t :south t :east t :west t)
                     (make-instance 'pulled :x 10 :y 6 :z 0 :north t :south t :east t :west t)
-                    (make-instance 'pulled :x 5  :y 6 :z 0 :north t :south t :east t :west t) ; Fifth line
-                    (make-instance 'pulled :x 6  :y 6 :z 0 :north t :south t :east t :west t)
-                    (make-instance 'exit   :x 7  :y 6 :z 0)
-                    (make-instance 'pulled :x 8  :y 6 :z 0 :north t :south t :east t :west t)
-                    (make-instance 'pulled :x 9  :y 6 :z 0 :north t :south t :east t :west t)
-                    (make-instance 'pulled :x 4  :y 7 :z 0 :north t :south t :east t :west t) ; Mirror fourth line
-                    (make-instance 'pulled :x 5  :y 7 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 5  :y 7 :z 0 :north t :south t :east t :west t) ; Fifth line
                     (make-instance 'pulled :x 6  :y 7 :z 0 :north t :south t :east t :west t)
-                    (make-instance 'pulled :x 7  :y 7 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'exit   :x 7  :y 7 :z 0)
                     (make-instance 'pulled :x 8  :y 7 :z 0 :north t :south t :east t :west t)
                     (make-instance 'pulled :x 9  :y 7 :z 0 :north t :south t :east t :west t)
-                    (make-instance 'pulled :x 10 :y 7 :z 0 :north t :south t :east t :west t)
-                    (make-instance 'pulled :x 3  :y 8 :z 0 :north t :south t :east t :west t) ; Mirrored third line
-                    (make-instance 'pulled :x 4  :y 8 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 4  :y 8 :z 0 :north t :south t :east t :west t) ; Mirror fourth line
                     (make-instance 'pulled :x 5  :y 8 :z 0 :north t :south t :east t :west t)
                     (make-instance 'pulled :x 6  :y 8 :z 0 :north t :south t :east t :west t)
                     (make-instance 'pulled :x 7  :y 8 :z 0 :north t :south t :east t :west t)
                     (make-instance 'pulled :x 8  :y 8 :z 0 :north t :south t :east t :west t)
                     (make-instance 'pulled :x 9  :y 8 :z 0 :north t :south t :east t :west t)
                     (make-instance 'pulled :x 10 :y 8 :z 0 :north t :south t :east t :west t)
-                    (make-instance 'pulled :x 11 :y 8 :z 0 :north t :south t :east t :west t)
-                    (make-instance 'pulled :x 3  :y 9 :z 0 :north t :south t :east t :west t) ; Mirrored second line
-                    (make-instance 'toggle :x 4 :y 9 :z 0)
+                    (make-instance 'pulled :x 3  :y 9 :z 0 :north t :south t :east t :west t) ; Mirrored third line
+                    (make-instance 'pulled :x 4  :y 9 :z 0 :north t :south t :east t :west t)
                     (make-instance 'pulled :x 5  :y 9 :z 0 :north t :south t :east t :west t)
                     (make-instance 'pulled :x 6  :y 9 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 7  :y 9 :z 0 :north t :south t :east t :west t)
                     (make-instance 'pulled :x 8  :y 9 :z 0 :north t :south t :east t :west t)
                     (make-instance 'pulled :x 9  :y 9 :z 0 :north t :south t :east t :west t)
-                    (make-instance 'toggle :x 10 :y 9 :z 0)
+                    (make-instance 'pulled :x 10 :y 9 :z 0 :north t :south t :east t :west t)
                     (make-instance 'pulled :x 11 :y 9 :z 0 :north t :south t :east t :west t)
-                    (make-instance 'pulled :x 3  :y 10 :z 0 :north t :south t :east t :west t) ; Mirrored top line
-                    (make-instance 'pulled :x 4  :y 10 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 3  :y 10 :z 0 :north t :south t :east t :west t) ; Mirrored second line
+                    (make-instance 'toggle :x 4  :y 10 :z 0)
                     (make-instance 'pulled :x 5  :y 10 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 6  :y 10 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 8  :y 10 :z 0 :north t :south t :east t :west t)
                     (make-instance 'pulled :x 9  :y 10 :z 0 :north t :south t :east t :west t)
-                    (make-instance 'pulled :x 10 :y 10 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'toggle :x 10 :y 10 :z 0)
                     (make-instance 'pulled :x 11 :y 10 :z 0 :north t :south t :east t :west t)
-                    (make-instance 'player :x 7  :y 13 :z 0)
+                    (make-instance 'pulled :x 3  :y 11 :z 0 :north t :south t :east t :west t) ; Mirrored top line
+                    (make-instance 'pulled :x 4  :y 11 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 5  :y 11 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 9  :y 11 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 10 :y 11 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'pulled :x 11 :y 11 :z 0 :north t :south t :east t :west t)
+                    (make-instance 'player :x 7  :y 14 :z 0)
                     (make-instance 'stepper :x 1  :y 1 :z -1) ; Top row
                     (make-instance 'stepper :x 2  :y 1 :z -1)
                     (make-instance 'stepper :x 3  :y 1 :z -1)
@@ -563,19 +790,19 @@
                     (make-instance 'stepper :x 1  :y 10 :z -1)
                     (make-instance 'stepper :x 1  :y 11 :z -1)
                     (make-instance 'stepper :x 1  :y 12 :z -1)
-                    (make-instance 'stepper :x 1  :y 12 :z -1) ; Bottom row
-                    (make-instance 'stepper :x 2  :y 12 :z -1)
-                    (make-instance 'stepper :x 3  :y 12 :z -1)
-                    (make-instance 'stepper :x 4  :y 12 :z -1)
-                    (make-instance 'stepper :x 5  :y 12 :z -1)
-                    (make-instance 'stepper :x 6  :y 12 :z -1)
-                    (make-instance 'stepper :x 7  :y 12 :z -1)
-                    (make-instance 'stepper :x 8  :y 12 :z -1)
-                    (make-instance 'stepper :x 9  :y 12 :z -1)
-                    (make-instance 'stepper :x 10 :y 12 :z -1)
-                    (make-instance 'stepper :x 11 :y 12 :z -1)
-                    (make-instance 'stepper :x 12 :y 12 :z -1)
-                    (make-instance 'stepper :x 13 :y 12 :z -1)
+                    (make-instance 'stepper :x 1  :y 13 :z -1) ; Bottom row
+                    (make-instance 'stepper :x 2  :y 13 :z -1)
+                    (make-instance 'stepper :x 3  :y 13 :z -1)
+                    (make-instance 'stepper :x 4  :y 13 :z -1)
+                    (make-instance 'stepper :x 5  :y 13 :z -1)
+                    (make-instance 'stepper :x 6  :y 13 :z -1)
+                    (make-instance 'stepper :x 7  :y 13 :z -1)
+                    (make-instance 'stepper :x 8  :y 13 :z -1)
+                    (make-instance 'stepper :x 9  :y 13 :z -1)
+                    (make-instance 'stepper :x 10 :y 13 :z -1)
+                    (make-instance 'stepper :x 11 :y 13 :z -1)
+                    (make-instance 'stepper :x 12 :y 13 :z -1)
+                    (make-instance 'stepper :x 13 :y 13 :z -1)
                     (make-instance 'stepper :x 13 :y 2 :z -1) ; East column
                     (make-instance 'stepper :x 13  :y 3 :z -1)
                     (make-instance 'stepper :x 13  :y 4 :z -1)
@@ -585,5 +812,6 @@
                     (make-instance 'stepper :x 13  :y 8 :z -1)
                     (make-instance 'stepper :x 13  :y 9 :z -1)
                     (make-instance 'stepper :x 13  :y 10 :z -1)
-                    (make-instance 'stepper :x 13  :y 11 :z -1))))))
+                    (make-instance 'stepper :x 13  :y 11 :z -1)
+                    (make-instance 'stepper :x 13  :y 12 :z -1))))))
 

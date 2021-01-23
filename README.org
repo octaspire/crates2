@@ -35,6 +35,12 @@ You can also build and run by issuing command:
 make run
 #+end_src
 
+To install and start playing from level 20:
+
+#+begin_src shell
+make install && make play level=20
+#+end_src
+
 ** Platform Specific Notes
 
 *** OpenBSD

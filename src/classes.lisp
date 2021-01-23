@@ -148,7 +148,7 @@
           :accessor pulled-south
           :initform nil)))
 
-(defclass toggle (moving)
+(defclass toggle (crate)
   ((east :initarg :east
          :accessor toggle-east
          :initform nil)

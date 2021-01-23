@@ -31,6 +31,7 @@
 (defparameter *frame-duration-default* 0.25) ; Not zeroed in test mode.
 (defparameter *frame-duration* *frame-duration-default*) ; Zeroed in test mode.
 (defparameter *test-run* nil)
+(defparameter *test-run-max-updates* 1900)
 
 (defun verbose-parser (x)
   (setf *verbose* (parse-integer x)))
@@ -92,7 +93,9 @@ This is similar to 'test' but runs much slower."
   (unless *errors*
     (init-visual-hash)
     (request-next-level)
-    (loop while (runningp)
+    (loop while (and (runningp)
+                     (or (not *test-run*)
+                         (< *update-counter* *test-run-max-updates*)))
           do (setf *input* nil)
              (ui-render *level*)
              (let ((input (ui-input)))
