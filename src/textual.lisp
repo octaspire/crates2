@@ -190,12 +190,14 @@
         (setf *last-input* (ui-read-input)))))
 
 (defun ui-input ()
-  (if *test-run*
-      (let ((input (car *fake-input*)))
-        (setf *fake-input* (cdr *fake-input*))
-        (setf *last-input* input)
-        input)
-      (ui-maybe-read-input)))
+  (if *level*
+      (if *test-run*
+          (let ((input (car *fake-input*)))
+            (setf *fake-input* (cdr *fake-input*))
+            (setf *last-input* input)
+            input)
+          (ui-maybe-read-input))
+      nil))
 
 (defun x-axis (length)
   (let ((result ""))

@@ -25,9 +25,9 @@
 (defparameter *running* t)
 (defparameter *level* nil)
 (defparameter *created* nil)
-(defparameter *next-level* 21)
+(defparameter *next-level* nil)
 (defparameter *level-width* 20)
-(defparameter *level-height* 15)
+(defparameter *level-height* 20)
 (defparameter *frame-duration-default* 0.25) ; Not zeroed in test mode.
 (defparameter *frame-duration* *frame-duration-default*) ; Zeroed in test mode.
 (defparameter *test-run* nil)
@@ -81,6 +81,9 @@ to see what happens."
 This is similar to 'test' but runs much slower."
    :long "autoplay"
    :arg-parser #'autoplay-parser)
+  (:name :log-input
+   :description "Log and show user input after quitting game."
+   :long "log-input")
   (:name :fullscreen
    :description "Run in fullscreen mode"
    :long "fullscreen"))
@@ -89,27 +92,37 @@ This is similar to 'test' but runs much slower."
   (when (> *verbose* 0)
     (format t fmt args)))
 
-(defun run ()
+(defun run (options)
   (unless *errors*
     (init-visual-hash)
     (request-next-level)
-    (loop while (and (runningp)
-                     (or (not *test-run*)
-                         (< *update-counter* *test-run-max-updates*)))
-          do (setf *input* nil)
-             (ui-render *level*)
-             (let ((input (ui-input)))
-               (when input
-                 (setf *input* (cons input *input*))
-                 (case input
-                   (:back    (running nil))
-                   (:restart (setf *next-level* *level-number*)))))
-             (unless *next-level*
-               (update *level*))
-             (when *next-level*
-               (load-next-level))
-             (incf *update-counter*)
-             (sleep *frame-duration*))))
+    (let ((str (make-array 2048 :element-type 'character :fill-pointer 0 :adjustable t))
+          (log-input (getf options :log-input)))
+      (with-output-to-string (s str)
+        (loop while (and (runningp)
+                         (or (not *test-run*)
+                             (< *update-counter* *test-run-max-updates*)))
+              do (setf *input* nil)
+                 (ui-render *level*)
+                 (let ((input (ui-input)))
+                   (when log-input
+                     (format s (if (keywordp input) "~%~S " "~S " ) input))
+                   (when input
+                     (setf *input* (cons input *input*))
+                     (case input
+                       (:back    (running nil))
+                       (:restart (setf *next-level* *level-number*)))))
+                 (unless *next-level*
+                   (update *level*))
+                 (when *next-level*
+                   (load-next-level)
+                   (when log-input
+                     (format s "~%----------LEVEL ~A----------~%" *level-number*)))
+                 (incf *update-counter*)
+                 (sleep *frame-duration*))
+        (setf str (nstring-downcase str))
+        (when log-input
+          (format t "~%~A~%" str))))))
 
 (defun usage ()
   (opts:describe
@@ -169,4 +182,4 @@ This is similar to 'test' but runs much slower."
     (cond-option options
                  (:help (usage))
                  (:version (version))
-                 (otherwise (run)))))
+                 (otherwise (run options)))))
