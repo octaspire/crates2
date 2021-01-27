@@ -31,7 +31,7 @@
 (defparameter *frame-duration-default* 0.25) ; Not zeroed in test mode.
 (defparameter *frame-duration* *frame-duration-default*) ; Zeroed in test mode.
 (defparameter *test-run* nil)
-(defparameter *test-run-max-updates* 1900)
+(defparameter *test-run-max-updates* 3000)
 
 (defun verbose-parser (x)
   (setf *verbose* (parse-integer x)))
@@ -121,6 +121,8 @@ This is similar to 'test' but runs much slower."
                      (format s "~%----------LEVEL ~A----------~%" *level-number*)))
                  (incf *update-counter*)
                  (sleep *frame-duration*))
+        (when (>= *update-counter* *test-run-max-updates*)
+          (format t "~%CRATES2: WARNING EXECUTION STOPPED ON TOO LARGE UPDATE COUNT~%"))
         (setf str (nstring-downcase str))
         (when log-input
           (format t "~%~A~%" str))))))
