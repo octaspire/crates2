@@ -12,17 +12,17 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-LISP  ?= sbcl
-EVAL  ?= "--eval"
-LOAD  ?= "--load
-level ?= 0
+LISP    ?= sbcl
+EVAL    ?= "--eval"
+level   ?= 0
 
 .PHONY: slime clean help test
 
 crates2: Makefile crates2.asd src/*.lisp
-	@$(LISP) $(EVAL) '(ql:quickload :crates2)' \
-                 $(EVAL) '(asdf:make :crates2)'    \
-                 $(EVAL) '(quit)'
+	@$(LISP) $(EVAL) "(progn (declaim (optimize (speed 0) (space 0) (safety 3) (debug 3))) \
+                                 (ql:quickload :crates2)                                       \
+                                 (asdf:make :crates2)                                          \
+                                 (quit))"
 
 slime:
 	@etc/slime.sh &

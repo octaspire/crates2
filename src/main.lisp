@@ -116,6 +116,7 @@ This is similar to 'test' but runs much slower."
                    (update *level*))
                  (when *next-level*
                    (load-next-level)
+                   (trivial-garbage:gc :full t)
                    (when log-input
                      (format s "~%----------LEVEL ~A----------~%" *level-number*)))
                  (incf *update-counter*)

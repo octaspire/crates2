@@ -13,7 +13,7 @@
 ;; See the License for the specific language governing permissions and
 ;; limitations under the License.
 (asdf:defsystem "crates2"
-  :depends-on (:alexandria :unix-opts :parse-float)
+  :depends-on (:alexandria :unix-opts :parse-float :trivial-garbage)
   :serial t
   :components ((:module src
                 :components
