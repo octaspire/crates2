@@ -25,7 +25,7 @@
   (setf (gethash "vacuum-idle" *visual-hash*) #("+----+" "|suck|" "+----+"))
   (setf (gethash "vacuum-full" *visual-hash*) #("+----+" "|SUCK|" "+----+"))
   ;; WALL
-  (setf (gethash "wall-idle" *visual-hash*) #("+----+" "|XXXX|" "+----+"))
+  (setf (gethash "wall-idle" *visual-hash*) #("######" "######" "######"))
   ;; PUSHED
   (setf (gethash "pushed-idle" *visual-hash*) #("+----+" "|PUSH|" "+----+"))
   ;; BLOCK-TIMER
@@ -69,14 +69,14 @@
   (setf (gethash "slope-wn" *visual-hash*) #("  +--+" " /   |" "+----+"))
   (setf (gethash "slope-ws" *visual-hash*) #("+----+" " \\   |" "  +--+"))
   ;; TURNSTILE
-  (setf (gethash "turnstile-e1" *visual-hash*) #("+----+" ">>>>>1" "+----+"))
-  (setf (gethash "turnstile-w1" *visual-hash*) #("+----+" "<<<<<1" "+----+"))
-  (setf (gethash "turnstile-n1" *visual-hash*) #("+1111+" "^^^^^^" "+^^^^+"))
-  (setf (gethash "turnstile-s1" *visual-hash*) #("+....+" "......" "+1111+"))
-  (setf (gethash "turnstile-e" *visual-hash*) #("+>>>>+" ">>>>>>" "+>>>>+"))
-  (setf (gethash "turnstile-w" *visual-hash*) #("+<<<<+" "<<<<<<" "+<<<<+"))
-  (setf (gethash "turnstile-n" *visual-hash*) #("+^^^^+" "^^^^^^" "+^^^^+"))
-  (setf (gethash "turnstile-s" *visual-hash*) #("+....+" "......" "+....+"))
+  (setf (gethash "turnstile-e1" *visual-hash*) #("+----+" "---->1" "+----+"))
+  (setf (gethash "turnstile-w1" *visual-hash*) #("+----+" "1<----" "+----+"))
+  (setf (gethash "turnstile-n1" *visual-hash*) #("+1111+" "^^^^^^" "+||||+"))
+  (setf (gethash "turnstile-s1" *visual-hash*) #("+||||+" "\\/\\/\\/" "+1111+"))
+  (setf (gethash "turnstile-e" *visual-hash*) #("+----+" "----->" "+----+"))
+  (setf (gethash "turnstile-w" *visual-hash*) #("+----+" "<-----" "+----+"))
+  (setf (gethash "turnstile-n" *visual-hash*) #("+^^^^+" "||||||" "+||||+"))
+  (setf (gethash "turnstile-s" *visual-hash*) #("+....+" "||||||" "\\/\\/\\/"))
   ;; BLOCK-COUNTER
   (setf (gethash "block-counter-10" *visual-hash*) #("+----+" "BCXX10" "+----+"))
   (setf (gethash "block-counter-09" *visual-hash*) #("+----+" "BCXX09" "+----+"))
