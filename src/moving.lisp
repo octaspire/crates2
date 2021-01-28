@@ -34,6 +34,7 @@
   (eq (velocity self) :zero))
 
 (defmethod update ((self moving))
+  (setf (moving-tail self) nil)
   (when (active self)
     (let ((v (velocity self)))
       (ecase v
@@ -44,6 +45,43 @@
         (:zero))))
   (call-next-method))
 
+(defmethod tail-x ((self moving))
+  (let ((tail (moving-tail self)))
+    (if tail
+        (first tail)
+        (crate-x self))))
+
+(defmethod tail-y ((self moving))
+  (let ((tail (moving-tail self)))
+    (if tail
+        (second tail)
+        (crate-y self))))
+
+(defmethod tail-z ((self moving))
+  (let ((tail (moving-tail self)))
+    (if tail
+        (third tail)
+        (crate-z self))))
+
+(defmethod move-to ((self moving) x y z)
+  (let ((old-x (crate-x self))
+        (old-y (crate-y self))
+        (old-z (crate-z self)))
+    (unless (is-at-p self x y z)
+      (let ((dx (- x old-x))
+            (dy (- y old-y))
+            (dz (- z old-z)))
+        (setf (crate-x self) x
+              (crate-y self) y
+              (crate-z self) z)
+        (set-tail self
+                  (+ old-x (/ dx 2))
+                  (+ old-y (/ dy 2))
+                  (+ old-z (/ dz 2)))))))
+
+(defmethod set-tail ((self moving) x y z)
+  (setf (moving-tail self) (list x y z)))
+
 (defmethod west ((self moving))
   (let* ((x (- (crate-x self) 1))
          (crate (find-at x (crate-y self) (crate-z self))))
@@ -51,7 +89,7 @@
         (lament self)
         (if crate
             (handle-collision self crate)
-            (setf (crate-x self) x)))))
+            (move-to self x (crate-y self) (crate-z self))))))
 
 (defmethod east ((self moving))
   (let* ((x (+ (crate-x self) 1))
@@ -60,7 +98,7 @@
         (lament self)
         (if crate
             (handle-collision self crate)
-            (setf (crate-x self) x)))))
+            (move-to self x (crate-y self) (crate-z self))))))
 
 (defmethod north ((self moving))
   (let* ((y (- (crate-y self) 1))
@@ -69,7 +107,7 @@
         (lament self)
         (if crate
             (handle-collision self crate)
-            (setf (crate-y self) y)))))
+            (move-to self (crate-x self) y (crate-z self))))))
 
 (defmethod south ((self moving))
   (let* ((y (+ (crate-y self) 1))
@@ -78,7 +116,7 @@
         (lament self)
         (if crate
             (handle-collision self crate)
-            (setf  (crate-y self) y)))))
+            (move-to self (crate-x self) y (crate-z self))))))
 
 (defmethod collide ((self moving) (target crate))
   (setf (velocity self) :zero))

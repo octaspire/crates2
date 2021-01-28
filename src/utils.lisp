@@ -94,16 +94,19 @@ directions."
           (:zero  :zero)))
       :zero))
 
-(defun move-to (crate x y z)
+(defmethod move-to ((self moving) x y z)
   (setf (crate-x crate) x)
   (setf (crate-y crate) y)
   (setf (crate-z crate) z))
 
-(defun move-other-to-my-side (i other side)
+(defmethod set-tail-to-me (i (other moving))
+  (set-tail other (crate-x i) (crate-y i) (crate-z i)))
+
+(defmethod move-other-to-my-side (i (other moving) side)
   "Move crate OTHER to SIDE of crate I"
   (ecase side
-    (:north (move-to other (crate-x i) (- (crate-y i) 1) (crate-z i)))
-    (:south (move-to other (crate-x i) (+ (crate-y i) 1) (crate-z i)))
-    (:east  (move-to other (+ (crate-x i) 1) (crate-y i) (crate-z i)))
-    (:west  (move-to other (- (crate-x i) 1) (crate-y i) (crate-z i)))
+    (:north (move-to other (crate-x i) (- (crate-y i) 1) (crate-z i)) (set-tail-to-me i other))
+    (:south (move-to other (crate-x i) (+ (crate-y i) 1) (crate-z i)) (set-tail-to-me i other))
+    (:east  (move-to other (+ (crate-x i) 1) (crate-y i) (crate-z i)) (set-tail-to-me i other))
+    (:west  (move-to other (- (crate-x i) 1) (crate-y i) (crate-z i)) (set-tail-to-me i other))
     (:zero  nil)))

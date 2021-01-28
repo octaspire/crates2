@@ -37,6 +37,9 @@
 (defgeneric handle-input (self input)
   (:documentation "React to input"))
 
+(defgeneric is-at-p (self x y z)
+  (:documentation "Predicate telling whether crate is at X Y Z"))
+
 ;; Methods
 
 (defmethod update ((self crate)))
@@ -44,3 +47,8 @@
 (defmethod visual ((self crate))
   (when (crate-visible self)
     (call-next-method)))
+
+(defmethod is-at-p ((self crate) x y z)
+  (and (= (crate-x self) x)
+       (= (crate-y self) y)
+       (= (crate-z self) z)))

@@ -16,5 +16,5 @@ tasks:
         make test
     - peek-results: |
         cd ~/quicklisp/local-projects/crates2
-        head -n 50 got.txt
-        tail -n 48 got.txt
+        head -n 67 got.txt
+        tail -n 65 got.txt

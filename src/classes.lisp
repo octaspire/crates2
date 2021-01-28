@@ -38,7 +38,10 @@
              :accessor velocity)
    (active :initarg :active
            :initform t
-           :accessor active)))
+           :accessor active)
+   (tail :initarg :tail
+           :initform nil
+           :accessor moving-tail)))
 
 (defclass wall (crate)
   ())

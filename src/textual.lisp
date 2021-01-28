@@ -206,25 +206,25 @@
                    (concatenate 'string result (format nil "~vd" cw i))))
     result))
 
-(defun ui-render (level)
+(defun ui-render (level step)
   (let ((lines (empty-level))
         (x-axis (x-axis *level-width*))
         (bar (format nil "~v@{~A~:*~}" (* cw *level-width*) #\-)))
     (loop for crate in level
           do (progn
-               (let* ((x (crate-x crate))
-                      (y (crate-y crate))
-                      (z (crate-z crate))
+               (let* ((x (if (and (= step 0) (typep crate 'moving)) (tail-x crate) (crate-x crate)))
+                      (y (if (and (= step 0) (typep crate 'moving)) (tail-y crate) (crate-y crate)))
+                      (z (if (and (= step 0) (typep crate 'moving)) (tail-z crate) (crate-z crate)))
                       (vids (visual crate)))
                  (loop for vid in vids
                        do
                           (let ((viv (gethash vid *visual-hash*)))
                             (when viv
                               (loop for liney from 0 to (- ch 1)
-                                    do (let ((str (aref viv liney))
-                                             (line (aref lines (+ (* y ch) liney)))
-                                             (deltax (* x cw)))
-                                         (setf line (replace-substr-at-transparent-whitespace line deltax str))))))))))
+                                        do (let ((str (aref viv liney))
+                                                 (line (aref lines (+ (truncate (* y ch)) liney)))
+                                                 (deltax (truncate (* x cw))))
+                                             (setf line (replace-substr-at-transparent-whitespace line deltax str))))))))))
     (format t "~%  ~A~%" x-axis)
     (format t "  +~A+ Level ~A~%" bar *level-number*)
     (loop for line across lines

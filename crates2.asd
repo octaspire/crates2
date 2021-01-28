@@ -18,8 +18,8 @@
   :components ((:module src
                 :components
                 ((:file "package")
-                 (:file "utils")
                  (:file "classes")
+                 (:file "utils")
                  (:file "crate")
                  (:file "moving")
                  (:file "simple-crates")
