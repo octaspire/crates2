@@ -20,10 +20,11 @@
   "Replace part of INPUT starting at INDEX using sub string NEW"
   (let ((substring-len (length new)))
     (loop for i from 0 to (- substring-len 1)
-          do (let ((new-char (aref new i)))
+          do (let ((new-char (aref new i))
+                   (ii (+ index i)))
                (when
-                   (not (equal new-char #\Space))
-                 (setf (aref input (+ index i)) new-char)))))
+                   (and (not (equal new-char #\Space)) (>= ii 0) (< ii (length input)))
+                 (setf (aref input ii) new-char)))))
   input)
 
 (defun find-at (x y z)

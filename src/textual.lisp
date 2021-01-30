@@ -57,7 +57,7 @@
   (setf (gethash "count-23"            *visual-hash*) #("      " "    23" "      "))
   ;; EXIT
   (setf (gethash "exit-idle" *visual-hash*) #("+----+" "|exit|" "+----+"))
-  (setf (gethash "exit-active" *visual-hash*) #("+----+" "|EXIT|" "+----+"))
+  (setf (gethash "exit-active" *visual-hash*) #("+----------+" "|          |" "|          |" "|          |" "+----------+"))
   ;; KEY
   (setf (gethash "key-idle" *visual-hash*) #("+----+" " KEY  " "+----+"))
   ;; PLAYER
@@ -220,11 +220,18 @@
                        do
                           (let ((viv (gethash vid *visual-hash*)))
                             (when viv
-                              (loop for liney from 0 to (- ch 1)
-                                        do (let ((str (aref viv liney))
-                                                 (line (aref lines (+ (truncate (* y ch)) liney)))
-                                                 (deltax (truncate (* x cw))))
-                                             (setf line (replace-substr-at-transparent-whitespace line deltax str))))))))))
+                              (let* ((vivh (length viv))
+                                     (dy (truncate (/ (- ch vivh) 2))))
+                                (loop for liney from 0 to (- vivh 1)
+                                      do (let* ((str (aref viv liney))
+                                                (vivw (length str))
+                                                (dx (truncate (/ (- cw vivw) 2)))
+                                                (finy (truncate (+ (* y ch) dy liney))))
+                                           (when (>= finy 0)
+                                             (let* ((line (aref lines finy))
+                                                    (finx (* x cw))
+                                                    (deltax (truncate (+ finx dx))))
+                                               (setf line (replace-substr-at-transparent-whitespace line deltax str)))))))))))))
     (format t "~%  ~A~%" x-axis)
     (format t "  +~A+ Level ~A~%" bar *level-number*)
     (loop for line across lines
