@@ -30,6 +30,7 @@
                  (:file "player")
                  (:file "slopes")
                  (:file "turnstiles")
+                 (:file "bomb")
                  (:file "block-timer")
                  (:file "block-counter")
                  (:file "pass-counter")

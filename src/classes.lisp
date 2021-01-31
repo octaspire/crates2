@@ -88,6 +88,17 @@
 (defclass turnstile-s (turnstile-s1)
   ())
 
+(defclass bomb (crate)
+  ((time :initarg :time
+         :accessor bomb-time
+         :initform 10)
+   (uptime :initarg :uptime
+           :accessor bomb-uptime
+           :initform 0)
+   (durable :initarg :durable
+            :accessor bomb-durable
+            :initform nil)))
+
 (defclass block-timer (crate)
   ((time :initarg :time
          :accessor block-timer-time
@@ -96,7 +107,7 @@
            :accessor block-timer-uptime
            :initform 0)
    (durable :initarg :durable
-           :accessor block-timer-durable
+            :accessor block-timer-durable
             :initform t)))
 
 (defclass block-counter (crate)
