@@ -44,7 +44,8 @@
   (setf *test-run* t)
   (let ((num (parse-integer x)))
     (setf *level-number* num)
-    (setf *next-level* nil)))
+    (setf *next-level* nil)
+    (setf *frame-duration* 0.05)))
 
 (defun get-current-level()
   (unless *level*
@@ -94,6 +95,7 @@ This is similar to 'test' but runs much slower."
 
 (defun run (options)
   (unless *errors*
+    (ui-init)
     (init-visual-hash)
     (request-next-level)
     (let ((str (make-array 2048 :element-type 'character :fill-pointer 0 :adjustable t))
@@ -128,7 +130,8 @@ This is similar to 'test' but runs much slower."
           (format t "~%CRATES2: WARNING EXECUTION STOPPED ON TOO LARGE UPDATE COUNT~%"))
         (setf str (nstring-downcase str))
         (when log-input
-          (format t "~%~A~%" str))))))
+          (format t "~%~A~%" str))))
+    (ui-delete)))
 
 (defun usage ()
   (opts:describe

@@ -1,5 +1,5 @@
 ;; Octaspire Crates 2 - Puzzle Game
-;; Copyright 2020 octaspire.com
+;; Copyright 2020, 2021 octaspire.com
 ;;
 ;; Licensed under the Apache License, Version 2.0 (the "License");
 ;; you may not use this file except in compliance with the License.
@@ -12,8 +12,8 @@
 ;; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ;; See the License for the specific language governing permissions and
 ;; limitations under the License.
-(asdf:defsystem "crates2"
-  :depends-on (:alexandria :unix-opts :parse-float :trivial-garbage)
+(asdf:defsystem "crates2-charms"
+  :depends-on (:alexandria :unix-opts :parse-float :trivial-garbage :cl-charms)
   :serial t
   :components ((:module src
                 :components
@@ -38,9 +38,9 @@
                  (:file "vacuum")
                  (:file "stepper")
                  (:file "level")
-                 (:file "textual")
+                 (:file "charms")
                  (:file "levels")
                  (:file "main"))))
   :build-operation program-op
-  :build-pathname "crates2"
+  :build-pathname "crates2-charms"
   :entry-point "crates2:main")

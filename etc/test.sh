@@ -32,10 +32,10 @@ then
     echo "Or copy the executable to /usr/local/bin manually. This is because of the W^X"
     echo "protection that OpenBSD uses."
     echo "===================================================================================="
-    doas /bin/cp crates2 /usr/local/bin/
-    /usr/local/bin/crates2 --test 0 > "$GOT_FILE"
+    doas /bin/cp crates2-text /usr/local/bin/
+    /usr/local/bin/crates2-text --test 0 > "$GOT_FILE"
 else
-    ./crates2 --test 0  > "$GOT_FILE"
+    ./crates2-text --test 0  > "$GOT_FILE"
 fi
 
 if test -e "$EXPECTED_ARCH"

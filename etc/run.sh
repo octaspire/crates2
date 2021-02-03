@@ -20,14 +20,15 @@ then
     echo "===================================================================================="
     echo "Running in OpenBSD. This script requires the following line in your /etc/doas.conf:"
     echo ""
-    echo "permit nopass ${USER} as root cmd /bin/cp args crates2 /usr/local/bin/"
+    echo "permit nopass ${USER} as root cmd /bin/cp args crates2-text /usr/local/bin/"
+    echo "permit nopass ${USER} as root cmd /bin/cp args crates2-charms /usr/local/bin/"
     echo ""
     echo "If this script doesn't work, please add the above line to your /etc/doas.conf."
     echo "Or copy the executable to /usr/local/bin manually. This is because of the W^X"
     echo "protection that OpenBSD uses."
     echo "===================================================================================="
-    doas /bin/cp crates2 /usr/local/bin/
-    /usr/local/bin/crates2
+    doas /bin/cp crates2-text /usr/local/bin/
+    /usr/local/bin/crates2-text
 else
-    ./crates2
+    ./crates2-text
 fi

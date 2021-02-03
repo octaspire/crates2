@@ -1,5 +1,5 @@
 ;; Octaspire Crates 2 - Puzzle Game
-;; Copyright 2020 octaspire.com
+;; Copyright 2020, 2021 octaspire.com
 ;;
 ;; Licensed under the Apache License, Version 2.0 (the "License");
 ;; you may not use this file except in compliance with the License.
@@ -198,28 +198,36 @@
     a))
 
 (defparameter *fake-input* nil)
-
+(defparameter *crates2-window* nil)
 (defparameter *last-input* nil)
 
 (defun ui-init ()
-  ;; Nothing to do.
-  )
+  (setf *crates2-window* (cl-charms/low-level:initscr))
+  (cl-charms:disable-echoing)
+  (cl-charms:enable-raw-input)
+  ;; (cl-charms/low-level:raw)
+  (cl-charms/low-level:curs-set 0)
+  ;; Don't block on getch
+  (cl-charms/low-level:timeout 0)
+  (cl-charms/low-level:keypad *crates2-window* cl-charms/low-level:TRUE)
+  (cl-charms/low-level:keypad cl-charms/low-level:*stdscr* cl-charms/low-level:TRUE))
 
 (defun ui-delete ()
-  ;; Nothing to do.
-  )
+  (cl-charms/low-level:endwin))
 
 (defun ui-read-input ()
-  (format t "Input: ")
-  (finish-output)
-  (let ((c (read-char)))
+  (let ((c (cl-charms/low-level:wgetch *crates2-window*)))
     (case c
-      (#\w :north)
-      (#\s :south)
-      (#\a :west)
-      (#\d :east)
-      (#\q :back)
-      (#\r :restart)
+      (119 :north)
+      (cl-charms/low-level:KEY_UP :north)
+      (115 :south)
+      (cl-charms/low-level:KEY_DOWN :south)
+      (97  :west)
+      (cl-charms/low-level:KEY_LEFT :west)
+      (100 :east)
+      (cl-charms/low-level:KEY_RIGHT :east)
+      (113 :back)
+      (114 :restart)
       (otherwise nil))))
 
 (defun ui-maybe-read-input ()
@@ -271,17 +279,18 @@
                                                     (finx (* x cw))
                                                     (deltax (truncate (+ finx dx))))
                                                (setf line (replace-substr-at-transparent-whitespace line deltax str)))))))))))))
-    (format t "~%  ~A~%" x-axis)
-    (format t "  +~A+ Level ~A~%" bar *level-number*)
+    (cl-charms/low-level:clear)
+    (cl-charms/low-level:mvaddstr 0 0 x-axis)
+    (cl-charms/low-level:mvaddstr 1 0 (format nil "  +~A+ Level ~A~%" bar *level-number*))
     (loop for line across lines
           for y from 0
           do (if (= (mod y ch) 0)
-                 (format t "~2d|~A|" (floor y ch) line)
-                 (format t "  |~A|" line))
+                 (cl-charms/low-level:mvaddstr (+ 2 y) 0 (format nil "~2d|~A|" (floor y ch) line))
+                 (cl-charms/low-level:mvaddstr (+ 2 y) 0 (format nil "  |~A|" line)))
              (if (= y 0)
-                 (format t " Input: ~@[~A~]~%" *last-input*)
-                 (if (= y 1)
-                     (format t " #updates: ~A~%" *update-counter*)
-                     (format t "~%"))))
-    (format t "  +~A+~%" bar))
+                 (cl-charms/low-level:mvaddstr (+ 3 y) 0 (format nil " Input: ~@[~A~]" *last-input*))
+                 (when (= y 1)
+                   (cl-charms/low-level:mvaddstr (+ 3 y) 0 (format nil " #updates: ~A~%" *update-counter*))))
+          finally (cl-charms/low-level:mvaddstr (+ 3 y) 0 (format nil "  +~A+" bar)))
+    (cl-charms/low-level:refresh))
   (setf *last-input* nil))

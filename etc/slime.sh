@@ -20,7 +20,7 @@ PROGRAM="(progn (slime)                                      \
          (while (not (slime-connected-p)) (sleep-for 0.5))   \
          (slime-repl-eval-string                             \
            \"(progn (declaim (optimize (speed 0) (debug 3))) \
-                    (ql:quickload :crates2)                  \
+                    (ql:quickload :crates2-text)             \
                     (in-package :crates2))\"))"
 
 if [ -z "${EMACS_SERVER_ON}" ]

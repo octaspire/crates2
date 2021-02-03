@@ -1,1 +1,1 @@
-Empty.
+- Move common parts from =charms= and =text= renderers into separate file.

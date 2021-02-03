@@ -49,10 +49,11 @@ To use crates2 in OpenBSD without Common Lisp REPL - i.e. by running the generat
 =crates2= executable directly - the =crates2= executable must be first
 copied into ~/usr/local/bin~. This is because of the ~W^X~ protection
 that OpenBSD uses. Command ~make run~ does this automagically in =OpenBSD=,
-if file ~/etc/doas.conf~ has a line:
+if file ~/etc/doas.conf~ has lines:
 
 #+begin_src shell
-permit nopass USERNAME as root cmd /bin/cp args crates2 /usr/local/bin/
+permit nopass USERNAME as root cmd /bin/cp args crates2-text /usr/local/bin/
+permit nopass USERNAME as root cmd /bin/cp args crates2-charms /usr/local/bin/
 #+end_src
 
 where ~USERNAME~ is your username. If you are getting error message

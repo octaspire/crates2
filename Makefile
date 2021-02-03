@@ -16,30 +16,38 @@ LISP    ?= sbcl
 EVAL    ?= "--eval"
 level   ?= 0
 
+all: crates2-text crates2-charms
+
 .PHONY: slime clean help test
 
-crates2: Makefile crates2.asd src/*.lisp
+crates2-text: Makefile crates2-text.asd src/*.lisp etc/*.*
 	@$(LISP) $(EVAL) "(progn (declaim (optimize (speed 0) (space 0) (safety 3) (debug 3))) \
-                                 (ql:quickload :crates2)                                       \
-                                 (asdf:make :crates2)                                          \
+                                 (ql:quickload :crates2-text)                                  \
+                                 (asdf:make :crates2-text)                                     \
+                                 (quit))"
+
+crates2-charms: Makefile crates2-charms.asd src/*.lisp etc/*.*
+	@$(LISP) $(EVAL) "(progn (declaim (optimize (speed 0) (space 0) (safety 3) (debug 3))) \
+                                 (ql:quickload :crates2-charms)                                \
+                                 (asdf:make :crates2-charms)                                   \
                                  (quit))"
 
 slime:
 	@etc/slime.sh &
 
-run: crates2
+run: crates2-text crates2-charms
 	@etc/run.sh
 
-play: crates2
+play: crates2-text crates2-charms
 	@etc/autoplay.sh $(level)
 
-install: crates2
+install: crates2-text crates2-charms
 	@etc/install.sh
 
 clean:
-	@rm -f crates2 expected.txt.bz2 expected.txt got.txt
+	@rm -f crates2-text crates2-charms expected.txt.bz2 expected.txt got.txt
 
-test: crates2
+test: crates2-text
 	@etc/test.sh
 
 help:
@@ -47,11 +55,13 @@ help:
 	@echo '  make <target>'
 	@echo ''
 	@echo 'Targets:'
-	@echo '  crates2  build standalone binary executable for crates2 (default target)'
-	@echo '  run      build standalone binary and run it'
-	@echo '  play     build standalone binary and autoplay it from given level'
-	@echo '  install  build standalone binary and install it'
-	@echo '  slime    start Emacs/slime (if needed) with crates2 loaded'
-	@echo '  clean    remove build artifacts'
-	@echo '  test     build and do a play test'
-	@echo '  help     show this help'
+	@echo '  all             build standalone binaries crates2 text, charms, SDL and OpenGL (default target)'
+	@echo '  crates2-text    build standalone binary executable for crates2 text mode'
+	@echo '  crates2-charms  build standalone binary executable for crates2 charms (ncurses) mode'
+	@echo '  run             build standalone binary and run it'
+	@echo '  play            build standalone binary and autoplay it from given level'
+	@echo '  install         build standalone binary and install it'
+	@echo '  slime           start Emacs/slime (if needed) with crates2 loaded'
+	@echo '  clean           remove build artifacts'
+	@echo '  test            build and do a play test'
+	@echo '  help            show this help'
