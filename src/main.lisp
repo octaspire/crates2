@@ -47,6 +47,12 @@
     (setf *next-level* nil)
     (setf *frame-duration* 0.05)))
 
+(defun log-file-parser (x)
+  ;; Set logging level. TODO make this configurable.
+  (log:config :debug)
+  ;; Log into the given file.
+  (log:config :daily x))
+
 (defun get-current-level()
   (unless *level*
     (load-next-level))
@@ -85,6 +91,10 @@ This is similar to 'test' but runs much slower."
   (:name :log-input
    :description "Log and show user input after quitting game."
    :long "log-input")
+  (:name :log-file
+   :description "Log to given file."
+   :long "log-file"
+   :arg-parser #'log-file-parser)
   (:name :fullscreen
    :description "Run in fullscreen mode"
    :long "fullscreen"))
@@ -184,6 +194,7 @@ This is similar to 'test' but runs much slower."
   (setf *next-level* (- *level-number* 1)))
 
 (defun main ()
+  (log:config :remove 1)                ; Remove console logging.
   (let ((options (handler-case
                      (handler-bind ((opts:arg-parser-failed #'parser-error)
                                     (opts:unknown-option    #'unknown-option))

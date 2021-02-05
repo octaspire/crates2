@@ -217,18 +217,21 @@
 
 (defun ui-read-input ()
   (let ((c (cl-charms/low-level:wgetch *crates2-window*)))
-    (case c
-      (119 :north)
-      (cl-charms/low-level:KEY_UP :north)
-      (115 :south)
-      (cl-charms/low-level:KEY_DOWN :south)
-      (97  :west)
-      (cl-charms/low-level:KEY_LEFT :west)
-      (100 :east)
-      (cl-charms/low-level:KEY_RIGHT :east)
-      (113 :back)
-      (114 :restart)
-      (otherwise nil))))
+    (log:debug "Input is ~A" c)
+    (cond
+      ((or (= c (char-code #\w))
+           (= c cl-charms/low-level:KEY_UP)) :north)
+      ((or (= c (char-code #\s))
+           (= c cl-charms/low-level:KEY_DOWN)) :south)
+      ((or (= c (char-code #\a))
+           (= c cl-charms/low-level:KEY_LEFT)) :west)
+      ((or (= c (char-code #\d))
+           (= c cl-charms/low-level:KEY_RIGHT)) :east)
+      ((or (= c (char-code #\q))
+           ;; Escape
+           (= c 27)) :back)
+      ((= c (char-code #\r)) :restart)
+      (t nil))))
 
 (defun ui-maybe-read-input ()
   (let ((player (find-first-crate-of-type 'player)))

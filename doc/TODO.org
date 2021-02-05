@@ -1,1 +1,2 @@
 - Move common parts from =charms= and =text= renderers into separate file.
+- Add command line option for setting the logging level.
