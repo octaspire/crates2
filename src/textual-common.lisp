@@ -1,5 +1,5 @@
 ;; Octaspire Crates 2 - Puzzle Game
-;; Copyright 2020 octaspire.com
+;; Copyright 2020, 2021 octaspire.com
 ;;
 ;; Licensed under the Apache License, Version 2.0 (the "License");
 ;; you may not use this file except in compliance with the License.
@@ -201,43 +201,6 @@
 
 (defparameter *last-input* nil)
 
-(defun ui-init ()
-  ;; Nothing to do.
-  )
-
-(defun ui-delete ()
-  ;; Nothing to do.
-  )
-
-(defun ui-read-input ()
-  (format t "Input: ")
-  (finish-output)
-  (let ((c (read-char)))
-    (case c
-      (#\w :north)
-      (#\s :south)
-      (#\a :west)
-      (#\d :east)
-      (#\q :back)
-      (#\r :restart)
-      (otherwise nil))))
-
-(defun ui-maybe-read-input ()
-  (let ((player (find-first-crate-of-type 'player)))
-    (if (and player (movingp player))
-        nil                    ; No input while player moves, in textual mode.
-        (setf *last-input* (ui-read-input)))))
-
-(defun ui-input ()
-  (if *level*
-      (if *test-run*
-          (let ((input (car *fake-input*)))
-            (setf *fake-input* (cdr *fake-input*))
-            (setf *last-input* input)
-            input)
-          (ui-maybe-read-input))
-      nil))
-
 (defun x-axis (length)
   (let ((result ""))
     (loop for i from 0 to (- length 1)
@@ -245,7 +208,7 @@
                    (concatenate 'string result (format nil "~vd" cw i))))
     result))
 
-(defun ui-render (level step)
+(defun ui-generate (level step)
   (let ((lines (empty-level))
         (x-axis (x-axis *level-width*))
         (bar (format nil "~v@{~A~:*~}" (* cw *level-width*) #\-)))
@@ -271,17 +234,4 @@
                                                     (finx (* x cw))
                                                     (deltax (truncate (+ finx dx))))
                                                (setf line (replace-substr-at-transparent-whitespace line deltax str)))))))))))))
-    (format t "~%  ~A~%" x-axis)
-    (format t "  +~A+ Level ~A~%" bar *level-number*)
-    (loop for line across lines
-          for y from 0
-          do (if (= (mod y ch) 0)
-                 (format t "~2d|~A|" (floor y ch) line)
-                 (format t "  |~A|" line))
-             (if (= y 0)
-                 (format t " Input: ~@[~A~]~%" *last-input*)
-                 (if (= y 1)
-                     (format t " #updates: ~A~%" *update-counter*)
-                     (format t "~%"))))
-    (format t "  +~A+~%" bar))
-  (setf *last-input* nil))
+    (values lines x-axis bar)))

@@ -38,7 +38,8 @@
                  (:file "vacuum")
                  (:file "stepper")
                  (:file "level")
-                 (:file "textual")
+                 (:file "textual-common")
+                 (:file "textual-plain")
                  (:file "levels")
                  (:file "main"))))
   :build-operation program-op
