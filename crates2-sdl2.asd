@@ -12,7 +12,7 @@
 ;; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ;; See the License for the specific language governing permissions and
 ;; limitations under the License.
-(asdf:defsystem "crates2-charms"
+(asdf:defsystem "crates2-sdl2"
   :depends-on (:alexandria :unix-opts :parse-float :trivial-garbage :sdl2 :log4cl)
   :serial t
   :components ((:module src
