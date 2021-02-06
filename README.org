@@ -11,7 +11,8 @@ is to be added.
 
 Prerequisites:
 
-At this stage: =Common Lisp= implementation (tested with SBCL), =Quicklisp= and =make=.
+At this stage: =Common Lisp= implementation (tested with SBCL), =Quicklisp=, =make=
+and =SDL2= library.
 
 Get sources and build by issuing commands:
 

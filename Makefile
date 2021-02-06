@@ -16,7 +16,7 @@ LISP    ?= sbcl
 EVAL    ?= "--eval"
 level   ?= 0
 
-all: crates2-text crates2-charms
+all: crates2-text crates2-charms crates2-sdl2
 
 .PHONY: slime clean help test
 
@@ -32,6 +32,12 @@ crates2-charms: Makefile crates2-charms.asd src/*.lisp etc/*.*
                                  (asdf:make :crates2-charms)                                   \
                                  (quit))"
 
+crates2-sdl2: Makefile crates2-sdl2.asd src/*.lisp etc/*.*
+	@$(LISP) $(EVAL) "(progn (declaim (optimize (speed 0) (space 0) (safety 3) (debug 3))) \
+                                 (ql:quickload :crates2-sdl2)                                  \
+                                 (asdf:make :crates2-sdl2)                                     \
+                                 (quit))"
+
 slime:
 	@etc/slime.sh &
 
@@ -45,7 +51,7 @@ install: crates2-text crates2-charms
 	@etc/install.sh
 
 clean:
-	@rm -f crates2-text crates2-charms expected.txt.bz2 expected.txt got.txt
+	@rm -f crates2-text crates2-charms crates2-sdl2 expected.txt.bz2 expected.txt got.txt
 
 test: crates2-text
 	@etc/test.sh
@@ -58,6 +64,7 @@ help:
 	@echo '  all             build standalone binaries crates2 text, charms, SDL and OpenGL (default target)'
 	@echo '  crates2-text    build standalone binary executable for crates2 text mode'
 	@echo '  crates2-charms  build standalone binary executable for crates2 charms (ncurses) mode'
+	@echo '  crates2-sdl2    build standalone binary executable for crates2 SDL2 (2D) mode'
 	@echo '  run             build standalone binary and run it'
 	@echo '  play            build standalone binary and autoplay it from given level'
 	@echo '  install         build standalone binary and install it'
