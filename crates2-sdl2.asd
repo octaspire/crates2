@@ -42,5 +42,5 @@
                  (:file "levels")
                  (:file "main"))))
   :build-operation program-op
-  :build-pathname "crates2-charms"
+  :build-pathname "crates2-sdl2"
   :entry-point "crates2:main")
