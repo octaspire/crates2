@@ -13,7 +13,13 @@
 ;; See the License for the specific language governing permissions and
 ;; limitations under the License.
 (asdf:defsystem "crates2-sdl2"
-  :depends-on (:alexandria :unix-opts :parse-float :trivial-garbage :sdl2 :log4cl)
+  :depends-on (:alexandria
+               :unix-opts
+               :parse-float
+               :trivial-garbage
+               :cffi
+               :sdl2                    ; Remove when octaspire-cl-sdl2 is ready
+               :log4cl)
   :serial t
   :components ((:module src
                 :components
