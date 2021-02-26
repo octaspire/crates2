@@ -14,6 +14,7 @@
 ;; limitations under the License.
 (ql:quickload :cffi)        ; For using foreign libraries.
 (ql:quickload :cffi-libffi) ; For passing structures by value to foreign functions.
+(ql:quickload :trivial-features)
 
 (defpackage :octaspire-cl-sdl2
   (:use
@@ -31,18 +32,68 @@
 (define-foreign-library libsdl2-ttf
     (:darwin (:or "libSDL2_ttf-2.0.0.dylib")))
 
+(define-foreign-library libsdl2-mixer
+    (:darwin (:or "libSDL2_mixer-2.0.0.dylib")))
+
 (use-foreign-library libsdl2)
 (use-foreign-library libsdl2-image)
 (use-foreign-library libsdl2-ttf)
+(use-foreign-library libsdl2-mixer)
 
 (defcfun "SDL_Init" :int
   (flags :long))
 
+;; Declared in include/SDL_audio.h
+(defconstant +AUDIO-U8+     #x0008)
+(defconstant +AUDIO-S8+     #x8008)
+(defconstant +AUDIO-U16LSB+ #x0010)
+(defconstant +AUDIO-S16LSB+ #x8010)
+(defconstant +AUDIO-U16MSB+ #x1010)
+(defconstant +AUDIO-S16MSB+ #x9010)
+(defconstant +AUDIO-U16+    +AUDIO-U16LSB+)
+(defconstant +AUDIO-S16+    +AUDIO-S16LSB+)
+
+(defconstant +AUDIO-S32LSB+ #x8020)
+(defconstant +AUDIO-S32MSB+ #x9020)
+(defconstant +AUDIO-S32+    +AUDIO-S16LSB+)
+
+(defconstant +AUDIO-F32LSB+ #x8120)
+(defconstant +AUDIO-F32MSB+ #x9120)
+(defconstant +AUDIO-F32+    +AUDIO-F32LSB+)
+
+#+little-endian
+(progn
+  (defconstant +AUDIO-U16SYS+ +AUDIO-U16LSB+)
+  (defconstant +AUDIO-S16SYS+ +AUDIO-S16LSB+)
+  (defconstant +AUDIO-S32SYS+ +AUDIO-S32LSB+)
+  (defconstant +AUDIO-F32SYS+ +AUDIO-F32LSB+))
+
+#+big-endian
+(progn
+  (defconstant +AUDIO-U16SYS+ +AUDIO-U16MSB+)
+  (defconstant +AUDIO-S16SYS+ +AUDIO-S16MSB+)
+  (defconstant +AUDIO-S32SYS+ +AUDIO-S32MSB+)
+  (defconstant +AUDIO-F32SYS+ +AUDIO-F32MSB+))
+
+
 ;; Declared in include/SDL.h
-(defconstant +SDL-INIT-TIMER+    #x001)
-(defconstant +SDL-INIT-AUDIO+    #x010)
-(defconstant +SDL-INIT-VIDEO+    #x020)
-(defconstant +SDL-INIT-JOYSTICK+ #x200)
+(defconstant +SDL-INIT-TIMER+                 #x001)
+(defconstant +SDL-INIT-AUDIO+                 #x010)
+(defconstant +SDL-INIT-VIDEO+                 #x020)
+(defconstant +SDL-INIT-JOYSTICK+              #x200)
+(defconstant +SDL-INIT-HAPTIC+                #x1000)
+(defconstant +SDL-INIT-GAMECONTROLLER+        #x1000)
+(defconstant +SDL-INIT-EVENTS+                #x4000)
+(defconstant +SDL-INIT-SENSOR+                #x8000)
+(defconstant +SDL-INIT-NOPARACHUTE+           #x100000)
+(defconstant +SDL-INIT-EVERYTHING+            (logior +SDL-INIT-TIMER+
+                                                      +SDL-INIT-AUDIO+
+                                                      +SDL-INIT-VIDEO+
+                                                      +SDL-INIT-JOYSTICK+
+                                                      +SDL-INIT-HAPTIC+
+                                                      +SDL-INIT-GAMECONTROLLER+
+                                                      +SDL-INIT-EVENTS+
+                                                      +SDL-INIT-SENSOR+))
 (defconstant +SDL-TEXTEDITINGEVENT-TEXT-SIZE+ 32)
 (defconstant +SDL-TEXTINPUTEVENT-TEXT-SIZE+   32)
 
@@ -53,6 +104,15 @@
   (y :int)
   (w :int)
   (h :int))
+
+(defun make-rect (rx ry rw rh)
+  (with-foreign-object (result '(:struct sdl-rect))
+    (with-foreign-slots ((x y w h) result (:struct sdl-rect))
+      (setf x rx)
+      (setf y ry)
+      (setf w rw)
+      (setf h rh))
+    result))
 
 ;; Declared in include/SDL_pixels.h
 (defcstruct sdl-color
@@ -940,6 +1000,14 @@
           ,@body
        (sdl-quit))))
 
+;; Defined in src/video/SDL_fillrect.c
+(defcfun "SDL_FillRect" :int
+  (dst   :pointer)
+  (rect  :pointer)                         ; const *
+  (color :uint32))
+
+
+
 
 
 ;;; SDL_Image
@@ -997,6 +1065,53 @@
 
 
 
+;;; SDL_mixer
+
+;; Declared in SDL_mixer.h
+
+;; Enumeration in C, but here separate constants.
+(defconstant +MIX-INIT-FLAC+ #x1)
+(defconstant +MIX-INIT-MOD+  #x2)
+(defconstant +MIX-INIT-MP3+  #x8)
+(defconstant +MIX-INIT-OGG+  #x10)
+(defconstant +MIX-INIT-MID+  #x20)
+(defconstant +MIX-INIT-OPUS+ #x40)
+
+(defcfun "Mix_Init" :int
+  (flags :int))
+
+(defcfun "Mix_Quit" :void)
+
+(defcfun "Mix_OpenAudio" :int
+  (frequency :int)
+  (format    :uint16)
+  (channels  :int)
+  (chunksize :int))
+
+(defcfun "Mix_CloseAudio" :void)
+
+(defcfun "Mix_LoadWAV" :pointer
+  (file (:string :encoding :utf-8)))
+
+(defmacro with-mix ((&rest flags) &body body)
+  `(progn
+     (unless (mix-init ,@flags)
+       (error "Mix Init failed"))
+     (unwind-protect
+          ,@body
+       (mix-quit))))
+
+(defmacro with-audio ((&rest flags) &body body)
+  `(progn
+     (unless (mix-openaudio ,@flags)
+       (error "Audio Init failed"))
+     (unwind-protect
+          ,@body
+       (mix-closeaudio))))
+
+
+
+
 
 ;; Helpers
 
@@ -1015,6 +1130,7 @@
 
 
 
+
 (defparameter *running* t)
 
 (defun handle-event (event)
@@ -1024,32 +1140,41 @@
       (setf *running* nil))))
 
 (sb-int:with-float-traps-masked (:invalid :inexact :overflow) ; Prevent crash in macOS Big Sur
-  (with-init (+SDL-INIT-VIDEO+)
-    (with-img (+IMG-INIT-PNG+)
-      (with-ttf
-          (with-window ("octaspire" 10 10 400 400 0)
-            (with-foreign-objects ((winsurface :pointer)
-                                   (txtsurface :pointer)
-                                   (image :pointer)
-                                   (font :pointer)
-                                   (textcolor '(:struct sdl-color))
-                                   (nullpointer :pointer))
-              (setf winsurface (sdl-getwindowsurface window))
-              (setf image (img-load "../../assets/texture/texture.png"))
-              (setf font (ttf-openfont "../../assets/font/IBM/Plex/IBMPlexMono-Bold.ttf" 20))
-              (setf textcolor (sdl-ext-color #xFF #xFF #xFF #xFF))
-              (with-foreign-string (text "Just some text here!")
-                (setf txtsurface (ttf-renderutf8-solid font text textcolor)))
-              (setf nullpointer (null-pointer))
-              (unless image
-                (error "Image is NULL"))
-              (loop while *running*
-                    do
-                       (with-foreign-object (event '(:union sdl-event))
-                         (loop while (/= (sdl-pollevent event) 0)
-                               do
-                                  (handle-event event)))
-                       (sdl-upperblit image nullpointer winsurface nullpointer)
-                       (sdl-upperblit txtsurface nullpointer winsurface nullpointer)
-                       (sdl-updatewindowsurface window)
-                       (sdl-delay 100))))))))
+  (with-init ((logior +SDL-INIT-VIDEO+ +SDL-INIT-AUDIO+))
+    (with-mix (+MIX-INIT-OGG+)
+      (with-audio (22050 +AUDIO-S16SYS+ 2 4096)
+        (with-img (+IMG-INIT-PNG+)
+          (with-ttf
+              (with-window ("octaspire" 10 10 400 400 0)
+                (with-foreign-objects ((winsurface :pointer)
+                                       (txtsurface :pointer)
+                                       (image :pointer)
+                                       (font :pointer)
+                                       (textcolor '(:struct sdl-color))
+                                       (nullpointer :pointer)
+                                       (screenrect '(:struct sdl-rect))
+                                       (screenrectpointer :pointer)
+                                       (blackcolorasint :uint32))
+                  (setf winsurface (sdl-getwindowsurface window))
+                  (setf image (img-load "../../assets/texture/texture.png"))
+                  (setf font (ttf-openfont "../../assets/font/IBM/Plex/IBMPlexMono-Bold.ttf" 20))
+                  (setf textcolor (sdl-ext-color #xFF #xFF #xFF #xFF))
+                  (setf screenrect (make-rect 0 0 400 400))
+                  (setf screenrectpointer (mem-aptr screenrect '(:struct sdl-rect) 0))
+                  (setf blackcolorasint #x000000FF)
+                  (with-foreign-string (text "Just some text here!")
+                    (setf txtsurface (ttf-renderutf8-solid font text textcolor)))
+                  (setf nullpointer (null-pointer))
+                  (unless image
+                    (error "Image is NULL"))
+                  (loop while *running*
+                        do
+                           (with-foreign-object (event '(:union sdl-event))
+                             (loop while (/= (sdl-pollevent event) 0)
+                                   do
+                                      (handle-event event)))
+                           (sdl-fillrect winsurface screenrectpointer blackcolorasint)
+                           (sdl-upperblit image nullpointer winsurface nullpointer)
+                           (sdl-upperblit txtsurface nullpointer winsurface nullpointer)
+                           (sdl-updatewindowsurface window)
+                           (sdl-delay 100))))))))))

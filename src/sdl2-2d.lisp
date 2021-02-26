@@ -24,9 +24,6 @@
 (defparameter *crates2-window* nil)
 (defparameter *visual-hash* (make-hash-table :test 'equal))
 
-(defun make-rect (x y w h)
-  )
-
 (defun init-visual-hash ()
   ;; VACUUM
   (setf (gethash "vacuum-idle" *visual-hash*) (make-rect 0 0 cw ch))
@@ -170,7 +167,7 @@
 (defparameter *image* nil)
 
 (defun ui-render (level step)
-  (let ((screen-surface (sdl2:get-window-surface *crates2-window*)))
+  (let ((screen-surface (sdl-getwindowsurface *crates2-window*)))
     (sdl2:fill-rect screen-surface nil (sdl2:map-rgb (sdl2:surface-format screen-surface) 0 0 0))
     (loop for crate in level
           do (progn
