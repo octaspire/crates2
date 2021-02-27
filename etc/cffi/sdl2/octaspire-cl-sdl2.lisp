@@ -12,6 +12,7 @@
 ;; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ;; See the License for the specific language governing permissions and
 ;; limitations under the License.
+(ql:quickload :alexandria)
 (ql:quickload :cffi)        ; For using foreign libraries.
 (ql:quickload :cffi-libffi) ; For passing structures by value to foreign functions.
 (ql:quickload :trivial-features)
@@ -19,6 +20,7 @@
 (defpackage :octaspire-cl-sdl2
   (:use
    :common-lisp
+   :alexandria
    :cffi))
 
 (in-package :octaspire-cl-sdl2)
@@ -112,12 +114,14 @@
   (w :int)
   (h :int))
 
-(defun make-rect (rx ry rw rh result)
+(defun set-rect (result rx ry rw rh)
   (with-foreign-slots ((x y w h) result (:struct sdl-rect))
     (setf x rx)
     (setf y ry)
     (setf w rw)
-    (setf h rh)))
+    (setf h rh)
+    result)
+  result)
 
 ;; Declared in include/SDL_pixels.h
 (defcstruct sdl-color
@@ -995,6 +999,19 @@
 (defcfun "SDL_RenderPresent" :void
   (renderer :pointer))
 
+(defcfun "SDL_CreateTextureFromSurface" :pointer
+  (renderer :pointer)
+  (surface  :pointer))
+
+(defcfun "SDL_DestroyTexture" :void
+  (texture :pointer))
+
+(defcfun "SDL_RenderCopy" :void
+  (renderer :pointer)
+  (texture :pointer)
+  (srcrect :pointer)                    ; const SDL_Rect*
+  (dstrect :pointer))                   ; const SDL_Rect*
+
 (defcfun "SDL_DestroyRenderer" :void
   (renderer :pointer))
 
@@ -1186,6 +1203,20 @@
             ,@body)
        (sdl-freesurface ,name))))
 
+(defmacro with-texture-from-img ((name filename) &body body)
+  "Anaphoric macro that loads and introduces a texture from FILENAME named
+according to NAME to the forms in BODY."
+  (alexandria:with-gensyms (img)
+    `(with-foreign-objects ((,name :pointer))
+       (unwind-protect
+            (progn
+              (with-surface (,img)
+                (setf ,img (img-load ,filename))
+                (setf ,name (sdl-createtexturefromsurface
+                             renderer ;; Captured from the calling environment
+                             ,img)))
+              ,@body)
+         (sdl-destroytexture ,name)))))
 
 
 
@@ -1208,29 +1239,35 @@
               (with-window ("octaspire" 10 10 400 400 0)
                 (with-renderer (window -1 +SDL_RENDERER_SOFTWARE+)
                   (with-surface (txtsurface)
-                    (with-foreign-objects ((image :pointer)
-                                           (font :pointer)
+                    (with-foreign-objects ((font :pointer)
                                            (textcolor '(:struct sdl-color))
                                            (rect1 '(:struct sdl-rect))
-                                           (rect1pointer :pointer))
-                      (setf image (img-load "../../assets/texture/texture.png"))
-                      (setf font (ttf-openfont "../../assets/font/IBM/Plex/IBMPlexMono-Bold.ttf" 20))
-                      (sdl-ext-color #xFF #xFF #xFF #xFF textcolor)
-                      (make-rect 100 100 110 110 rect1)
-                      (setf rect1pointer (mem-aptr rect1 '(:struct sdl-rect) 0))
-                      (with-foreign-string (text "Just some text here!")
-                        (setf txtsurface (ttf-renderutf8-solid font text textcolor)))
-                      (unless image
-                        (error "Image is NULL"))
-                      (loop while *running*
-                            do
-                               (with-foreign-object (event '(:union sdl-event))
-                                 (loop while (/= (sdl-pollevent event) 0)
-                                       do
-                                          (handle-event event)))
-                               (sdl-setrenderdrawcolor renderer #xBA #x16 #x0C #xFF)
-                               (sdl-renderclear renderer)
-                               (sdl-setrenderdrawcolor renderer #xFF #x4F #x00 #xFF)
-                               (sdl-renderdrawrect renderer rect1pointer)
-                               (sdl-renderpresent renderer)
-                               (sdl-delay 100))))))))))))
+                                           (rect2 '(:struct sdl-rect))
+                                           (rect1pointer :pointer)
+                                           (rect2pointer :pointer)
+                                           (nullpointer :pointer))
+                      (with-texture-from-img (texture "../../assets/texture/texture.png")
+                        (setf nullpointer (null-pointer))
+                        (setf font (ttf-openfont "../../assets/font/IBM/Plex/IBMPlexMono-Bold.ttf" 20))
+                        (sdl-ext-color #xFF #xFF #xFF #xFF textcolor)
+                        (setf rect1pointer (mem-aptr rect1 '(:struct sdl-rect) 0))
+                        (setf rect2pointer (mem-aptr rect2 '(:struct sdl-rect) 0))
+                        (with-foreign-string (text "Just some text here!")
+                          (setf txtsurface (ttf-renderutf8-solid font text textcolor)))
+                        (loop while *running*
+                              do
+                                 (with-foreign-object (event '(:union sdl-event))
+                                   (loop while (/= (sdl-pollevent event) 0)
+                                         do
+                                            (handle-event event)))
+                                 (sdl-setrenderdrawcolor renderer #xBA #x16 #x0C #xFF)
+                                 (sdl-renderclear renderer)
+                                 (sdl-rendercopy renderer texture nullpointer nullpointer)
+                                 (set-rect rect1 32 32 32 32)
+                                 (set-rect rect2 200 200 32 32)
+                                 (sdl-rendercopy renderer texture rect1pointer rect2pointer)
+                                 (sdl-setrenderdrawcolor renderer #xFF #x4F #x00 #xFF)
+                                 (set-rect rect1 100 100 110 110)
+                                 (sdl-renderdrawrect renderer rect1pointer)
+                                 (sdl-renderpresent renderer)
+                                 (sdl-delay 100)))))))))))))
