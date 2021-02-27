@@ -43,6 +43,13 @@
 (defcfun "SDL_Init" :int
   (flags :long))
 
+;; Declared in include/SDL_render.h
+(defconstant +SDL_RENDERER_SOFTWARE+      #x0001)
+(defconstant +SDL_RENDERER_ACCELERATED+   #x0002)
+(defconstant +SDL_RENDERER_PRESENTVSYNC+  #x0004)
+(defconstant +SDL_RENDERER_TARGETTEXTURE+ #x0008)
+
+
 ;; Declared in include/SDL_audio.h
 (defconstant +AUDIO-U8+     #x0008)
 (defconstant +AUDIO-S8+     #x8008)
@@ -105,14 +112,12 @@
   (w :int)
   (h :int))
 
-(defun make-rect (rx ry rw rh)
-  (with-foreign-object (result '(:struct sdl-rect))
-    (with-foreign-slots ((x y w h) result (:struct sdl-rect))
-      (setf x rx)
-      (setf y ry)
-      (setf w rw)
-      (setf h rh))
-    result))
+(defun make-rect (rx ry rw rh result)
+  (with-foreign-slots ((x y w h) result (:struct sdl-rect))
+    (setf x rx)
+    (setf y ry)
+    (setf w rw)
+    (setf h rh)))
 
 ;; Declared in include/SDL_pixels.h
 (defcstruct sdl-color
@@ -122,14 +127,12 @@
   (b :uint8)
   (a :uint8))
 
-(defun sdl-ext-color (red green blue alpha)
-  (with-foreign-object (color '(:struct sdl-color))
-    (with-foreign-slots ((r g b a) color (:struct sdl-color))
+(defun sdl-ext-color (red green blue alpha color)
+  (with-foreign-slots ((r g b a) color (:struct sdl-color))
       (setf r red)
       (setf g green)
       (setf b blue)
       (setf a alpha)
-      color)
     color))
 
 ;; Declared in include/SDL_events.h
@@ -964,12 +967,61 @@
   (flags :uint32)
   (h :int))
 
+
+
+
+
+
+;; Declared in include/SDL_render.h
+(defcfun "SDL_CreateRenderer" :pointer
+  (window :pointer)
+  (index  :int)
+  (flags  :uint32))
+
+(defcfun "SDL_SetRenderDrawColor" :int
+  (renderer :pointer)
+  (r  :uint8)
+  (g  :uint8)
+  (b  :uint8)
+  (a  :uint8))
+
+(defcfun "SDL_RenderDrawRect" :int
+  (renderer :pointer)
+  (rect     :pointer))                     ; const SDL_Rect*
+
+(defcfun "SDL_RenderClear" :int
+  (renderer :pointer))
+
+(defcfun "SDL_RenderPresent" :void
+  (renderer :pointer))
+
+(defcfun "SDL_DestroyRenderer" :void
+  (renderer :pointer))
+
+(defmacro with-renderer ((&rest args) &body body)
+  "Anaphoric macro that introduces an anaphor RENDERER to the forms in BODY."
+  `(with-foreign-objects ((renderer :pointer))
+     (unwind-protect
+          (progn
+            (setf renderer (sdl-createrenderer ,@args))
+            (unless renderer
+              (error "WITH-RENDERER failed to create RENDERER."))
+            ,@body)
+       (sdl-destroyrenderer renderer))))
+
+
+
+
+
 ;; Declared in include/SDL_surface.h
 (defcfun "SDL_UpperBlit" :int
   (src     :pointer)
   (srcrect :pointer)
   (dst     :pointer)
   (dstrect :pointer))
+
+(defcfun "SDL_FreeSurface" :void
+  (surface  :pointer))
 
 (defcfun "SDL_GetWindowSurface" :pointer
   (window  :pointer))
@@ -1126,6 +1178,14 @@
             ,@body)
        (sdl-destroywindow window))))
 
+(defmacro with-surface ((name) &body body)
+  "Anaphoric macro that introduces the named anaphor to the forms in BODY."
+  `(with-foreign-objects ((,name :pointer))
+     (unwind-protect
+          (progn
+            ,@body)
+       (sdl-freesurface ,name))))
+
 
 
 
@@ -1146,35 +1206,31 @@
         (with-img (+IMG-INIT-PNG+)
           (with-ttf
               (with-window ("octaspire" 10 10 400 400 0)
-                (with-foreign-objects ((winsurface :pointer)
-                                       (txtsurface :pointer)
-                                       (image :pointer)
-                                       (font :pointer)
-                                       (textcolor '(:struct sdl-color))
-                                       (nullpointer :pointer)
-                                       (screenrect '(:struct sdl-rect))
-                                       (screenrectpointer :pointer)
-                                       (blackcolorasint :uint32))
-                  (setf winsurface (sdl-getwindowsurface window))
-                  (setf image (img-load "../../assets/texture/texture.png"))
-                  (setf font (ttf-openfont "../../assets/font/IBM/Plex/IBMPlexMono-Bold.ttf" 20))
-                  (setf textcolor (sdl-ext-color #xFF #xFF #xFF #xFF))
-                  (setf screenrect (make-rect 0 0 400 400))
-                  (setf screenrectpointer (mem-aptr screenrect '(:struct sdl-rect) 0))
-                  (setf blackcolorasint #x000000FF)
-                  (with-foreign-string (text "Just some text here!")
-                    (setf txtsurface (ttf-renderutf8-solid font text textcolor)))
-                  (setf nullpointer (null-pointer))
-                  (unless image
-                    (error "Image is NULL"))
-                  (loop while *running*
-                        do
-                           (with-foreign-object (event '(:union sdl-event))
-                             (loop while (/= (sdl-pollevent event) 0)
-                                   do
-                                      (handle-event event)))
-                           (sdl-fillrect winsurface screenrectpointer blackcolorasint)
-                           (sdl-upperblit image nullpointer winsurface nullpointer)
-                           (sdl-upperblit txtsurface nullpointer winsurface nullpointer)
-                           (sdl-updatewindowsurface window)
-                           (sdl-delay 100))))))))))
+                (with-renderer (window -1 +SDL_RENDERER_SOFTWARE+)
+                  (with-surface (txtsurface)
+                    (with-foreign-objects ((image :pointer)
+                                           (font :pointer)
+                                           (textcolor '(:struct sdl-color))
+                                           (rect1 '(:struct sdl-rect))
+                                           (rect1pointer :pointer))
+                      (setf image (img-load "../../assets/texture/texture.png"))
+                      (setf font (ttf-openfont "../../assets/font/IBM/Plex/IBMPlexMono-Bold.ttf" 20))
+                      (sdl-ext-color #xFF #xFF #xFF #xFF textcolor)
+                      (make-rect 100 100 110 110 rect1)
+                      (setf rect1pointer (mem-aptr rect1 '(:struct sdl-rect) 0))
+                      (with-foreign-string (text "Just some text here!")
+                        (setf txtsurface (ttf-renderutf8-solid font text textcolor)))
+                      (unless image
+                        (error "Image is NULL"))
+                      (loop while *running*
+                            do
+                               (with-foreign-object (event '(:union sdl-event))
+                                 (loop while (/= (sdl-pollevent event) 0)
+                                       do
+                                          (handle-event event)))
+                               (sdl-setrenderdrawcolor renderer #xBA #x16 #x0C #xFF)
+                               (sdl-renderclear renderer)
+                               (sdl-setrenderdrawcolor renderer #xFF #x4F #x00 #xFF)
+                               (sdl-renderdrawrect renderer rect1pointer)
+                               (sdl-renderpresent renderer)
+                               (sdl-delay 100))))))))))))
