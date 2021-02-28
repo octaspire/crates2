@@ -27,16 +27,19 @@
 
 (define-foreign-library libsdl2
   (:darwin (:or (:framework "SDL2") (:default "libSDL2")))
-  (:unix (:or "libSDL2")))
+  (:unix (:or "libSDL2-2.0.so")))
 
 (define-foreign-library libsdl2-image
-  (:darwin (:or (:framework "SDL2_image") (:default "libSDL2_image"))))
+  (:darwin (:or (:framework "SDL2_image") (:default "libSDL2_image")))
+  (:unix (:or "libSDL2_image-2.0.so")))
 
 (define-foreign-library libsdl2-ttf
-  (:darwin (:or (:framework "SDL2_ttf") (:default "libSDL2_ttf"))))
+  (:darwin (:or (:framework "SDL2_ttf") (:default "libSDL2_ttf")))
+  (:unix (:or "libSDL2_ttf-2.0.so")))
 
 (define-foreign-library libsdl2-mixer
-  (:darwin (:or (:framework "SDL2_mixer") (:default "libSDL2_mixer"))))
+  (:darwin (:or (:framework "SDL2_mixer") (:default "libSDL2_mixer")))
+  (:unix (:or "libSDL2_mixer-2.0.so")))
 
 (use-foreign-library libsdl2)
 (use-foreign-library libsdl2-image)
