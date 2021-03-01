@@ -12,6 +12,11 @@
 ;; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ;; See the License for the specific language governing permissions and
 ;; limitations under the License.
+(defpackage :crates2-main
+  (:use :common-lisp
+   :crates2
+   :crates2-ui))
+
 (in-package :crates2)
 
 (defparameter *verbose* 0)
@@ -105,8 +110,8 @@ This is similar to 'test' but runs much slower."
 
 (defun run (options)
   (unless *errors*
-    (ui-init)
-    (init-visual-hash)
+    (crates2-ui:ui-init)
+    (crates2-ui:init-visual-hash)
     (request-next-level)
     (let ((str (make-array 2048 :element-type 'character :fill-pointer 0 :adjustable t))
           (log-input (getf options :log-input))
@@ -116,10 +121,10 @@ This is similar to 'test' but runs much slower."
                          (or (not *test-run*)
                              (< *update-counter* *test-run-max-updates*)))
               do (setf *input* nil)
-                 (ui-render *level* 0)
+                 (crates2-ui:ui-render *level* 0)
                  (sleep half-frame-duration)
-                 (ui-render *level* 1)
-                 (let ((input (ui-input)))
+                 (crates2-ui:ui-render *level* 1)
+                 (let ((input (crates2-ui:ui-input)))
                    (when log-input
                      (format s (if (keywordp input) "~%~S " "~S " ) input))
                    (when input
@@ -141,7 +146,7 @@ This is similar to 'test' but runs much slower."
         (setf str (nstring-downcase str))
         (when log-input
           (format t "~%~A~%" str))))
-    (ui-delete)))
+    (crates2-ui:ui-delete)))
 
 (defun usage ()
   (opts:describe

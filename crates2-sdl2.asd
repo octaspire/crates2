@@ -18,35 +18,37 @@
                :parse-float
                :trivial-garbage
                :cffi
-               :sdl2                    ; Remove when octaspire-cl-sdl2 is ready
+               :cffi-libffi
+               :trivial-features
                :log4cl)
   :serial t
   :components ((:module src
                 :components
-                ((:file "package")
-                 (:file "classes")
-                 (:file "utils")
-                 (:file "crate")
-                 (:file "moving")
-                 (:file "simple-crates")
-                 (:file "exit")
-                 (:file "key")
-                 (:file "pulled")
-                 (:file "toggle")
-                 (:file "player")
-                 (:file "slopes")
-                 (:file "turnstiles")
-                 (:file "bomb")
-                 (:file "block-timer")
-                 (:file "block-counter")
-                 (:file "pass-counter")
-                 (:file "pass-timer")
-                 (:file "vacuum")
-                 (:file "stepper")
-                 (:file "level")
-                 (:file "sdl2-2d")
-                 (:file "levels")
-                 (:file "main"))))
+                        ((:file "package")
+                         (:file "classes")
+                         (:file "utils")
+                         (:file "crate")
+                         (:file "moving")
+                         (:file "simple-crates")
+                         (:file "exit")
+                         (:file "key")
+                         (:file "pulled")
+                         (:file "toggle")
+                         (:file "player")
+                         (:file "slopes")
+                         (:file "turnstiles")
+                         (:file "bomb")
+                         (:file "block-timer")
+                         (:file "block-counter")
+                         (:file "pass-counter")
+                         (:file "pass-timer")
+                         (:file "vacuum")
+                         (:file "stepper")
+                         (:file "level")
+                         (:file "octaspire-cl-sdl2")
+                         (:file "sdl2-2d")
+                         (:file "levels")
+                         (:file "main"))))
   :build-operation program-op
   :build-pathname "crates2-sdl2"
   :entry-point "crates2:main")

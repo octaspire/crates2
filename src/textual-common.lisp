@@ -12,7 +12,7 @@
 ;; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ;; See the License for the specific language governing permissions and
 ;; limitations under the License.
-(in-package :crates2)
+(in-package :crates2-ui)
 
 ;; Crate is drawn as CW x CH character shape
 (defconstant cw 6)

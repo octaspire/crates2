@@ -12,18 +12,16 @@
 ;; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ;; See the License for the specific language governing permissions and
 ;; limitations under the License.
-(ql:quickload :alexandria)
-(ql:quickload :cffi)        ; For using foreign libraries.
-(ql:quickload :cffi-libffi) ; For passing structures by value to foreign functions.
-(ql:quickload :trivial-features)
-
-(defpackage :octaspire-cl-sdl2
+(defpackage :crates2-ui
   (:use
    :common-lisp
    :alexandria
-   :cffi))
+   :parse-float
+   :trivial-garbage
+   :cffi
+   :log4cl))
 
-(in-package :octaspire-cl-sdl2)
+(in-package :crates2-ui)
 
 (define-foreign-library libsdl2
   (:darwin (:or (:framework "SDL2") (:default "libSDL2")))
@@ -1226,52 +1224,55 @@ according to NAME to the forms in BODY."
 
 
 
-(defparameter *running* t)
+;; (defparameter *running* t)
 
-(defun handle-event (event)
-  (format t "~A~%" (format-sdl-event event))
-  (with-foreign-slots ((type) event (:union sdl-event))
-    (when (eq type :SDL-KEYDOWN)
-      (setf *running* nil))))
+;; (defun handle-event (event)
+;;   (format t "~A~%" (format-sdl-event event))
+;;   (with-foreign-slots ((type) event (:union sdl-event))
+;;     (when (eq type :SDL-KEYDOWN)
+;;       (setf *running* nil))))
 
-(sb-int:with-float-traps-masked (:invalid :inexact :overflow) ; Prevent crash in macOS Big Sur
-  (with-init ((logior +SDL-INIT-VIDEO+ +SDL-INIT-AUDIO+))
-    (with-mix (+MIX-INIT-OGG+)
-      (with-audio (22050 +AUDIO-S16SYS+ 2 4096)
-        (with-img (+IMG-INIT-PNG+)
-          (with-ttf
-              (with-window ("octaspire" 10 10 400 400 0)
-                (with-renderer (window -1 +SDL_RENDERER_SOFTWARE+)
-                  (with-surface (txtsurface)
-                    (with-foreign-objects ((font :pointer)
-                                           (textcolor '(:struct sdl-color))
-                                           (rect1 '(:struct sdl-rect))
-                                           (rect2 '(:struct sdl-rect))
-                                           (rect1pointer :pointer)
-                                           (rect2pointer :pointer)
-                                           (nullpointer :pointer))
-                      (with-texture-from-img (texture "../../assets/texture/texture.png")
-                        (setf nullpointer (null-pointer))
-                        (setf font (ttf-openfont "../../assets/font/IBM/Plex/IBMPlexMono-Bold.ttf" 20))
-                        (sdl-ext-color #xFF #xFF #xFF #xFF textcolor)
-                        (setf rect1pointer (mem-aptr rect1 '(:struct sdl-rect) 0))
-                        (setf rect2pointer (mem-aptr rect2 '(:struct sdl-rect) 0))
-                        (with-foreign-string (text "Just some text here!")
-                          (setf txtsurface (ttf-renderutf8-solid font text textcolor)))
-                        (loop while *running*
-                              do
-                                 (with-foreign-object (event '(:union sdl-event))
-                                   (loop while (/= (sdl-pollevent event) 0)
-                                         do
-                                            (handle-event event)))
-                                 (sdl-setrenderdrawcolor renderer #xBA #x16 #x0C #xFF)
-                                 (sdl-renderclear renderer)
-                                 (sdl-rendercopy renderer texture nullpointer nullpointer)
-                                 (set-rect rect1 32 32 32 32)
-                                 (set-rect rect2 200 200 32 32)
-                                 (sdl-rendercopy renderer texture rect1pointer rect2pointer)
-                                 (sdl-setrenderdrawcolor renderer #xFF #x4F #x00 #xFF)
-                                 (set-rect rect1 100 100 110 110)
-                                 (sdl-renderdrawrect renderer rect1pointer)
-                                 (sdl-renderpresent renderer)
-                                 (sdl-delay 100)))))))))))))
+;; (defparameter *crates2-window* :pointer)
+
+;; (sb-int:with-float-traps-masked (:invalid :inexact :overflow) ; Prevent crash in macOS Big Sur
+;;   (setf *crates2-window* (sdl-createwindow "octaspire" 10 10 400 400 0))
+;;   (with-init ((logior +SDL-INIT-VIDEO+ +SDL-INIT-AUDIO+))
+;;     (with-mix (+MIX-INIT-OGG+)
+;;       (with-audio (22050 +AUDIO-S16SYS+ 2 4096)
+;;         (with-img (+IMG-INIT-PNG+)
+;;           (with-ttf
+;;               (with-window ("octaspire" 10 10 400 400 0)
+;;                 (with-renderer (window -1 +SDL_RENDERER_SOFTWARE+)
+;;                   (with-surface (txtsurface)
+;;                     (with-foreign-objects ((font :pointer)
+;;                                            (textcolor '(:struct sdl-color))
+;;                                            (rect1 '(:struct sdl-rect))
+;;                                            (rect2 '(:struct sdl-rect))
+;;                                            (rect1pointer :pointer)
+;;                                            (rect2pointer :pointer)
+;;                                            (nullpointer :pointer))
+;;                       (with-texture-from-img (texture "../../assets/texture/texture.png")
+;;                         (setf nullpointer (null-pointer))
+;;                         (setf font (ttf-openfont "../../assets/font/IBM/Plex/IBMPlexMono-Bold.ttf" 20))
+;;                         (sdl-ext-color #xFF #xFF #xFF #xFF textcolor)
+;;                         (setf rect1pointer (mem-aptr rect1 '(:struct sdl-rect) 0))
+;;                         (setf rect2pointer (mem-aptr rect2 '(:struct sdl-rect) 0))
+;;                         (with-foreign-string (text "Just some text here!")
+;;                           (setf txtsurface (ttf-renderutf8-solid font text textcolor)))
+;;                         (loop while *running*
+;;                               do
+;;                                  (with-foreign-object (event '(:union sdl-event))
+;;                                    (loop while (/= (sdl-pollevent event) 0)
+;;                                          do
+;;                                             (handle-event event)))
+;;                                  (sdl-setrenderdrawcolor renderer #xBA #x16 #x0C #xFF)
+;;                                  (sdl-renderclear renderer)
+;;                                  (sdl-rendercopy renderer texture nullpointer nullpointer)
+;;                                  (set-rect rect1 32 32 32 32)
+;;                                  (set-rect rect2 200 200 32 32)
+;;                                  (sdl-rendercopy renderer texture rect1pointer rect2pointer)
+;;                                  (sdl-setrenderdrawcolor renderer #xFF #x4F #x00 #xFF)
+;;                                  (set-rect rect1 100 100 110 110)
+;;                                  (sdl-renderdrawrect renderer rect1pointer)
+;;                                  (sdl-renderpresent renderer)
+;;                                  (sdl-delay 100)))))))))))))
