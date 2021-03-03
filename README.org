@@ -92,3 +92,24 @@ make slime
    See the License for the specific language governing permissions and
    limitations under the License.
 #+end_example
+
+In addition, the following assets are being used,
+possibly in modified form:
+
+** Graphics
+
+The texture is based on free game graphics (=Sinistar.zip=) released
+under the Creative Commons Attribution 3.0 License at lostgarden.com.
+
+The assets are here modified versions, not the originals.
+See lostgarden.com for the originals:
+"Iron Plague, a Sinistar clone" art by Daniel Cook (Lostgarden.com).
+See the directory for the asset for more information.
+
+** Fonts
+
+The font used is =IBM Plex Mono Bold=, and is
+Copyright © 2017 IBM Corp. with Reserved Font Name "Plex".
+
+It is licensed under the SIL Open Font License, Version 1.1.
+See the directory for the asset for more information.

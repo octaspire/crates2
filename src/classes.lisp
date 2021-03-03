@@ -28,6 +28,9 @@
       :accessor crate-z)
    (visible :initarg :visible
             :accessor crate-visible)
+   (frame :initarg :frame
+          :initform 0
+          :accessor crate-frame)
    (state :initarg :state
           :initform :idle
           :accessor crate-state)))

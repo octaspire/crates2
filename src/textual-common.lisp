@@ -25,7 +25,10 @@
   (setf (gethash "vacuum-idle" *visual-hash*) #("+----+" "|suck|" "+----+"))
   (setf (gethash "vacuum-full" *visual-hash*) #("+----+" "|SUCK|" "+----+"))
   ;; WALL
-  (setf (gethash "wall-idle" *visual-hash*) #("######" "######" "######"))
+  (setf (gethash "wall-idle-00" *visual-hash*) #("#0####" "######" "######"))
+  (setf (gethash "wall-idle-01" *visual-hash*) #("#1####" "######" "######"))
+  (setf (gethash "wall-idle-02" *visual-hash*) #("#2####" "######" "######"))
+  (setf (gethash "wall-idle-03" *visual-hash*) #("#3####" "######" "######"))
   ;; PUSHED
   (setf (gethash "pushed-idle" *visual-hash*) #("+----+" "|PUSH|" "+----+"))
   ;; BLOCK-TIMER
@@ -61,7 +64,13 @@
   ;; KEY
   (setf (gethash "key-idle" *visual-hash*) #("+----+" " KEY  " "+----+"))
   ;; PLAYER
-  (setf (gethash "player-active" *visual-hash*) #(" .--. " " |  | " " `--' "))
+  (setf (gethash "player-active-00" *visual-hash*) #(" .--. " " |XX| " " `--' "))
+  (setf (gethash "player-active-01" *visual-hash*) #(" .--. " " |xx| " " `--' "))
+  (setf (gethash "player-active-02" *visual-hash*) #(" .--. " " |**| " " `--' "))
+  (setf (gethash "player-active-03" *visual-hash*) #(" .--. " " |..| " " `--' "))
+  (setf (gethash "player-active-04" *visual-hash*) #(" .--. " " |..| " " `--' "))
+  (setf (gethash "player-active-05" *visual-hash*) #(" .--. " " |**| " " `--' "))
+  (setf (gethash "player-active-06" *visual-hash*) #(" .--. " " |xx| " " `--' "))
   (setf (gethash "player-hidden" *visual-hash*) #("      " "      " "      "))
   ;; SLOPES
   (setf (gethash "slope-en" *visual-hash*) #("+--+  " "|   \\ " "+----+"))

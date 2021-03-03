@@ -15,12 +15,12 @@
 (in-package :crates2-ui)
 
 ;; Crate is drawn as CW x CH pixel shape
-(defconstant cw 32)
-(defconstant ch 32)
-(defconstant iw 512)
+(defconstant cw 64)
+(defconstant ch 64)
+(defconstant iw 1024)
 ;; Window dimensions
-(defconstant screen-width 600)
-(defconstant screen-height 480)
+(defconstant screen-width 1280)
+(defconstant screen-height 768)
 
 (defparameter *crates2-window* :pointer)
 (defparameter *crates2-renderer* :pointer)
@@ -29,9 +29,9 @@
 (defparameter *visual-hash* (make-hash-table :test 'equal))
 
 (defun make-rect (index)
-  (let* ((sprites-per-row (/ iw cw))
+  (let* ((sprites-per-row (floor iw cw))
          (x (* cw (mod index sprites-per-row)))
-         (y (* ch (/ index sprites-per-row))))
+         (y (* ch (floor index sprites-per-row))))
     (list x y cw ch)))
 
 (defun init-visual-hash ()
@@ -39,7 +39,10 @@
   (setf (gethash "vacuum-idle" *visual-hash*) (make-rect 0))
   (setf (gethash "vacuum-full" *visual-hash*) (make-rect 0))
   ;; WALL
-  (setf (gethash "wall-idle" *visual-hash*) (make-rect 0))
+  (setf (gethash "wall-idle-00" *visual-hash*) (make-rect 0))
+  (setf (gethash "wall-idle-01" *visual-hash*) (make-rect 1))
+  (setf (gethash "wall-idle-02" *visual-hash*) (make-rect 2))
+  (setf (gethash "wall-idle-03" *visual-hash*) (make-rect 3))
   ;; PUSHED
   (setf (gethash "pushed-idle" *visual-hash*) (make-rect 0))
   ;; BLOCK-TIMER
@@ -70,13 +73,19 @@
   (setf (gethash "count-22"            *visual-hash*) (make-rect 0))
   (setf (gethash "count-23"            *visual-hash*) (make-rect 0))
   ;; EXIT
-  (setf (gethash "exit-idle" *visual-hash*) (make-rect 0))
-  (setf (gethash "exit-active" *visual-hash*) (make-rect 0))
+  (setf (gethash "exit-idle" *visual-hash*) (make-rect 3))
+  (setf (gethash "exit-active" *visual-hash*) (make-rect 4))
   ;; KEY
-  (setf (gethash "key-idle" *visual-hash*) (make-rect 0))
+  (setf (gethash "key-idle" *visual-hash*) (make-rect 2))
   ;; PLAYER
-  (setf (gethash "player-active" *visual-hash*) (make-rect 17))
-  (setf (gethash "player-hidden" *visual-hash*) (make-rect 0))
+  (setf (gethash "player-active-00" *visual-hash*) (make-rect 16))
+  (setf (gethash "player-active-01" *visual-hash*) (make-rect 17))
+  (setf (gethash "player-active-02" *visual-hash*) (make-rect 18))
+  (setf (gethash "player-active-03" *visual-hash*) (make-rect 19))
+  (setf (gethash "player-active-04" *visual-hash*) (make-rect 20))
+  (setf (gethash "player-active-05" *visual-hash*) (make-rect 21))
+  (setf (gethash "player-active-06" *visual-hash*) (make-rect 22))
+  (setf (gethash "player-hidden"    *visual-hash*) (make-rect 27))
   ;; SLOPES
   (setf (gethash "slope-en" *visual-hash*) (make-rect 0))
   (setf (gethash "slope-es" *visual-hash*) (make-rect 0))
@@ -176,7 +185,7 @@
 
 (defun ui-render (level step)
   (sb-int:with-float-traps-masked (:invalid :inexact :overflow)
-    (sdl-setrenderdrawcolor *crates2-renderer* #xBA #x16 #x0C #xFF)
+    (sdl-setrenderdrawcolor *crates2-renderer* #x00 #x00 #x00 #xFF)
     (sdl-renderclear *crates2-renderer*)
     (sdl-setrenderdrawcolor *crates2-renderer* #xBA #x16 #x0C #xFF)
     (cffi:with-foreign-objects ((rect1 '(:struct sdl-rect))
@@ -201,11 +210,10 @@
                                        (ry (second viv))
                                        (vivw (third viv))
                                        (vivh (fourth viv))
-                                       (dx (truncate (/ (- cw vivw) 2)))
-                                       (dy (truncate (/ (- ch vivh) 2)))
-                                       (finx (* x cw))
-                                       (finy (truncate (+ (* y ch) dy ry)))
-                                       (deltax (truncate (+ finx dx))))
+                                       (dx (floor (- cw vivw) 2))
+                                       (dy (floor (- ch vivh) 2))
+                                       (finy (+ (* y ch) dy))
+                                       (deltax (+ (* x cw) dx)))
                                   (set-rect rect1 rx ry vivw vivh)
                                   (set-rect rect2 deltax finy vivw vivh)
                                   (sdl-rendercopy *crates2-renderer* *texture* rect1pointer rect2pointer))))))))
