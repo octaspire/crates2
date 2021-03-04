@@ -76,7 +76,15 @@
   (setf (gethash "exit-idle" *visual-hash*) (make-rect 3))
   (setf (gethash "exit-active" *visual-hash*) (make-rect 4))
   ;; KEY
-  (setf (gethash "key-idle" *visual-hash*) (make-rect 2))
+  (setf (gethash "key-idle-00" *visual-hash*) (make-rect 32))
+  (setf (gethash "key-idle-01" *visual-hash*) (make-rect 33))
+  (setf (gethash "key-idle-02" *visual-hash*) (make-rect 34))
+  (setf (gethash "key-idle-03" *visual-hash*) (make-rect 35))
+  (setf (gethash "key-idle-04" *visual-hash*) (make-rect 36))
+  (setf (gethash "key-idle-05" *visual-hash*) (make-rect 37))
+  (setf (gethash "key-idle-06" *visual-hash*) (make-rect 38))
+  (setf (gethash "key-idle-07" *visual-hash*) (make-rect 39))
+  (setf (gethash "key-idle-08" *visual-hash*) (make-rect 40))
   ;; PLAYER
   (setf (gethash "player-active-00" *visual-hash*) (make-rect 16))
   (setf (gethash "player-active-01" *visual-hash*) (make-rect 17))

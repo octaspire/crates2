@@ -62,7 +62,15 @@
   (setf (gethash "exit-idle" *visual-hash*) #("+----+" "|exit|" "+----+"))
   (setf (gethash "exit-active" *visual-hash*) #("+----+" "|EXIT|" "+----+"))
   ;; KEY
-  (setf (gethash "key-idle" *visual-hash*) #("+----+" " KEY  " "+----+"))
+  (setf (gethash "key-idle-00" *visual-hash*) #("+----+" " KEY  " "+----+"))
+  (setf (gethash "key-idle-01" *visual-hash*) #("+----+" " KEY  " "+----+"))
+  (setf (gethash "key-idle-02" *visual-hash*) #("+----+" " KEY  " "+----+"))
+  (setf (gethash "key-idle-03" *visual-hash*) #("+----+" " KEY  " "+----+"))
+  (setf (gethash "key-idle-04" *visual-hash*) #("+----+" " key  " "+----+"))
+  (setf (gethash "key-idle-05" *visual-hash*) #("+----+" " key  " "+----+"))
+  (setf (gethash "key-idle-06" *visual-hash*) #("+----+" " key  " "+----+"))
+  (setf (gethash "key-idle-07" *visual-hash*) #("+----+" " KEY  " "+----+"))
+  (setf (gethash "key-idle-08" *visual-hash*) #("+----+" " KEY  " "+----+"))
   ;; PLAYER
   (setf (gethash "player-active-00" *visual-hash*) #(" .--. " " |XX| " " `--' "))
   (setf (gethash "player-active-01" *visual-hash*) #(" .--. " " |xx| " " `--' "))

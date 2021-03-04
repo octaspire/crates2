@@ -17,7 +17,12 @@
 ;; Methods
 
 (defmethod visual ((self key))
-  (list "key-idle"))
+  (list (format nil "key-idle-~2,'0d" (crate-frame self))))
+
+(defmethod update ((self key))
+  (let ((frame (1+ (crate-frame self))))
+    (setf (crate-frame self) (mod frame 9)))
+  (call-next-method))
 
 (defmethod collide ((self key) (target player))
   (ecase (crate-state self)
