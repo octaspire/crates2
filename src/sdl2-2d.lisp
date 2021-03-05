@@ -15,12 +15,12 @@
 (in-package :crates2-ui)
 
 ;; Crate is drawn as CW x CH pixel shape
-(defconstant cw 64)
-(defconstant ch 64)
-(defconstant iw 1024)
+(defconstant cw 32)
+(defconstant ch 32)
+(defconstant iw 512)
 ;; Window dimensions
-(defconstant screen-width 1280)
-(defconstant screen-height 768)
+(defconstant screen-width 800)
+(defconstant screen-height 600)
 
 (defparameter *crates2-window* :pointer)
 (defparameter *crates2-renderer* :pointer)
@@ -233,7 +233,7 @@
     (sdl-init +SDL-INIT-VIDEO+)
     (setf *crates2-window* (sdl-createwindow "Crates 2" 0 0 screen-width screen-height 0))
     (setf *crates2-renderer* (sdl-createrenderer *crates2-window* -1 +SDL_RENDERER_SOFTWARE+))
-    (setf *image* (img-load "etc/assets/texture/texture.png"))
+    (setf *image* (img-load "etc/assets/texture/texture32.png"))
     (setf *texture* (sdl-createtexturefromsurface
                      *crates2-renderer*
                      *image*))))
