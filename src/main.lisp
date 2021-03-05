@@ -173,6 +173,16 @@ This is similar to 'test' but runs much slower."
        (loop for (,option ,value) on ,opts-not-empty by #'cddr
              do (case ,option ,@clauses)))))
 
+(defun compare-crate (a b)
+  (if (eq (type-of a) 'player) ; player first
+      t
+      (if (subtypep (type-of a) 'moving) ; all other moving next
+          t
+          nil)))
+
+(defun sort-level (level)
+  (sort level #'compare-crate))
+
 (defun load-next-level ()
   (if (and *test-run* (>= *next-level* *num-levels*))
       (running nil)
@@ -183,7 +193,7 @@ This is similar to 'test' but runs much slower."
         (format t "LEVEL ~A~%" *level-number*)
         (setf *level* nil)
         (let ((loaded (load-level *level-number*)))
-          (setf *level* (cadr loaded))
+          (setf *level* (sort-level (cadr loaded)))
           (setf *fake-input* (car loaded))))))
 
 (defun request-next-level ()

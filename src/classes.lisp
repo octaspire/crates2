@@ -67,16 +67,21 @@
 (defclass pushed (moving)
   ())
 
-(defclass turnstile-e1 (crate)
+(defclass turnstile (crate)
+  ((active-step :initarg :active-step
+           :initform 0
+           :accessor turnstile-active-step)))
+
+(defclass turnstile-e1 (turnstile)
   ())
 
-(defclass turnstile-w1 (crate)
+(defclass turnstile-w1 (turnstile)
   ())
 
-(defclass turnstile-n1 (crate)
+(defclass turnstile-n1 (turnstile)
   ())
 
-(defclass turnstile-s1 (crate)
+(defclass turnstile-s1 (turnstile)
   ())
 
 (defclass turnstile-e (turnstile-e1)

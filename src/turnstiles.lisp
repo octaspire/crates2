@@ -16,6 +16,15 @@
 
 ;; Methods
 
+(defmethod activate ((self turnstile))
+  (setf (turnstile-active-step self) 3))
+
+(defmethod update ((self turnstile))
+  (let ((step (turnstile-active-step self)))
+    (when (> step 0)
+      (setf (turnstile-active-step self) (1- step))))
+  (call-next-method))
+
 ;; E1
 
 (defmethod update ((self turnstile-e1))
@@ -24,7 +33,9 @@
 
 
 (defmethod visual ((self turnstile-e1))
-  (list "turnstile-e1"))
+  (if (> (turnstile-active-step self) 0)
+      (list "turnstile-e1-active")
+      (list "turnstile-e1")))
 
 (defmethod collide ((self turnstile-e1) (target pulled))
   nil)
@@ -33,7 +44,8 @@
   (let ((side (on-which-side-is-other self target)))
     (case side
       (:west
-       (move-other-to-my-side self target :east)))))
+       (move-other-to-my-side self target :east)
+       (activate self)))))
 
 
 ;; W1
@@ -42,7 +54,9 @@
   (call-next-method))
 
 (defmethod visual ((self turnstile-w1))
-  (list "turnstile-w1"))
+  (if (> (turnstile-active-step self) 0)
+      (list "turnstile-w1-active")
+      (list "turnstile-w1")))
 
 (defmethod collide ((self turnstile-w1) (target pulled))
   nil)
@@ -51,7 +65,8 @@
   (let ((side (on-which-side-is-other self target)))
     (case side
       (:east
-       (move-other-to-my-side self target :west)))))
+       (move-other-to-my-side self target :west)
+       (activate self)))))
 
 ;; N1
 
@@ -59,7 +74,9 @@
   (call-next-method))
 
 (defmethod visual ((self turnstile-n1))
-  (list "turnstile-n1"))
+  (if (> (turnstile-active-step self) 0)
+      (list "turnstile-n1-active")
+      (list "turnstile-n1")))
 
 (defmethod collide ((self turnstile-n1) (target pulled))
   nil)
@@ -68,7 +85,8 @@
   (let ((side (on-which-side-is-other self target)))
     (case side
       (:south
-       (move-other-to-my-side self target :north)))))
+       (move-other-to-my-side self target :north)
+       (activate self)))))
 
 ;; S1
 
@@ -76,7 +94,9 @@
   (call-next-method))
 
 (defmethod visual ((self turnstile-s1))
-  (list "turnstile-s1"))
+  (if (> (turnstile-active-step self) 0)
+      (list "turnstile-s1-active")
+      (list "turnstile-s1")))
 
 (defmethod collide ((self turnstile-s1) (target pulled))
   nil)
@@ -85,7 +105,8 @@
   (let ((side (on-which-side-is-other self target)))
     (case side
       (:north
-       (move-other-to-my-side self target :south)))))
+       (move-other-to-my-side self target :south)
+       (activate self)))))
 
 ;; E
 
@@ -93,7 +114,9 @@
   (call-next-method))
 
 (defmethod visual ((self turnstile-e))
-  (list "turnstile-e"))
+  (if (> (turnstile-active-step self) 0)
+      (list "turnstile-e-active")
+      (list "turnstile-e")))
 
 (defmethod collide ((self turnstile-e) (target pulled))
   nil)
@@ -103,7 +126,8 @@
     (case side
       (:west
        (call-next-method)
-       (setf (velocity target) :east)))))
+       (setf (velocity target) :east)
+       (activate self)))))
 
 
 ;; W
@@ -112,7 +136,9 @@
   (call-next-method))
 
 (defmethod visual ((self turnstile-w))
-  (list "turnstile-w"))
+  (if (> (turnstile-active-step self) 0)
+      (list "turnstile-w-active")
+      (list "turnstile-w")))
 
 (defmethod collide ((self turnstile-w) (target pulled))
   nil)
@@ -122,7 +148,8 @@
     (case side
       (:east
        (call-next-method)
-       (setf (velocity target) :west)))))
+       (setf (velocity target) :west)
+       (activate self)))))
 
 ;; N
 
@@ -130,7 +157,9 @@
   (call-next-method))
 
 (defmethod visual ((self turnstile-n))
-  (list "turnstile-n"))
+  (if (> (turnstile-active-step self) 0)
+      (list "turnstile-n-active")
+      (list "turnstile-n")))
 
 (defmethod collide ((self turnstile-n) (target pulled))
   nil)
@@ -140,7 +169,8 @@
     (case side
       (:south
        (call-next-method)
-       (setf (velocity target) :north)))))
+       (setf (velocity target) :north)
+       (activate self)))))
 
 ;; S
 
@@ -148,7 +178,9 @@
   (call-next-method))
 
 (defmethod visual ((self turnstile-s))
-  (list "turnstile-s"))
+  (if (> (turnstile-active-step self) 0)
+      (list "turnstile-s-active")
+      (list "turnstile-s")))
 
 (defmethod collide ((self turnstile-s) (target pulled))
   nil)
@@ -158,5 +190,6 @@
     (case side
       (:north
        (call-next-method)
-       (setf (velocity target) :south)))))
+       (setf (velocity target) :south)
+       (activate self)))))
 
