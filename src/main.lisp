@@ -33,7 +33,7 @@
 (defparameter *next-level* nil)
 (defparameter *level-width* 20)
 (defparameter *level-height* 20)
-(defparameter *frame-duration-default* 0.25) ; Not zeroed in test mode.
+(defparameter *frame-duration-default* 0.125) ; Not zeroed in test mode.
 (defparameter *frame-duration* *frame-duration-default*) ; Zeroed in test mode.
 (defparameter *test-run* nil)
 (defparameter *test-run-max-updates* 3000)

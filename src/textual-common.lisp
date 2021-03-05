@@ -59,8 +59,9 @@
   (setf (gethash "count-22"            *visual-hash*) #("      " "    22" "      "))
   (setf (gethash "count-23"            *visual-hash*) #("      " "    23" "      "))
   ;; EXIT
-  (setf (gethash "exit-idle" *visual-hash*) #("+----+" "|exit|" "+----+"))
-  (setf (gethash "exit-active" *visual-hash*) #("+----+" "|EXIT|" "+----+"))
+  (setf (gethash "exit-idle"        *visual-hash*) #("+----+" "|exit|" "+----+"))
+  (setf (gethash "exit-active-pass" *visual-hash*) #("+----+" "|EXIT|" "+----+"))
+  (setf (gethash "exit-active-fail" *visual-hash*) #("+----+" "|FAIL|" "+----+"))
   ;; KEY
   (setf (gethash "key-idle-00" *visual-hash*) #("+----+" " KEY  " "+----+"))
   (setf (gethash "key-idle-01" *visual-hash*) #("+----+" " KEY  " "+----+"))

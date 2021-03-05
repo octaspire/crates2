@@ -73,8 +73,9 @@
   (setf (gethash "count-22"            *visual-hash*) (make-rect 0))
   (setf (gethash "count-23"            *visual-hash*) (make-rect 0))
   ;; EXIT
-  (setf (gethash "exit-idle" *visual-hash*) (make-rect 3))
-  (setf (gethash "exit-active" *visual-hash*) (make-rect 4))
+  (setf (gethash "exit-idle"        *visual-hash*) (make-rect 48))
+  (setf (gethash "exit-active-pass" *visual-hash*) (make-rect 49))
+  (setf (gethash "exit-active-fail" *visual-hash*) (make-rect 50))
   ;; KEY
   (setf (gethash "key-idle-00" *visual-hash*) (make-rect 32))
   (setf (gethash "key-idle-01" *visual-hash*) (make-rect 33))
