@@ -72,6 +72,7 @@
   (setf (gethash "key-idle-06" *visual-hash*) #("+----+" " key  " "+----+"))
   (setf (gethash "key-idle-07" *visual-hash*) #("+----+" " KEY  " "+----+"))
   (setf (gethash "key-idle-08" *visual-hash*) #("+----+" " KEY  " "+----+"))
+  (setf (gethash "key-active"  *visual-hash*) #("+----+" " !!!  " "+----+"))
   ;; PLAYER
   (setf (gethash "player-active-00" *visual-hash*) #(" .--. " " |XX| " " `--' "))
   (setf (gethash "player-active-01" *visual-hash*) #(" .--. " " |xx| " " `--' "))
@@ -82,10 +83,14 @@
   (setf (gethash "player-active-06" *visual-hash*) #(" .--. " " |xx| " " `--' "))
   (setf (gethash "player-hidden" *visual-hash*) #("      " "      " "      "))
   ;; SLOPES
-  (setf (gethash "slope-en" *visual-hash*) #("+--+  " "|   \\ " "+----+"))
-  (setf (gethash "slope-es" *visual-hash*) #("+----+" "|   / " "+--+  "))
-  (setf (gethash "slope-wn" *visual-hash*) #("  +--+" " /   |" "+----+"))
-  (setf (gethash "slope-ws" *visual-hash*) #("+----+" " \\   |" "  +--+"))
+  (setf (gethash "slope-en"        *visual-hash*) #("+--+  " "|   \\ " "+----+"))
+  (setf (gethash "slope-en-active" *visual-hash*) #("o--o  " "|   \\ " "o----o"))
+  (setf (gethash "slope-es"        *visual-hash*) #("+----+" "|   / " "+--+  "))
+  (setf (gethash "slope-es-active" *visual-hash*) #("o----o" "|   / " "o--o  "))
+  (setf (gethash "slope-wn"        *visual-hash*) #("  +--+" " /   |" "+----+"))
+  (setf (gethash "slope-wn-active" *visual-hash*) #("  o--o" " /   |" "o----o"))
+  (setf (gethash "slope-ws"        *visual-hash*) #("+----+" " \\   |" "  +--+"))
+  (setf (gethash "slope-ws-active" *visual-hash*) #("o----o" " \\   |" "  o--o"))
   ;; TURNSTILE
   (setf (gethash "turnstile-e1"        *visual-hash*) #("+----+" "---->1" "+----+"))
   (setf (gethash "turnstile-e1-active" *visual-hash*) #("+----+" "---->!" "+----+"))

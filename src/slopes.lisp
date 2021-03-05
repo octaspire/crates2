@@ -16,6 +16,15 @@
 
 ;; Methods
 
+(defmethod activate ((self slope))
+  (setf (slope-active-step self) 3))
+
+(defmethod update ((self slope))
+  (let ((step (slope-active-step self)))
+    (when (> step 0)
+      (setf (slope-active-step self) (1- step))))
+  (call-next-method))
+
 ;; EN
 
 (defmethod update ((self slope-en))
@@ -27,17 +36,21 @@
 ;; +----+
 
 (defmethod visual ((self slope-en))
-  (list "slope-en"))
+  (if (> (slope-active-step self) 0)
+      (list "slope-en-active")
+      (list "slope-en")))
 
 (defmethod collide ((self slope-en) (target moving))
   (let ((side (on-which-side-is-other self target)))
     (case side
       (:east
        (move-other-to-my-side self target :north)
-       (setf (velocity target) :north))
+       (setf (velocity target) :north)
+       (activate self))
       (:north
        (move-other-to-my-side self target :east)
-       (setf (velocity target) :east)))))
+       (setf (velocity target) :east)
+       (activate self)))))
 
 ;; ES
 
@@ -49,17 +62,21 @@
 ;; +--+  
 
 (defmethod visual ((self slope-es))
-  (list "slope-es"))
+  (if (> (slope-active-step self) 0)
+      (list "slope-es-active")
+      (list "slope-es")))
 
 (defmethod collide ((self slope-es) (target moving))
   (let ((side (on-which-side-is-other self target)))
     (case side
       (:east
        (move-other-to-my-side self target :south)
-       (setf (velocity target) :south))
+       (setf (velocity target) :south)
+       (activate self))
       (:south
        (move-other-to-my-side self target :east)
-       (setf (velocity target) :east)))))
+       (setf (velocity target) :east)
+       (activate self)))))
 
 ;; WN
 
@@ -71,17 +88,21 @@
 ;; +----+
 
 (defmethod visual ((self slope-wn))
-  (list "slope-wn"))
+  (if (> (slope-active-step self) 0)
+      (list "slope-wn-active")
+      (list "slope-wn")))
 
 (defmethod collide ((self slope-wn) (target moving))
   (let ((side (on-which-side-is-other self target)))
     (case side
       (:west
        (move-other-to-my-side self target :north)
-       (setf (velocity target) :north))
+       (setf (velocity target) :north)
+       (activate self))
       (:north
        (move-other-to-my-side self target :west)
-       (setf (velocity target) :west)))))
+       (setf (velocity target) :west)
+       (activate self)))))
 
 ;; WS
 
@@ -93,14 +114,18 @@
 ;;   +--+
 
 (defmethod visual ((self slope-ws))
-  (list "slope-ws"))
+  (if (> (slope-active-step self) 0)
+      (list "slope-ws-active")
+      (list "slope-ws")))
 
 (defmethod collide ((self slope-ws) (target moving))
   (let ((side (on-which-side-is-other self target)))
     (case side
       (:west
        (move-other-to-my-side self target :south)
-       (setf (velocity target) :south))
+       (setf (velocity target) :south)
+       (activate self))
       (:south
        (move-other-to-my-side self target :west)
-       (setf (velocity target) :west)))))
+       (setf (velocity target) :west)
+       (activate self)))))

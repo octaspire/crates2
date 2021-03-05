@@ -86,6 +86,7 @@
   (setf (gethash "key-idle-06" *visual-hash*) (make-rect 38))
   (setf (gethash "key-idle-07" *visual-hash*) (make-rect 39))
   (setf (gethash "key-idle-08" *visual-hash*) (make-rect 40))
+  (setf (gethash "key-active"  *visual-hash*) (make-rect 41))
   ;; PLAYER
   (setf (gethash "player-active-00" *visual-hash*) (make-rect 16))
   (setf (gethash "player-active-01" *visual-hash*) (make-rect 17))
@@ -96,10 +97,14 @@
   (setf (gethash "player-active-06" *visual-hash*) (make-rect 22))
   (setf (gethash "player-hidden"    *visual-hash*) (make-rect 27))
   ;; SLOPES
-  (setf (gethash "slope-en" *visual-hash*) (make-rect 0))
-  (setf (gethash "slope-es" *visual-hash*) (make-rect 0))
-  (setf (gethash "slope-wn" *visual-hash*)(make-rect 0))
-  (setf (gethash "slope-ws" *visual-hash*)(make-rect 0))
+  (setf (gethash "slope-en"        *visual-hash*) (make-rect 192))
+  (setf (gethash "slope-en-active" *visual-hash*) (make-rect 193))
+  (setf (gethash "slope-es"        *visual-hash*) (make-rect 208))
+  (setf (gethash "slope-es-active" *visual-hash*) (make-rect 209))
+  (setf (gethash "slope-wn"        *visual-hash*) (make-rect 224))
+  (setf (gethash "slope-wn-active" *visual-hash*) (make-rect 225))
+  (setf (gethash "slope-ws"        *visual-hash*) (make-rect 240))
+  (setf (gethash "slope-ws-active" *visual-hash*) (make-rect 241))
   ;; TURNSTILE
   (setf (gethash "turnstile-e1"        *visual-hash*) (make-rect 80))
   (setf (gethash "turnstile-e1-active" *visual-hash*) (make-rect 81))
