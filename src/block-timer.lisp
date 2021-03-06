@@ -31,11 +31,13 @@
               (block-timer-uptime self))))
 
 (defmethod visual ((self block-timer))
-  (let ((timestr (format nil "count-~2,'0d" (time-left self))))
+  (let ((result "number-")
+        (passstr (format nil "~2,'0d" (time-left self))))
+    (setf result (concatenate 'string result passstr))
     (list (if (block-timer-durable self)
               "block-timer-durable"
               "block-timer")
-          timestr)))
+          result)))
 
 (defmethod collide ((self block-timer) (target moving))
   (ecase (crate-state self)
