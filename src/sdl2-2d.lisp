@@ -47,7 +47,7 @@
   (setf (gethash "pushed-idle" *visual-hash*) (make-rect 0))
   ;; BLOCK-TIMER
   (setf (gethash "block-timer-durable" *visual-hash*) (make-rect 0))
-  (setf (gethash "block-timer"         *visual-hash*) (make-rect 0))
+  (setf (gethash "block-timer"         *visual-hash*) (make-rect 5))
   ;; EXIT
   (setf (gethash "exit-idle"        *visual-hash*) (make-rect 48))
   (setf (gethash "exit-active-pass" *visual-hash*) (make-rect 49))
@@ -71,7 +71,7 @@
   (setf (gethash "player-active-04" *visual-hash*) (make-rect 20))
   (setf (gethash "player-active-05" *visual-hash*) (make-rect 21))
   (setf (gethash "player-active-06" *visual-hash*) (make-rect 22))
-  (setf (gethash "player-hidden"    *visual-hash*) (make-rect 27))
+  (setf (gethash "player-hidden"    *visual-hash*) (make-rect 15))
   ;; SLOPES
   (setf (gethash "slope-en"        *visual-hash*) (make-rect 192))
   (setf (gethash "slope-en-active" *visual-hash*) (make-rect 193))
@@ -206,40 +206,40 @@
   ;; PASS-TIMER
   (setf (gethash "pass-timer"       *visual-hash*) (make-rect 4))
   ;; PULLED
-  (setf (gethash "pulled-idle"               *visual-hash*) (make-rect 0))
+  (setf (gethash "pulled-idle"               *visual-hash*) (make-rect 6))
   ;; east
-  (setf (gethash "pulled-east-handle-active" *visual-hash*) (make-rect 0))
-  (setf (gethash "pulled-east-handle-idle"   *visual-hash*) (make-rect 0))
-  (setf (gethash "pulled-east-no-handle"     *visual-hash*) (make-rect 0))
+  (setf (gethash "pulled-east-handle-active" *visual-hash*) (make-rect 11))
+  (setf (gethash "pulled-east-handle-idle"   *visual-hash*) (make-rect 7))
+  (setf (gethash "pulled-east-no-handle"     *visual-hash*) (make-rect 15))
   ;; west
-  (setf (gethash "pulled-west-handle-active" *visual-hash*) (make-rect 0))
-  (setf (gethash "pulled-west-handle-idle"   *visual-hash*) (make-rect 0))
-  (setf (gethash "pulled-west-no-handle"     *visual-hash*) (make-rect 0))
+  (setf (gethash "pulled-west-handle-active" *visual-hash*) (make-rect 13))
+  (setf (gethash "pulled-west-handle-idle"   *visual-hash*) (make-rect 9))
+  (setf (gethash "pulled-west-no-handle"     *visual-hash*) (make-rect 15))
   ;; north
-  (setf (gethash "pulled-north-handle-active" *visual-hash*) (make-rect 0))
-  (setf (gethash "pulled-north-handle-idle"   *visual-hash*) (make-rect 0))
-  (setf (gethash "pulled-north-no-handle"     *visual-hash*) (make-rect 0))
+  (setf (gethash "pulled-north-handle-active" *visual-hash*) (make-rect 12))
+  (setf (gethash "pulled-north-handle-idle"   *visual-hash*) (make-rect 8))
+  (setf (gethash "pulled-north-no-handle"     *visual-hash*) (make-rect 15))
   ;; south
-  (setf (gethash "pulled-south-handle-active" *visual-hash*) (make-rect 0))
-  (setf (gethash "pulled-south-handle-idle"   *visual-hash*) (make-rect 0))
-  (setf (gethash "pulled-south-no-handle"     *visual-hash*) (make-rect 0))
+  (setf (gethash "pulled-south-handle-active" *visual-hash*) (make-rect 14))
+  (setf (gethash "pulled-south-handle-idle"   *visual-hash*) (make-rect 10))
+  (setf (gethash "pulled-south-no-handle"     *visual-hash*) (make-rect 15))
   ;; STEPPER
-  (setf (gethash "stepper-idle"               *visual-hash*) (make-rect 0))
-  (setf (gethash "stepper-active"             *visual-hash*) (make-rect 0))
+  (setf (gethash "stepper-idle"               *visual-hash*) (make-rect 42))
+  (setf (gethash "stepper-active"             *visual-hash*) (make-rect 43))
   ;; TOGGLE
-  (setf (gethash "toggle-idle"                *visual-hash*) (make-rect 0))
+  (setf (gethash "toggle-idle"                *visual-hash*) (make-rect 23))
   ;; east
-  (setf (gethash "toggle-east-on"             *visual-hash*) (make-rect 0))
-  (setf (gethash "toggle-east-off"            *visual-hash*) (make-rect 0))
+  (setf (gethash "toggle-east-on"             *visual-hash*) (make-rect 24))
+  (setf (gethash "toggle-east-off"            *visual-hash*) (make-rect 28))
   ;; west
-  (setf (gethash "toggle-west-on"             *visual-hash*) (make-rect 0))
-  (setf (gethash "toggle-west-off"            *visual-hash*) (make-rect 0))
+  (setf (gethash "toggle-west-on"             *visual-hash*) (make-rect 26))
+  (setf (gethash "toggle-west-off"            *visual-hash*) (make-rect 28))
   ;; north
-  (setf (gethash "toggle-north-on"            *visual-hash*) (make-rect 0))
-  (setf (gethash "toggle-north-off"           *visual-hash*) (make-rect 0))
+  (setf (gethash "toggle-north-on"            *visual-hash*) (make-rect 25))
+  (setf (gethash "toggle-north-off"           *visual-hash*) (make-rect 28))
   ;; south
-  (setf (gethash "toggle-south-on"            *visual-hash*) (make-rect 0))
-  (setf (gethash "toggle-south-off"           *visual-hash*) (make-rect 0))
+  (setf (gethash "toggle-south-on"            *visual-hash*) (make-rect 27))
+  (setf (gethash "toggle-south-off"           *visual-hash*) (make-rect 28))
   ;; BOMB
   (setf (gethash "bomb-durable"  *visual-hash*) (make-rect 0))
   (setf (gethash "bomb"          *visual-hash*) (make-rect 0))

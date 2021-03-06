@@ -203,11 +203,13 @@ This is similar to 'test' but runs much slower."
              do (case ,option ,@clauses)))))
 
 (defun compare-crate (a b)
-  (if (eq (type-of a) 'player) ; player first
+  (if (eq (type-of a) 'stepper)         ; Stepper first
       t
-      (if (subtypep (type-of a) 'moving) ; all other moving next
+      (if (eq (type-of a) 'player)      ; Player next
           t
-          nil)))
+          (if (subtypep (type-of a) 'moving) ; Then all other moving
+              t
+              nil))))
 
 (defun sort-level (level)
   (sort level #'compare-crate))

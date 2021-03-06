@@ -32,7 +32,7 @@ crates2-charms: Makefile crates2-charms.asd src/*.lisp etc/*.*
                                  (asdf:make :crates2-charms)                                   \
                                  (quit))"
 
-crates2-sdl2: Makefile crates2-sdl2.asd src/*.lisp etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf etc/assets/texture/texture.png
+crates2-sdl2: Makefile crates2-sdl2.asd src/*.lisp etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf etc/assets/texture/texture32.png
 	@$(LISP) $(EVAL) "(progn (declaim (optimize (speed 0) (space 0) (safety 3) (debug 3))) \
                                  (ql:quickload :crates2-sdl2)                                  \
                                  (asdf:make :crates2-sdl2)                                     \
