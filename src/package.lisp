@@ -16,7 +16,9 @@
   (:use
    :common-lisp)
   (:export #:main
+           #:player
            #:moving
+           #:movingp
            #:crate-x
            #:crate-y
            #:crate-z
@@ -38,7 +40,7 @@
    :common-lisp
    :crates2)
   (:export #:ui-init
-           #:ui-input
+           #:ui-read-input
            #:init-visual-hash
            #:ui-render
            #:ui-delete))

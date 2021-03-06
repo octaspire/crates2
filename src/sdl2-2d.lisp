@@ -250,8 +250,6 @@
 
 (defparameter *fake-input* nil)
 
-(defparameter *last-input* nil)
-
 (defun ui-render (level step)
   (sb-int:with-float-traps-masked (:invalid :inexact :overflow)
     (sdl-setrenderdrawcolor *crates2-renderer* #x00 #x00 #x00 #xFF)
@@ -267,9 +265,9 @@
       (setf rect2pointer (mem-aptr rect2 '(:struct sdl-rect) 0))
       (loop for crate in level
             do (progn
-                 (let* ((x (if (and (= step 0) (typep crate 'moving)) (tail-x crate) (crate-x crate)))
-                        (y (if (and (= step 0) (typep crate 'moving)) (tail-y crate) (crate-y crate)))
-                        (z (if (and (= step 0) (typep crate 'moving)) (tail-z crate) (crate-z crate)))
+                 (let* ((x (if (and (= step 0) (typep crate 'crates2:moving)) (tail-x crate) (crate-x crate)))
+                        (y (if (and (= step 0) (typep crate 'crates2:moving)) (tail-y crate) (crate-y crate)))
+                        (z (if (and (= step 0) (typep crate 'crates2:moving)) (tail-z crate) (crate-z crate)))
                         (vids (visual crate)))
                    (loop for vid in vids
                          do
@@ -324,19 +322,3 @@
                                                            ((eq scancode :SDL-SCANCODE-ESCAPE) (setf result :back))))))
                          ((eq type :SDL-QUIT) (setf result :back))))))
       result)))
-
-(defun ui-maybe-read-input ()
-  (let ((player (find-first-crate-of-type 'player)))
-    (if (and player (movingp player))
-        nil                    ; No input while player moves, in textual mode.
-        (setf *last-input* (ui-read-input)))))
-
-(defun ui-input ()
-  (if *level*
-      (if *test-run*
-          (let ((input (car *fake-input*)))
-            (setf *fake-input* (cdr *fake-input*))
-            (setf *last-input* input)
-            input)
-          (ui-maybe-read-input))
-      nil))

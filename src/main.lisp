@@ -37,6 +37,8 @@
 (defparameter *frame-duration* *frame-duration-default*) ; Zeroed in test mode.
 (defparameter *test-run* nil)
 (defparameter *test-run-max-updates* 3000)
+(defparameter *last-input* nil)
+(defparameter *pending-input* nil)
 
 (defun verbose-parser (x)
   (setf *verbose* (parse-integer x)))
@@ -108,6 +110,33 @@ This is similar to 'test' but runs much slower."
   (when (> *verbose* 0)
     (format t fmt args)))
 
+(defun ui-maybe-read-input ()
+  (let ((player (find-first-crate-of-type 'player)))
+    (if (null player)
+        (crates2-ui:ui-read-input)                 ; clean the event queue
+        (progn
+          (if (movingp player)
+              (let ((pending (crates2-ui:ui-read-input)))
+                (when pending
+                  (setf *pending-input* pending))
+                nil)           ; No input while player moves, in textual mode.
+              (progn (setf *last-input*
+                           (if *pending-input*
+                               *pending-input*
+                               (crates2-ui:ui-read-input)))
+                     (setf *pending-input* nil)
+                     *last-input*))))))
+
+(defun ui-input ()
+  (if *level*
+      (if *test-run*
+          (let ((input (car *fake-input*)))
+            (setf *fake-input* (cdr *fake-input*))
+            (setf *last-input* input)
+            input)
+          (ui-maybe-read-input))
+      nil))
+
 (defun run (options)
   (unless *errors*
     (crates2-ui:ui-init)
@@ -124,7 +153,7 @@ This is similar to 'test' but runs much slower."
                  (crates2-ui:ui-render *level* 0)
                  (sleep half-frame-duration)
                  (crates2-ui:ui-render *level* 1)
-                 (let ((input (crates2-ui:ui-input)))
+                 (let ((input (ui-input)))
                    (when log-input
                      (format s (if (keywordp input) "~%~S " "~S " ) input))
                    (when input
@@ -189,8 +218,8 @@ This is similar to 'test' but runs much slower."
       (let ((level-number (mod *next-level* *num-levels*)))
         (setf *next-level* nil)
         (setf *fake-input* nil)
+        (setf *pending-input* nil)
         (setf *level-number* level-number)
-        (format t "LEVEL ~A~%" *level-number*)
         (setf *level* nil)
         (let ((loaded (load-level *level-number*)))
           (setf *level* (sort-level (cadr loaded)))
@@ -202,7 +231,6 @@ This is similar to 'test' but runs much slower."
     (setf *next-level* (+ *level-number* 1))))
 
 (defun request-restart-level ()
-  (format t "RESTART~%")
   (setf *next-level* *level-number*))
 
 (defun request-previous-level ()
