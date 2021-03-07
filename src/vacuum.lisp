@@ -17,16 +17,18 @@
 ;; Methods
 
 (defmethod update ((self vacuum))
-  (let ((crate (find-at-of-type (crate-x self) (crate-y self) 0 'moving)))
-    (when crate
-      (collide self crate)
-      (collide crate self)))
+  (ecase (crate-state self)
+    (:idle
+     (let ((frame (1+ (crate-frame self))))
+       (setf (crate-frame self) (mod frame 8))))
+    (:broken nil))
   (call-next-method))
 
 (defmethod visual ((self vacuum))
   (if (full self)
-      (list "vacuum-full")
-      (list "vacuum-idle")))
+      (list "vacuum-body")
+      (list "vacuum-body"
+            (format nil "gear-~2,'0d" (crate-frame self)))))
 
 (defmethod collide ((self vacuum) (target player))
   (setf (crate-state self) :activated)

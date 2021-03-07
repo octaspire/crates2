@@ -22,8 +22,15 @@
 
 (defun init-visual-hash ()
   ;; VACUUM
-  (setf (gethash "vacuum-idle" *visual-hash*) #("+----+" "|suck|" "+----+"))
-  (setf (gethash "vacuum-full" *visual-hash*) #("+----+" "|SUCK|" "+----+"))
+  (setf (gethash "vacuum-body" *visual-hash*) #("+----+" "|    |" "+----+"))
+  (setf (gethash "gear-00"     *visual-hash*) #("      " "   |  " "      "))
+  (setf (gethash "gear-01"     *visual-hash*) #("      " "   /  " "      "))
+  (setf (gethash "gear-02"     *visual-hash*) #("      " "   -  " "      "))
+  (setf (gethash "gear-03"     *visual-hash*) #("      " "   \\  " "      "))
+  (setf (gethash "gear-04"     *visual-hash*) #("      " "   |  " "      "))
+  (setf (gethash "gear-05"     *visual-hash*) #("      " "   /  " "      "))
+  (setf (gethash "gear-06"     *visual-hash*) #("      " "   -  " "      "))
+  (setf (gethash "gear-07"     *visual-hash*) #("      " "   \\  " "      "))
   ;; WALL
   (setf (gethash "wall-idle-00" *visual-hash*) #("#0####" "######" "######"))
   (setf (gethash "wall-idle-01" *visual-hash*) #("#1####" "######" "######"))

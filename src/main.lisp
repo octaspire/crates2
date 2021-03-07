@@ -26,11 +26,11 @@
 (defparameter *errors* nil)
 (defparameter *update-counter* 0)
 (defparameter *input* nil)
-(defparameter *level-number* 7)
+(defparameter *level-number* -1)
 (defparameter *running* t)
 (defparameter *level* nil)
 (defparameter *created* nil)
-(defparameter *next-level* 8)
+(defparameter *next-level* 0)
 (defparameter *level-width* 20)
 (defparameter *level-height* 20)
 (defparameter *frame-duration-default* 0.125) ; Not zeroed in test mode.
@@ -203,13 +203,19 @@ This is similar to 'test' but runs much slower."
              do (case ,option ,@clauses)))))
 
 (defun compare-crate (a b)
-  (if (eq (type-of a) 'stepper)         ; Stepper first
-      t
-      (if (eq (type-of a) 'player)      ; Player next
-          t
-          (if (subtypep (type-of a) 'moving) ; Then all other moving
-              t
-              nil))))
+  (let ((az (crate-z a))
+        (bz (crate-z b)))
+    (if (= az az)
+        (progn
+          (when (eq (type-of a) 'player)
+            t)
+          (when (eq (type-of b) 'player)
+            nil)
+          (when (and (subtypep (type-of a) 'moving)
+                     (not (eq (type-of b) 'player)))
+            t)
+          nil)
+        (< az bz))))
 
 (defun sort-level (level)
   (sort level #'compare-crate))
