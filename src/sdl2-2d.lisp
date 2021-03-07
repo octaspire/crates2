@@ -244,9 +244,13 @@
   (setf (gethash "bomb-durable"  *visual-hash*) (make-rect 76))
   (setf (gethash "bomb"          *visual-hash*) (make-rect 77))
   ;; ring 1
-  (setf (gethash "bomb-ring-1"   *visual-hash*) (list 0 (* 16 ch) (* 3 cw) (* 3 ch))) ; start at index 256; size 3x3 slots
+  (setf (gethash "bomb-ring-1"   *visual-hash*) (list 0 (* 16 ch) (* 1 cw) (* 1 ch)))  ; start at index 256 (y slot 16); size 1 slot
   ;; ring 2
-  (setf (gethash "bomb-ring-2"   *visual-hash*) (list 0 (* 19 ch) (* 5 cw) (* 5 ch))))  ; start at 320; size 5x5 slots
+  (setf (gethash "bomb-ring-2"   *visual-hash*) (list 0 (* 17 ch) (* 3 cw) (* 3 ch)))  ; start at y slot 17; size 3x3 slots
+  ;; ring 3
+  (setf (gethash "bomb-ring-3"   *visual-hash*) (list 0 (* 20 ch) (* 5 cw) (* 5 ch)))  ; size 5x5 slots
+  ;; ring 4
+  (setf (gethash "bomb-ring-4"   *visual-hash*) (list 0 (* 25 ch) (* 5 cw) (* 5 ch)))) ; size 5x5 slots
 
 (defparameter *fake-input* nil)
 

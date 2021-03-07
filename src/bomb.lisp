@@ -75,11 +75,11 @@
       (:explosion1
        (setf result (nconc result (list "bomb-ring-1"))))
       (:explosion2
-       (setf result (nconc result (list "bomb-ring-1"))))
-      (:explosion3
        (setf result (nconc result (list "bomb-ring-2"))))
+      (:explosion3
+       (setf result (nconc result (list "bomb-ring-3"))))
       (:explosion4
-       (setf result (nconc result (list "bomb-ring-2")))))
+       (setf result (nconc result (list "bomb-ring-4")))))
     result))
 
 (defmethod collide ((self bomb) (target moving))
