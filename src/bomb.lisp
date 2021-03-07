@@ -64,20 +64,23 @@
               (bomb-uptime self))))
 
 (defmethod visual ((self bomb))
-  (let ((timestr (format nil "count-~2,'0d" (time-left self))))
-    (list (if (bomb-durable self)
-              "bomb-durable"
-              "bomb")
-          (case (crate-state self)
-            (:explosion1
-             "bomb-ring-1")
-            (:explosion2
-             "bomb-ring-1")
-            (:explosion3
-             "bomb-ring-2")
-            (:explosion4
-             "bomb-ring-2"))
-          timestr)))
+  (let* ((time (time-left self))
+         (tstr (format nil "number-~2,'0d" time))
+         (result (list (if (bomb-durable self)
+                           "bomb-durable"
+                           "bomb"))))
+    (when (> time 0)
+      (setf result (nconc result (list tstr))))
+    (case (crate-state self)
+      (:explosion1
+       (setf result (nconc result (list "bomb-ring-1"))))
+      (:explosion2
+       (setf result (nconc result (list "bomb-ring-1"))))
+      (:explosion3
+       (setf result (nconc result (list "bomb-ring-2"))))
+      (:explosion4
+       (setf result (nconc result (list "bomb-ring-2")))))
+    result))
 
 (defmethod collide ((self bomb) (target moving))
   (case (crate-state self)
