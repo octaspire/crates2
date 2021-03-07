@@ -30,7 +30,7 @@
 (defparameter *running* t)
 (defparameter *level* nil)
 (defparameter *created* nil)
-(defparameter *next-level* 0)
+(defparameter *next-level* nil)
 (defparameter *level-width* 20)
 (defparameter *level-height* 20)
 (defparameter *frame-duration-default* 0.125) ; Not zeroed in test mode.
@@ -208,12 +208,12 @@ This is similar to 'test' but runs much slower."
     (if (= az az)
         (progn
           (when (eq (type-of a) 'player)
-            t)
+            (return-from compare-crate t))
           (when (eq (type-of b) 'player)
-            nil)
+            (return-from compare-crate nil))
           (when (and (subtypep (type-of a) 'moving)
                      (not (eq (type-of b) 'player)))
-            t)
+            (return-from compare-crate t))
           nil)
         (< az bz))))
 

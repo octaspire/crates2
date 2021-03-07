@@ -29,6 +29,7 @@
                    :north)
              (list (make-instance 'pulled       :x 4 :y 3 :z 0 :east t)
                    (make-instance 'pulled       :x 5 :y 9 :z 0 :north t)
+                   (make-instance 'pushed       :x 5 :y 5 :z 0)
                    (make-instance 'vacuum       :x 5 :y 7 :z -1)
                    (make-instance 'player       :x 6 :y 3 :z 0)
                    (make-instance 'pulled       :x 8 :y 3 :z 0 :west t)

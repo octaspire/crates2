@@ -19,17 +19,15 @@
 (defmethod update ((self vacuum))
   (ecase (crate-state self)
     (:idle
-     (let ((frame (1+ (crate-frame self))))
-       (setf (crate-frame self) (mod frame 8))))
+     (let ((frame (1+ (crate-frame self)))
+           (crate (find-at-of-type (crate-x self) (crate-y self) 0 'moving)))
+       (setf (crate-frame self) (mod frame 8))
+       (when crate
+         (setf (crate-state self) :broken)
+         (lament crate))))
     (:broken nil))
   (call-next-method))
 
 (defmethod visual ((self vacuum))
-  (if (full self)
-      (list "vacuum-body")
-      (list "vacuum-body"
-            (format nil "gear-~2,'0d" (crate-frame self)))))
-
-(defmethod collide ((self vacuum) (target player))
-  (setf (crate-state self) :activated)
-  (setf (full self) t))
+  (list "vacuum-body"
+        (format nil "gear-~2,'0d" (crate-frame self))))
