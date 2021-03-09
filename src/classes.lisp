@@ -28,6 +28,9 @@
       :accessor crate-z)
    (visible :initarg :visible
             :accessor crate-visible)
+   (frame :initarg :frame
+          :initform 0
+          :accessor crate-frame)
    (state :initarg :state
           :initform :idle
           :accessor crate-state)))
@@ -49,31 +52,41 @@
 (defclass stepper (crate)
   ())
 
-(defclass slope-en (crate)
+(defclass slope (crate)
+  ((active-step :initarg :active-step
+                :initform 0
+                :accessor slope-active-step)))
+
+(defclass slope-en (slope)
   ())
 
-(defclass slope-es (crate)
+(defclass slope-es (slope)
   ())
 
-(defclass slope-wn (crate)
+(defclass slope-wn (slope)
   ())
 
-(defclass slope-ws (crate)
+(defclass slope-ws (slope)
   ())
 
 (defclass pushed (moving)
   ())
 
-(defclass turnstile-e1 (crate)
+(defclass turnstile (crate)
+  ((active-step :initarg :active-step
+                :initform 0
+                :accessor turnstile-active-step)))
+
+(defclass turnstile-e1 (turnstile)
   ())
 
-(defclass turnstile-w1 (crate)
+(defclass turnstile-w1 (turnstile)
   ())
 
-(defclass turnstile-n1 (crate)
+(defclass turnstile-n1 (turnstile)
   ())
 
-(defclass turnstile-s1 (crate)
+(defclass turnstile-s1 (turnstile)
   ())
 
 (defclass turnstile-e (turnstile-e1)
@@ -143,7 +156,9 @@
           :initform 0)))
 
 (defclass key (crate)
-  ())
+  ((active-step :initarg :active-step
+                :initform 0
+                :accessor key-active-step)))
 
 (defclass pulled (moving)
   ((puller :initarg :puller

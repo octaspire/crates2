@@ -21,10 +21,10 @@
               (pass-timer-uptime self))))
 
 (defmethod visual ((self pass-timer))
-  (let ((result "pass-timer-")
-        (timestr (format nil "~2,'0d" (time-left self))))
-    (setf result (concatenate 'string result timestr))
-    (list result)))
+  (let ((result "number-")
+        (passstr (format nil "~2,'0d" (time-left self))))
+    (setf result (concatenate 'string result passstr))
+    (list "pass-timer" result)))
 
 (defmethod update ((self pass-timer))
   (ecase (crate-state self)

@@ -12,7 +12,7 @@
 ;; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ;; See the License for the specific language governing permissions and
 ;; limitations under the License.
-(in-package :crates2)
+(in-package :crates2-ui)
 
 ;; Crate is drawn as CW x CH character shape
 (defconstant cw 6)
@@ -22,10 +22,20 @@
 
 (defun init-visual-hash ()
   ;; VACUUM
-  (setf (gethash "vacuum-idle" *visual-hash*) #("+----+" "|suck|" "+----+"))
-  (setf (gethash "vacuum-full" *visual-hash*) #("+----+" "|SUCK|" "+----+"))
+  (setf (gethash "vacuum-body" *visual-hash*) #("+----+" "|    |" "+----+"))
+  (setf (gethash "gear-00"     *visual-hash*) #("      " "   |  " "      "))
+  (setf (gethash "gear-01"     *visual-hash*) #("      " "   /  " "      "))
+  (setf (gethash "gear-02"     *visual-hash*) #("      " "   -  " "      "))
+  (setf (gethash "gear-03"     *visual-hash*) #("      " "   \\  " "      "))
+  (setf (gethash "gear-04"     *visual-hash*) #("      " "   |  " "      "))
+  (setf (gethash "gear-05"     *visual-hash*) #("      " "   /  " "      "))
+  (setf (gethash "gear-06"     *visual-hash*) #("      " "   -  " "      "))
+  (setf (gethash "gear-07"     *visual-hash*) #("      " "   \\  " "      "))
   ;; WALL
-  (setf (gethash "wall-idle" *visual-hash*) #("######" "######" "######"))
+  (setf (gethash "wall-idle-00" *visual-hash*) #("#0####" "######" "######"))
+  (setf (gethash "wall-idle-01" *visual-hash*) #("#1####" "######" "######"))
+  (setf (gethash "wall-idle-02" *visual-hash*) #("#2####" "######" "######"))
+  (setf (gethash "wall-idle-03" *visual-hash*) #("#3####" "######" "######"))
   ;; PUSHED
   (setf (gethash "pushed-idle" *visual-hash*) #("+----+" "|PUSH|" "+----+"))
   ;; BLOCK-TIMER
@@ -56,63 +66,162 @@
   (setf (gethash "count-22"            *visual-hash*) #("      " "    22" "      "))
   (setf (gethash "count-23"            *visual-hash*) #("      " "    23" "      "))
   ;; EXIT
-  (setf (gethash "exit-idle" *visual-hash*) #("+----+" "|exit|" "+----+"))
-  (setf (gethash "exit-active" *visual-hash*) #("+----+" "|EXIT|" "+----+"))
+  (setf (gethash "exit-idle"        *visual-hash*) #("+----+" "|exit|" "+----+"))
+  (setf (gethash "exit-active-pass" *visual-hash*) #("+----+" "|EXIT|" "+----+"))
+  (setf (gethash "exit-active-fail" *visual-hash*) #("+----+" "|FAIL|" "+----+"))
   ;; KEY
-  (setf (gethash "key-idle" *visual-hash*) #("+----+" " KEY  " "+----+"))
+  (setf (gethash "key-idle-00" *visual-hash*) #("+----+" " KEY  " "+----+"))
+  (setf (gethash "key-idle-01" *visual-hash*) #("+----+" " KEY  " "+----+"))
+  (setf (gethash "key-idle-02" *visual-hash*) #("+----+" " KEY  " "+----+"))
+  (setf (gethash "key-idle-03" *visual-hash*) #("+----+" " KEY  " "+----+"))
+  (setf (gethash "key-idle-04" *visual-hash*) #("+----+" " key  " "+----+"))
+  (setf (gethash "key-idle-05" *visual-hash*) #("+----+" " key  " "+----+"))
+  (setf (gethash "key-idle-06" *visual-hash*) #("+----+" " key  " "+----+"))
+  (setf (gethash "key-idle-07" *visual-hash*) #("+----+" " KEY  " "+----+"))
+  (setf (gethash "key-idle-08" *visual-hash*) #("+----+" " KEY  " "+----+"))
+  (setf (gethash "key-active"  *visual-hash*) #("+----+" " !!!  " "+----+"))
   ;; PLAYER
-  (setf (gethash "player-active" *visual-hash*) #(" .--. " " |  | " " `--' "))
+  (setf (gethash "player-active-00" *visual-hash*) #(" .--. " " |XX| " " `--' "))
+  (setf (gethash "player-active-01" *visual-hash*) #(" .--. " " |xx| " " `--' "))
+  (setf (gethash "player-active-02" *visual-hash*) #(" .--. " " |**| " " `--' "))
+  (setf (gethash "player-active-03" *visual-hash*) #(" .--. " " |..| " " `--' "))
+  (setf (gethash "player-active-04" *visual-hash*) #(" .--. " " |..| " " `--' "))
+  (setf (gethash "player-active-05" *visual-hash*) #(" .--. " " |**| " " `--' "))
+  (setf (gethash "player-active-06" *visual-hash*) #(" .--. " " |xx| " " `--' "))
   (setf (gethash "player-hidden" *visual-hash*) #("      " "      " "      "))
   ;; SLOPES
-  (setf (gethash "slope-en" *visual-hash*) #("+--+  " "|   \\ " "+----+"))
-  (setf (gethash "slope-es" *visual-hash*) #("+----+" "|   / " "+--+  "))
-  (setf (gethash "slope-wn" *visual-hash*) #("  +--+" " /   |" "+----+"))
-  (setf (gethash "slope-ws" *visual-hash*) #("+----+" " \\   |" "  +--+"))
+  (setf (gethash "slope-en"        *visual-hash*) #("+--+  " "|   \\ " "+----+"))
+  (setf (gethash "slope-en-active" *visual-hash*) #("o--o  " "|   \\ " "o----o"))
+  (setf (gethash "slope-es"        *visual-hash*) #("+----+" "|   / " "+--+  "))
+  (setf (gethash "slope-es-active" *visual-hash*) #("o----o" "|   / " "o--o  "))
+  (setf (gethash "slope-wn"        *visual-hash*) #("  +--+" " /   |" "+----+"))
+  (setf (gethash "slope-wn-active" *visual-hash*) #("  o--o" " /   |" "o----o"))
+  (setf (gethash "slope-ws"        *visual-hash*) #("+----+" " \\   |" "  +--+"))
+  (setf (gethash "slope-ws-active" *visual-hash*) #("o----o" " \\   |" "  o--o"))
   ;; TURNSTILE
-  (setf (gethash "turnstile-e1" *visual-hash*) #("+----+" "---->1" "+----+"))
-  (setf (gethash "turnstile-w1" *visual-hash*) #("+----+" "1<----" "+----+"))
-  (setf (gethash "turnstile-n1" *visual-hash*) #("+1111+" "^^^^^^" "+||||+"))
-  (setf (gethash "turnstile-s1" *visual-hash*) #("+||||+" "\\/\\/\\/" "+1111+"))
-  (setf (gethash "turnstile-e" *visual-hash*) #("+----+" "----->" "+----+"))
-  (setf (gethash "turnstile-w" *visual-hash*) #("+----+" "<-----" "+----+"))
-  (setf (gethash "turnstile-n" *visual-hash*) #("+^^^^+" "||||||" "+||||+"))
-  (setf (gethash "turnstile-s" *visual-hash*) #("+....+" "||||||" "\\/\\/\\/"))
+  (setf (gethash "turnstile-e1"        *visual-hash*) #("+----+" "---->1" "+----+"))
+  (setf (gethash "turnstile-e1-active" *visual-hash*) #("+----+" "---->!" "+----+"))
+  (setf (gethash "turnstile-w1"        *visual-hash*) #("+----+" "1<----" "+----+"))
+  (setf (gethash "turnstile-w1-active" *visual-hash*) #("+----+" "!<----" "+----+"))
+  (setf (gethash "turnstile-n1"        *visual-hash*) #("+1111+" "|^^^^|" "+||||+"))
+  (setf (gethash "turnstile-n1-active" *visual-hash*) #("+!!!!+" "|^^^^|" "+^^^^+"))
+  (setf (gethash "turnstile-s1"        *visual-hash*) #("+||||+" "\\/\\/\\/" "+1111+"))
+  (setf (gethash "turnstile-s1-active" *visual-hash*) #("+\\/\\/+" "\\/\\/\\/" "+!!!!+"))
+  (setf (gethash "turnstile-e"         *visual-hash*) #("+----+" "----->" "+----+"))
+  (setf (gethash "turnstile-e-active"  *visual-hash*) #("+----+" ">>>>>>" "+----+"))
+  (setf (gethash "turnstile-w"         *visual-hash*) #("+----+" "<-----" "+----+"))
+  (setf (gethash "turnstile-w-active"  *visual-hash*) #("+----+" "<<<<<<" "+----+"))
+  (setf (gethash "turnstile-n"         *visual-hash*) #("+^^^^+" "||||||" "+||||+"))
+  (setf (gethash "turnstile-n-active"  *visual-hash*) #("+^^^^+" "|^^^^|" "+^^^^+"))
+  (setf (gethash "turnstile-s"         *visual-hash*) #("+....+" "||||||" "\\/\\/\\/"))
+  (setf (gethash "turnstile-s-active"  *visual-hash*) #("+\\/\\/+" "|\\/\\/|" "\\/\\/\\/"))
+  ;; NUMBERS
+  (setf (gethash "number-01"        *visual-hash*) #("      " "    01" "      "))
+  (setf (gethash "number-02"        *visual-hash*) #("      " "    02" "      "))
+  (setf (gethash "number-03"        *visual-hash*) #("      " "    03" "      "))
+  (setf (gethash "number-04"        *visual-hash*) #("      " "    04" "      "))
+  (setf (gethash "number-05"        *visual-hash*) #("      " "    05" "      "))
+  (setf (gethash "number-06"        *visual-hash*) #("      " "    06" "      "))
+  (setf (gethash "number-07"        *visual-hash*) #("      " "    07" "      "))
+  (setf (gethash "number-08"        *visual-hash*) #("      " "    08" "      "))
+  (setf (gethash "number-09"        *visual-hash*) #("      " "    09" "      "))
+  (setf (gethash "number-10"        *visual-hash*) #("      " "    10" "      "))
+  (setf (gethash "number-11"        *visual-hash*) #("      " "    11" "      "))
+  (setf (gethash "number-12"        *visual-hash*) #("      " "    12" "      "))
+  (setf (gethash "number-13"        *visual-hash*) #("      " "    13" "      "))
+  (setf (gethash "number-14"        *visual-hash*) #("      " "    14" "      "))
+  (setf (gethash "number-15"        *visual-hash*) #("      " "    15" "      "))
+  (setf (gethash "number-16"        *visual-hash*) #("      " "    16" "      "))
+  (setf (gethash "number-17"        *visual-hash*) #("      " "    17" "      "))
+  (setf (gethash "number-18"        *visual-hash*) #("      " "    18" "      "))
+  (setf (gethash "number-19"        *visual-hash*) #("      " "    19" "      "))
+  (setf (gethash "number-20"        *visual-hash*) #("      " "    20" "      "))
+  (setf (gethash "number-21"        *visual-hash*) #("      " "    21" "      "))
+  (setf (gethash "number-22"        *visual-hash*) #("      " "    22" "      "))
+  (setf (gethash "number-23"        *visual-hash*) #("      " "    23" "      "))
+  (setf (gethash "number-24"        *visual-hash*) #("      " "    24" "      "))
+  (setf (gethash "number-25"        *visual-hash*) #("      " "    25" "      "))
+  (setf (gethash "number-26"        *visual-hash*) #("      " "    26" "      "))
+  (setf (gethash "number-27"        *visual-hash*) #("      " "    27" "      "))
+  (setf (gethash "number-28"        *visual-hash*) #("      " "    28" "      "))
+  (setf (gethash "number-29"        *visual-hash*) #("      " "    29" "      "))
+  (setf (gethash "number-30"        *visual-hash*) #("      " "    30" "      "))
+  (setf (gethash "number-31"        *visual-hash*) #("      " "    31" "      "))
+  (setf (gethash "number-32"        *visual-hash*) #("      " "    32" "      "))
+  (setf (gethash "number-33"        *visual-hash*) #("      " "    33" "      "))
+  (setf (gethash "number-34"        *visual-hash*) #("      " "    34" "      "))
+  (setf (gethash "number-35"        *visual-hash*) #("      " "    35" "      "))
+  (setf (gethash "number-36"        *visual-hash*) #("      " "    36" "      "))
+  (setf (gethash "number-37"        *visual-hash*) #("      " "    37" "      "))
+  (setf (gethash "number-38"        *visual-hash*) #("      " "    38" "      "))
+  (setf (gethash "number-39"        *visual-hash*) #("      " "    39" "      "))
+  (setf (gethash "number-40"        *visual-hash*) #("      " "    40" "      "))
+  (setf (gethash "number-41"        *visual-hash*) #("      " "    41" "      "))
+  (setf (gethash "number-42"        *visual-hash*) #("      " "    42" "      "))
+  (setf (gethash "number-43"        *visual-hash*) #("      " "    43" "      "))
+  (setf (gethash "number-44"        *visual-hash*) #("      " "    44" "      "))
+  (setf (gethash "number-45"        *visual-hash*) #("      " "    45" "      "))
+  (setf (gethash "number-46"        *visual-hash*) #("      " "    46" "      "))
+  (setf (gethash "number-47"        *visual-hash*) #("      " "    47" "      "))
+  (setf (gethash "number-48"        *visual-hash*) #("      " "    48" "      "))
+  (setf (gethash "number-49"        *visual-hash*) #("      " "    49" "      "))
+  (setf (gethash "number-50"        *visual-hash*) #("      " "    50" "      "))
+  (setf (gethash "number-51"        *visual-hash*) #("      " "    51" "      "))
+  (setf (gethash "number-52"        *visual-hash*) #("      " "    52" "      "))
+  (setf (gethash "number-53"        *visual-hash*) #("      " "    53" "      "))
+  (setf (gethash "number-54"        *visual-hash*) #("      " "    54" "      "))
+  (setf (gethash "number-55"        *visual-hash*) #("      " "    55" "      "))
+  (setf (gethash "number-56"        *visual-hash*) #("      " "    56" "      "))
+  (setf (gethash "number-57"        *visual-hash*) #("      " "    57" "      "))
+  (setf (gethash "number-58"        *visual-hash*) #("      " "    58" "      "))
+  (setf (gethash "number-59"        *visual-hash*) #("      " "    59" "      "))
+  (setf (gethash "number-60"        *visual-hash*) #("      " "    60" "      "))
+  (setf (gethash "number-61"        *visual-hash*) #("      " "    61" "      "))
+  (setf (gethash "number-62"        *visual-hash*) #("      " "    62" "      "))
+  (setf (gethash "number-63"        *visual-hash*) #("      " "    63" "      "))
+  (setf (gethash "number-64"        *visual-hash*) #("      " "    64" "      "))
+  (setf (gethash "number-65"        *visual-hash*) #("      " "    65" "      "))
+  (setf (gethash "number-66"        *visual-hash*) #("      " "    66" "      "))
+  (setf (gethash "number-67"        *visual-hash*) #("      " "    67" "      "))
+  (setf (gethash "number-68"        *visual-hash*) #("      " "    68" "      "))
+  (setf (gethash "number-69"        *visual-hash*) #("      " "    69" "      "))
+  (setf (gethash "number-70"        *visual-hash*) #("      " "    70" "      "))
+  (setf (gethash "number-71"        *visual-hash*) #("      " "    71" "      "))
+  (setf (gethash "number-72"        *visual-hash*) #("      " "    72" "      "))
+  (setf (gethash "number-73"        *visual-hash*) #("      " "    73" "      "))
+  (setf (gethash "number-74"        *visual-hash*) #("      " "    74" "      "))
+  (setf (gethash "number-75"        *visual-hash*) #("      " "    75" "      "))
+  (setf (gethash "number-76"        *visual-hash*) #("      " "    76" "      "))
+  (setf (gethash "number-77"        *visual-hash*) #("      " "    77" "      "))
+  (setf (gethash "number-78"        *visual-hash*) #("      " "    78" "      "))
+  (setf (gethash "number-79"        *visual-hash*) #("      " "    79" "      "))
+  (setf (gethash "number-80"        *visual-hash*) #("      " "    80" "      "))
+  (setf (gethash "number-81"        *visual-hash*) #("      " "    81" "      "))
+  (setf (gethash "number-82"        *visual-hash*) #("      " "    82" "      "))
+  (setf (gethash "number-83"        *visual-hash*) #("      " "    83" "      "))
+  (setf (gethash "number-84"        *visual-hash*) #("      " "    84" "      "))
+  (setf (gethash "number-85"        *visual-hash*) #("      " "    85" "      "))
+  (setf (gethash "number-86"        *visual-hash*) #("      " "    86" "      "))
+  (setf (gethash "number-87"        *visual-hash*) #("      " "    87" "      "))
+  (setf (gethash "number-88"        *visual-hash*) #("      " "    88" "      "))
+  (setf (gethash "number-89"        *visual-hash*) #("      " "    89" "      "))
+  (setf (gethash "number-90"        *visual-hash*) #("      " "    90" "      "))
+  (setf (gethash "number-91"        *visual-hash*) #("      " "    91" "      "))
+  (setf (gethash "number-92"        *visual-hash*) #("      " "    92" "      "))
+  (setf (gethash "number-93"        *visual-hash*) #("      " "    93" "      "))
+  (setf (gethash "number-94"        *visual-hash*) #("      " "    94" "      "))
+  (setf (gethash "number-95"        *visual-hash*) #("      " "    95" "      "))
+  (setf (gethash "number-96"        *visual-hash*) #("      " "    96" "      "))
+  (setf (gethash "number-97"        *visual-hash*) #("      " "    97" "      "))
+  (setf (gethash "number-98"        *visual-hash*) #("      " "    98" "      "))
+  (setf (gethash "number-99"        *visual-hash*) #("      " "    99" "      "))
+  (setf (gethash "number-100"       *visual-hash*) #("      " "    100" "      "))
   ;; BLOCK-COUNTER
-  (setf (gethash "block-counter-10" *visual-hash*) #("+----+" "BCXX10" "+----+"))
-  (setf (gethash "block-counter-09" *visual-hash*) #("+----+" "BCXX09" "+----+"))
-  (setf (gethash "block-counter-08" *visual-hash*) #("+----+" "BCXX08" "+----+"))
-  (setf (gethash "block-counter-07" *visual-hash*) #("+----+" "BCXX07" "+----+"))
-  (setf (gethash "block-counter-06" *visual-hash*) #("+----+" "BCXX06" "+----+"))
-  (setf (gethash "block-counter-05" *visual-hash*) #("+----+" "BCXX05" "+----+"))
-  (setf (gethash "block-counter-04" *visual-hash*) #("+----+" "BCXX04" "+----+"))
-  (setf (gethash "block-counter-03" *visual-hash*) #("+----+" "BCXX03" "+----+"))
-  (setf (gethash "block-counter-02" *visual-hash*) #("+----+" "BCXX02" "+----+"))
-  (setf (gethash "block-counter-01" *visual-hash*) #("+----+" "BCXX01" "+----+"))
-  (setf (gethash "block-counter-00" *visual-hash*) #("+----+" "BCXX00" "+----+"))
+  (setf (gethash "block-counter"   *visual-hash*) #("+----+" "BCXX  " "+----+"))
   ;; PASS-COUNTER
-  (setf (gethash "pass-counter-10" *visual-hash*) #("+----+" "PC  10" "+----+"))
-  (setf (gethash "pass-counter-09" *visual-hash*) #("+----+" "PC  09" "+----+"))
-  (setf (gethash "pass-counter-08" *visual-hash*) #("+----+" "PC  08" "+----+"))
-  (setf (gethash "pass-counter-07" *visual-hash*) #("+----+" "PC  07" "+----+"))
-  (setf (gethash "pass-counter-06" *visual-hash*) #("+----+" "PC  06" "+----+"))
-  (setf (gethash "pass-counter-05" *visual-hash*) #("+----+" "PC  05" "+----+"))
-  (setf (gethash "pass-counter-04" *visual-hash*) #("+----+" "PC  04" "+----+"))
-  (setf (gethash "pass-counter-03" *visual-hash*) #("+----+" "PC  03" "+----+"))
-  (setf (gethash "pass-counter-02" *visual-hash*) #("+----+" "PC  02" "+----+"))
-  (setf (gethash "pass-counter-01" *visual-hash*) #("+----+" "PC  01" "+----+"))
-  (setf (gethash "pass-counter-00" *visual-hash*) #("+----+" "PC  00" "+----+"))
+  (setf (gethash "pass-counter"    *visual-hash*) #("+----+" "PC    " "+----+"))
   ;; PASS-TIMER
-  (setf (gethash "pass-timer-10" *visual-hash*) #("+----+" "PT  10" "+----+"))
-  (setf (gethash "pass-timer-09" *visual-hash*) #("+----+" "PT  09" "+----+"))
-  (setf (gethash "pass-timer-08" *visual-hash*) #("+----+" "PT  08" "+----+"))
-  (setf (gethash "pass-timer-07" *visual-hash*) #("+----+" "PT  07" "+----+"))
-  (setf (gethash "pass-timer-06" *visual-hash*) #("+----+" "PT  06" "+----+"))
-  (setf (gethash "pass-timer-05" *visual-hash*) #("+----+" "PT  05" "+----+"))
-  (setf (gethash "pass-timer-04" *visual-hash*) #("+----+" "PT  04" "+----+"))
-  (setf (gethash "pass-timer-03" *visual-hash*) #("+----+" "PT  03" "+----+"))
-  (setf (gethash "pass-timer-02" *visual-hash*) #("+----+" "PT  02" "+----+"))
-  (setf (gethash "pass-timer-01" *visual-hash*) #("+----+" "PT  01" "+----+"))
-  (setf (gethash "pass-timer-00" *visual-hash*) #("+----+" "PT  00" "+----+"))
+  (setf (gethash "pass-timer"      *visual-hash*) #("+----+" "PT    " "+----+"))
   ;; PULLED
   (setf (gethash "pulled-idle"               *visual-hash*) #(".-  -." "|    |" "`-  -'"))
   ;; east
@@ -152,20 +261,29 @@
   (setf (gethash "bomb-durable"  *visual-hash*) #("+----+" "BOMP  " "+----+"))
   (setf (gethash "bomb"          *visual-hash*) #("+----+" "BOMX  " "+----+"))
   ;; ring 1
-  ;; ******************
-  ;; ******************
-  ;; ******************
-  ;; ******      ******
-  ;; ******      ******
-  ;; ******      ******
-  ;; ******************
-  ;; ******************
-  ;; ******************
-  (setf (gethash "bomb-ring-1"   *visual-hash*) #("******************" "******************" "******************" "******      ******" "******      ******" "******      ******" "******************" "******************" "******************"))
+  ;;    ************ 
+  ;;   **************
+  ;;   ****      ****
+  ;;   ****      ****
+  ;;   ****      ****
+  ;;   **************
+  ;;    ************ 
+  (setf (gethash "bomb-ring-1"   *visual-hash*) #("  **************  " "  **************  " "  ****      ****  " "  ****      ****  " "  ****      ****  " "  **************  " "  **************  "))
   ;; ring 2
+  ;;  **************** 
+  ;; ******************
+  ;; ******************
+  ;; ******      ******
+  ;; ******      ******
+  ;; ******      ******
+  ;; ******************
+  ;; ******************
+  ;;  **************** 
+  (setf (gethash "bomb-ring-2"   *visual-hash*) #(" **************** " "******************" "******************" "******      ******" "******      ******" "******      ******" "******************" "******************" " **************** "))
+  ;; ring 3
+  ;;  ############################
   ;; ##############################
   ;; ##############################
-  ;; ##############################
   ;; ######                  ######
   ;; ######                  ######
   ;; ######                  ######
@@ -177,8 +295,25 @@
   ;; ######                  ######
   ;; ##############################
   ;; ##############################
+  ;;  ############################ 
+  (setf (gethash "bomb-ring-3"   *visual-hash*) #(" ############################ " "##############################" "##############################" "######                  ######" "######                  ######" "######                  ######" "######                  ######" "######                  ######" "######                  ######" "######                  ######" "######                  ######" "######                  ######" "##############################" "##############################" " ############################ "))
+  ;; ring 4
+  ;;  ############################ 
   ;; ##############################
-  (setf (gethash "bomb-ring-2"   *visual-hash*) #("##############################" "##############################" "##############################" "######                  ######" "######                  ######" "######                  ######" "######                  ######" "######                  ######" "######                  ######" "######                  ######" "######                  ######" "######                  ######" "##############################" "##############################" "##############################")))
+  ;; ####                      ####
+  ;; ####                      ####
+  ;; ####                      ####
+  ;; ####                      ####
+  ;; ####                      ####
+  ;; ####                      ####
+  ;; ####                      ####
+  ;; ####                      ####
+  ;; ####                      ####
+  ;; ####                      ####
+  ;; ####                      ####
+  ;; ##############################
+  ;;  ############################ 
+  (setf (gethash "bomb-ring-4"   *visual-hash*) #(" ############################ " "##############################" "####                      ####" "####                      ####" "####                      ####" "####                      ####" "####                      ####" "####                      ####" "####                      ####" "####                      ####" "####                      ####" "####                      ####" "####                      ####" "##############################" " ############################ ")))
 
 (defun empty-line ()
   (let* ((w *level-width*)

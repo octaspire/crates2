@@ -13,5 +13,34 @@
 ;; See the License for the specific language governing permissions and
 ;; limitations under the License.
 (defpackage :crates2
-  (:use :cl)
-  (:export #:main))
+  (:use
+   :common-lisp)
+  (:export #:main
+           #:player
+           #:moving
+           #:movingp
+           #:crate-x
+           #:crate-y
+           #:crate-z
+           #:visual
+           #:tail-x
+           #:tail-y
+           #:tail-z
+           #:*test-run*
+           #:find-first-crate-of-type
+           #:*level*
+           #:*level-width*
+           #:*level-height*
+           #:*level-number*
+           #:*update-counter*
+           #:replace-substr-at-transparent-whitespace))
+
+(defpackage :crates2-ui
+  (:use
+   :common-lisp
+   :crates2)
+  (:export #:ui-init
+           #:ui-read-input
+           #:init-visual-hash
+           #:ui-render
+           #:ui-delete))

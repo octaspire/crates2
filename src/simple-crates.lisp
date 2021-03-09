@@ -22,7 +22,7 @@
   (call-next-method))
 
 (defmethod visual ((self wall))
-  (list "wall-idle"))
+  (list (format nil "wall-idle-~2,'0d" (crate-frame self))))
 
 (defmethod collide ((self wall) (target moving))
   )

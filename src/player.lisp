@@ -16,16 +16,16 @@
 
 ;; Methods
 
+(defmethod visual ((self player))
+  (if (active self)
+      (list (format nil "player-active-~2,'0d" (crate-frame self)))
+      (list "player-hidden")))
+
 (defmethod update ((self player))
   (ecase (crate-state self)
     (:idle (player-update-idle self))
     (:lamented (player-update-lamented self)))
   (call-next-method))
-
-(defmethod visual ((self player))
-  (if (active self)
-      (list "player-active")
-      (list "player-hidden")))
 
 (defmethod collide ((self player) (target crate))
   (call-next-method))
@@ -56,7 +56,9 @@
 ;; Functions
 
 (defun player-update-idle (self)
-  (let ((input (car *input*)))
+  (let ((input (car *input*))
+        (frame (1+ (crate-frame self))))
+    (setf (crate-frame self) (mod frame 7))
     (when (and input (stationaryp self))
       (handle-input self input))))
 

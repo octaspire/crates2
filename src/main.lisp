@@ -12,6 +12,11 @@
 ;; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ;; See the License for the specific language governing permissions and
 ;; limitations under the License.
+(defpackage :crates2-main
+  (:use :common-lisp
+   :crates2
+   :crates2-ui))
+
 (in-package :crates2)
 
 (defparameter *verbose* 0)
@@ -21,17 +26,19 @@
 (defparameter *errors* nil)
 (defparameter *update-counter* 0)
 (defparameter *input* nil)
-(defparameter *level-number* 0)
+(defparameter *level-number* -1)
 (defparameter *running* t)
 (defparameter *level* nil)
 (defparameter *created* nil)
-(defparameter *next-level* 8)
+(defparameter *next-level* nil)
 (defparameter *level-width* 20)
 (defparameter *level-height* 20)
-(defparameter *frame-duration-default* 0.25) ; Not zeroed in test mode.
+(defparameter *frame-duration-default* 0.125) ; Not zeroed in test mode.
 (defparameter *frame-duration* *frame-duration-default*) ; Zeroed in test mode.
 (defparameter *test-run* nil)
 (defparameter *test-run-max-updates* 3000)
+(defparameter *last-input* nil)
+(defparameter *pending-input* nil)
 
 (defun verbose-parser (x)
   (setf *verbose* (parse-integer x)))
@@ -103,10 +110,37 @@ This is similar to 'test' but runs much slower."
   (when (> *verbose* 0)
     (format t fmt args)))
 
+(defun ui-maybe-read-input ()
+  (let ((player (find-first-crate-of-type 'player)))
+    (if (null player)
+        (crates2-ui:ui-read-input)                 ; clean the event queue
+        (progn
+          (if (movingp player)
+              (let ((pending (crates2-ui:ui-read-input)))
+                (when pending
+                  (setf *pending-input* pending))
+                nil)           ; No input while player moves, in textual mode.
+              (progn (setf *last-input*
+                           (if *pending-input*
+                               *pending-input*
+                               (crates2-ui:ui-read-input)))
+                     (setf *pending-input* nil)
+                     *last-input*))))))
+
+(defun ui-input ()
+  (if *level*
+      (if *test-run*
+          (let ((input (car *fake-input*)))
+            (setf *fake-input* (cdr *fake-input*))
+            (setf *last-input* input)
+            input)
+          (ui-maybe-read-input))
+      nil))
+
 (defun run (options)
   (unless *errors*
-    (ui-init)
-    (init-visual-hash)
+    (crates2-ui:ui-init)
+    (crates2-ui:init-visual-hash)
     (request-next-level)
     (let ((str (make-array 2048 :element-type 'character :fill-pointer 0 :adjustable t))
           (log-input (getf options :log-input))
@@ -116,9 +150,9 @@ This is similar to 'test' but runs much slower."
                          (or (not *test-run*)
                              (< *update-counter* *test-run-max-updates*)))
               do (setf *input* nil)
-                 (ui-render *level* 0)
+                 (crates2-ui:ui-render *level* 0)
                  (sleep half-frame-duration)
-                 (ui-render *level* 1)
+                 (crates2-ui:ui-render *level* 1)
                  (let ((input (ui-input)))
                    (when log-input
                      (format s (if (keywordp input) "~%~S " "~S " ) input))
@@ -141,7 +175,7 @@ This is similar to 'test' but runs much slower."
         (setf str (nstring-downcase str))
         (when log-input
           (format t "~%~A~%" str))))
-    (ui-delete)))
+    (crates2-ui:ui-delete)))
 
 (defun usage ()
   (opts:describe
@@ -168,17 +202,35 @@ This is similar to 'test' but runs much slower."
        (loop for (,option ,value) on ,opts-not-empty by #'cddr
              do (case ,option ,@clauses)))))
 
+(defun compare-crate (a b)
+  (let ((az (crate-z a))
+        (bz (crate-z b)))
+    (if (= az az)
+        (progn
+          (when (eq (type-of a) 'player)
+            (return-from compare-crate t))
+          (when (eq (type-of b) 'player)
+            (return-from compare-crate nil))
+          (when (and (subtypep (type-of a) 'moving)
+                     (not (eq (type-of b) 'player)))
+            (return-from compare-crate t))
+          nil)
+        (< az bz))))
+
+(defun sort-level (level)
+  (sort level #'compare-crate))
+
 (defun load-next-level ()
   (if (and *test-run* (>= *next-level* *num-levels*))
       (running nil)
       (let ((level-number (mod *next-level* *num-levels*)))
         (setf *next-level* nil)
         (setf *fake-input* nil)
+        (setf *pending-input* nil)
         (setf *level-number* level-number)
-        (format t "LEVEL ~A~%" *level-number*)
         (setf *level* nil)
         (let ((loaded (load-level *level-number*)))
-          (setf *level* (cadr loaded))
+          (setf *level* (sort-level (cadr loaded)))
           (setf *fake-input* (car loaded))))))
 
 (defun request-next-level ()
@@ -187,7 +239,6 @@ This is similar to 'test' but runs much slower."
     (setf *next-level* (+ *level-number* 1))))
 
 (defun request-restart-level ()
-  (format t "RESTART~%")
   (setf *next-level* *level-number*))
 
 (defun request-previous-level ()

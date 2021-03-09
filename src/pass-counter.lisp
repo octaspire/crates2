@@ -21,10 +21,10 @@
      (pass-counter-passes self)))
 
 (defmethod visual ((self pass-counter))
-  (let ((result "pass-counter-")
+  (let ((result "number-")
         (passstr (format nil "~2,'0d" (passes-left self))))
     (setf result (concatenate 'string result passstr))
-    (list result)))
+    (list "pass-counter" result)))
 
 (defmethod update ((self pass-counter))
   (ecase (crate-state self)

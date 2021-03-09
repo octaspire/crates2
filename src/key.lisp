@@ -17,11 +17,30 @@
 ;; Methods
 
 (defmethod visual ((self key))
-  (list "key-idle"))
+  (ecase (crate-state self)
+    (:idle
+     (list (format nil "key-idle-~2,'0d" (crate-frame self))))
+    (:active (list "key-active"))
+    (:lamented (list "key-active"))))
+
+(defmethod update ((self key))
+  (ecase (crate-state self)
+    (:idle
+     (let ((frame (1+ (crate-frame self))))
+       (setf (crate-frame self) (mod frame 9))))
+    (:active
+     (let ((step (key-active-step self)))
+       (if (> step 0)
+           (setf (key-active-step self) (1- step))
+           (lament self)))))
+  (call-next-method))
 
 (defmethod collide ((self key) (target player))
   (ecase (crate-state self)
     (:idle
      (setf (velocity target) (on-which-side-i-am self target))
-     (lament self))
+     (setf (crate-state self) :active)
+     (setf (key-active-step self) 1))
+    (:active
+     (setf (velocity target) (on-which-side-i-am self target)))
     (:lamented nil)))
