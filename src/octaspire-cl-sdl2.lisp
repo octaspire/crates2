@@ -965,6 +965,38 @@
       (:SDL-LASTEVENT                (format nil "TYPE: LastEvent")))))
 
 ;; Declared in include/SDL_video.h
+(eval (let ((sdl-win-fullscr #x01))
+        `(defcenum sdl-windowflags
+           "Flags for a window"
+           (:SDL-WINDOW-FULLSCREEN    ,sdl-win-fullscr)
+           (:SDL-WINDOW-OPENGL        #x02)
+           (:SDL-WINDOW-SHOWN         #x04)
+           (:SDL-WINDOW-HIDDEN        #x08)
+           (:SDL-WINDOW-BORDERLESS    #x10)
+           (:SDL-WINDOW-RESIZABLE     #x20)
+           (:SDL-WINDOW-MINIMIZED     #x40)
+           (:SDL-WINDOW-MAXIMIZED     #x80)
+           (:SDL-WINDOW-INPUT-GRABBED #x100)
+           (:SDL-WINDOW-INPUT-FOCUS   #x200)
+           (:SDL-WINDOW-MOUSE-FOCUS   #x400)
+           (:SDL-WINDOW-FULLSCREEN-DESKTOP ,(logior sdl-win-fullscr #x1000))
+           (:SDL-WINDOW-FOREIGN       #x800)
+           (:SDL-WINDOW-ALLOW-HIGHDPI #x2000)
+           (:SDL-WINDOW-MOUSE-CAPTURE #x4000)
+           (:SDL-WINDOW-ALWAYS-ON-TOP #x8000)
+           (:SDL-WINDOW-SKIP-TASKBAR  #x10000)
+           (:SDL-WINDOW-UTILITY       #x20000)
+           (:SDL-WINDOW-TOOLTIP       #x40000)
+           (:SDL-WINDOW-POPUP-MENU    #x80000)
+           (:SDL-WINDOW-VULKAN        #x10000000)
+           (:SDL-WINDOW-METAL         #x20000000))))
+
+(defcfun "SDL_GL_CreateContext" :pointer
+  (window :pointer))
+
+(defcfun "SDL_GL_SetSwapInterval" :int
+  (interval :int))
+
 (defcfun "SDL_CreateWindow" :pointer
   (title (:string :encoding :utf-8))
   (x :int)
@@ -973,7 +1005,32 @@
   (flags :uint32)
   (h :int))
 
+;; OpenGL
 
+;; declared in GL/gl.h
+(defconstant +GL-CURRENT-BIT+         #x1)
+(defconstant +GL-POINT-BIT+           #x2)
+(defconstant +GL-LINE-BIT+            #x4)
+(defconstant +GL-POLYGON-BIT+         #x8)
+(defconstant +GL-POLYGON-STIPPLE-BIT+ #x10)
+(defconstant +GL-PIXEL-MODE-BIT+      #x20)
+(defconstant +GL-LIGHTING-BIT+        #x40)
+(defconstant +GL-FOG-BIT+             #x80)
+(defconstant +GL-DEPTH-BUFFER-BIT+    #x100)
+(defconstant +GL-ACCUM-BUFFER-BIT+    #x200)
+(defconstant +GL-STENCIL-BUFFER-BIT+  #x400)
+(defconstant +GL-VIEWPORT-BIT+        #x800)
+(defconstant +GL-TRANSFORM-BIT+       #x1000)
+(defconstant +GL-ENABLE-BIT+          #x2000)
+(defconstant +GL-COLOR-BUFFER-BIT+    #x4000)
+(defconstant +GL-EVAL-BIT+            #x10000)
+(defconstant +GL-LIST-BIT+            #x20000)
+(defconstant +GL-TEXTURE-BIT+         #x40000)
+(defconstant +GL-SCISSOR-BIT+         #x80000)
+(defconstant +GL-ALL-ATTRIB-BITS+     #xFFFFFFFF)
+
+(defcfun "glClear" :void
+  (mask :uint32))
 
 
 
@@ -1181,7 +1238,47 @@
        (mix-closeaudio))))
 
 
+;;; OpenGL
 
+(defcenum sdl-glattr
+  "OpenGL configuration attributes"
+  (:SDL-GL-RED-SIZE 0)
+  (:SDL-GL-GREEN-SIZE)
+  (:SDL-GL-BLUE-SIZE)
+  (:SDL-GL-ALPHA-SIZE)
+  (:SDL-GL-BUFFER-SIZE)
+  (:SDL-GL-DOUBLEBUFFER)
+  (:SDL-GL-DEPTH-SIZE)
+  (:SDL-GL-STENCIL-SIZE)
+  (:SDL-GL-ACCUM-RED-SIZE)
+  (:SDL-GL-ACCUM-GREEN-SIZE)
+  (:SDL-GL-ACCUM-BLUE-SIZE)
+  (:SDL-GL-ACCUM-ALPHA-SIZE)
+  (:SDL-GL-STEREO)
+  (:SDL-GL-MULTISAMPLEBUFFERS)
+  (:SDL-GL-MULTISAMPLESAMPLES)
+  (:SDL-GL-ACCELERATED-VISUAL)
+  (:SDL-GL-RETAINED-BACKING)
+  (:SDL-GL-CONTEXT-MAJOR-VERSION)
+  (:SDL-GL-CONTEXT-MINOR-VERSION)
+  (:SDL-GL-CONTEXT-EGL)
+  (:SDL-GL-CONTEXT-FLAGS)
+  (:SDL-GL-CONTEXT-PROFILE-MASK)
+  (:SDL-GL-SHARE-WITH-CURRENT-CONTEXT)
+  (:SDL-GL-FRAMEBUFFER_SRGB_CAPABLE)
+  (:SDL-GL-CONTEXT-RELEASE-BEHAVIOR)
+  (:SDL-GL-CONTEXT-RESET-NOTIFICATION)
+  (:SDL-GL-CONTEXT-NO-ERROR))
+
+(defcenum sdl-glprofile
+  "Profile mask"
+  (:SDL-GL-CONTEXT-PROFILE-CORE          #x01)
+  (:SDL-GL-CONTEXT-PROFILE-COMPATIBILITY #x02)
+  (:SDL-GL-CONTEXT-PROFILE-ES            #x04))
+
+(defcfun "SDL_GL_SetAttribute" :int
+  (attr  sdl-glattr)
+  (value :int))
 
 
 ;; Helpers
