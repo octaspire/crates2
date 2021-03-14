@@ -39,10 +39,20 @@
   (:darwin (:or (:framework "SDL2_mixer") (:default "libSDL2_mixer")))
   (:unix (:or "libSDL2_mixer-2.0.so")))
 
+(define-foreign-library libgl
+  (:darwin (:or (:framework "GL") (:default "libGL")))
+  (:unix (:or "libGL.so")))
+
+(define-foreign-library libglu
+    (:darwin (:or (:framework "GLU") (:default "libGLU")))
+  (:unix (:or "libGLU.so")))
+
 (use-foreign-library libsdl2)
 (use-foreign-library libsdl2-image)
 (use-foreign-library libsdl2-ttf)
 (use-foreign-library libsdl2-mixer)
+(use-foreign-library libgl)
+(use-foreign-library libglu)
 
 (defcfun "SDL_Init" :int
   (flags :long))

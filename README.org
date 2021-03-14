@@ -11,8 +11,8 @@ is to be added.
 
 Prerequisites:
 
-At this stage: =Common Lisp= implementation (tested with SBCL), =Quicklisp=, =make=
-and =SDL2= library.
+At this stage: =Common Lisp= implementation (tested with SBCL), =Quicklisp=, =make=,
+=libffi=, =SDL2=, =SDL2-image=, =SDL2-mixer=, =GL= and =GLU= libraries.
 
 Get sources and build by issuing commands:
 
@@ -29,6 +29,16 @@ or copying file ~etc/crates2.conf~ to
 But please note, that the path given in that file probably
 has to be changed to match the location of the cloned directory
 on your machine.
+
+If =libffi= is not found on a UNIX like system, the
+following change to file
+=$HOME/quicklisp/dists/quicklisp/software/cffi_0.23.0/libffi/libffi.lisp=
+might help:
+
+#+begin_src diff
+-  (:unix (:or "libffi.so.7" "libffi32.so.7" "libffi.so.6" "libffi32.so.6" "libffi.so.5" "libffi32.so.5"))
++  (:unix (:or "libffi.so.7" "libffi32.so.7" "libffi.so.6" "libffi32.so.6" "libffi.so.5" "libffi32.so.5" "libffi.so"))
+#+end_src
 
 You can also build and run by issuing command:
 
