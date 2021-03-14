@@ -1029,8 +1029,92 @@
 (defconstant +GL-SCISSOR-BIT+         #x80000)
 (defconstant +GL-ALL-ATTRIB-BITS+     #xFFFFFFFF)
 
+(defconstant +GL-TEXTURE-2D+          #x0DE1)
+(defconstant +GL-DEPTH-TEST+          #x0B71)
+(defconstant +GL-DEPTH-TEST+          #x0B71)
+(defconstant +GL-CULL-FACE+           #x0B44)
+(defconstant +GL-ALPHA-TEST+          #x0BC0)
+
 (defcfun "glClear" :void
   (mask :uint32))
+
+(defcfun "glClearColor" :void
+  (red   :float)
+  (green :float)
+  (blue  :float)
+  (alpha :float))
+
+(defcfun "glDisable" :void
+  (cap :uint32))
+
+(defcfun "glTranslatef" :void
+  (x :float)
+  (y :float)
+  (z :float))
+
+(defcfun "glViewport" :void
+  (x :int32)
+  (y :int32)
+  (w :uint32)
+  (h :uint32))
+
+(defcfun "glFlush" :void)
+
+;; GLenum for real. Defined in include/GL/gl.h
+(defconstant +GL-MODELVIEW+  #x1700)
+(defconstant +GL-PROJECTION+ #x1701)
+(defconstant +GL-TEXTURE+    #x1702)
+(defconstant +GL-COLOR+      #x1800)
+
+(defcfun "glMatrixMode" :void
+  (mode :int))
+
+(defcfun "glLoadIdentity" :void)
+
+(defcfun "gluPerspective" :void
+  (fovy   :float)
+  (aspect :float)
+  (znear  :float)
+  (zfar   :float))
+
+(defcfun "gluOrtho2D" :void
+  (left   :float)
+  (rightt :float)
+  (bottom :float)
+  (top    :float))
+
+(defcfun "glColor3f" :void
+  (red   :float)
+  (green :float)
+  (blue  :float))
+
+(defcfun "glColor4f" :void
+  (red   :float)
+  (green :float)
+  (blue  :float)
+  (alpha :float))
+
+(defcfun "glVertex3f" :void
+  (x :float)
+  (y :float)
+  (z :float))
+
+;; GLenum for real. Defined in include/GL/gl.h
+(defconstant +GL-POINTS+              #x0)
+(defconstant +GL-LINES+               #x1)
+(defconstant +GL-LINE-LOOP+           #x2)
+(defconstant +GL-LINE-STRIP+          #x3)
+(defconstant +GL-TRIANGLES+           #x4)
+(defconstant +GL-TRIANGLE-STRIP+      #x5)
+(defconstant +GL-TRIANGLE-FAN+        #x6)
+(defconstant +GL-QUADS+               #x7)
+(defconstant +GL-QUAD-STRIP+          #x8)
+(defconstant +GL-POLYGON+             #x9)
+
+(defcfun "glBegin" :void
+  (mode :int))
+
+(defcfun "glEnd" :void)
 
 
 
@@ -1279,6 +1363,9 @@
 (defcfun "SDL_GL_SetAttribute" :int
   (attr  sdl-glattr)
   (value :int))
+
+(defcfun "SDL_GL_SwapWindow" :void
+  (window :pointer))
 
 
 ;; Helpers
