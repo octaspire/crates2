@@ -47,12 +47,17 @@
     (:darwin (:or (:framework "GLU") (:default "libGLU")))
   (:unix (:or "libGLU.so")))
 
+(define-foreign-library libglew
+    (:darwin (:or (:framework "GLEW") (:default "libGLEW")))
+  (:unix (:or "libGLEW.so")))
+
 (use-foreign-library libsdl2)
 (use-foreign-library libsdl2-image)
 (use-foreign-library libsdl2-ttf)
 (use-foreign-library libsdl2-mixer)
 (use-foreign-library libgl)
 (use-foreign-library libglu)
+(use-foreign-library libglew)
 
 (defcfun "SDL_Init" :int
   (flags :long))
@@ -1045,6 +1050,20 @@
 (defconstant +GL-CULL-FACE+           #x0B44)
 (defconstant +GL-ALPHA-TEST+          #x0BC0)
 
+(defconstant +GL-NO-ERROR+            #x0)
+(defconstant +GL-INVALID-ENUM+        #x500)
+(defconstant +GL-INVALID-VALUE+       #x501)
+(defconstant +GL-INVALID-OPERATION+   #x502)
+(defconstant +GL-STACK-OVERFLOW+      #x503)
+(defconstant +GL-STACK-UNDERFLOW+     #x504)
+(defconstant +GL-OUT-OF-MEMORY+       #x505)
+
+(defcfun "glewInit" :uint)
+
+(defcfun "glGetError" :uint32)           ; GLenum for real
+(defcfun "gluErrorString" (:string :encoding :utf-8)
+  (error :uint32)) ;; GLenum for real
+
 (defcfun "glClear" :void
   (mask :uint32))
 
@@ -1077,21 +1096,21 @@
 (defconstant +GL-COLOR+      #x1800)
 
 (defcfun "glMatrixMode" :void
-  (mode :int))
+  (mode :uint))
 
 (defcfun "glLoadIdentity" :void)
 
 (defcfun "gluPerspective" :void
-  (fovy   :float)
-  (aspect :float)
-  (znear  :float)
-  (zfar   :float))
+  (fovy   :double)
+  (aspect :double)
+  (znear  :double)
+  (zfar   :double))
 
 (defcfun "gluOrtho2D" :void
-  (left   :float)
-  (rightt :float)
-  (bottom :float)
-  (top    :float))
+  (left   :double)
+  (rightt :double)
+  (bottom :double)
+  (top    :double))
 
 (defcfun "glColor3f" :void
   (red   :float)
@@ -1122,7 +1141,7 @@
 (defconstant +GL-POLYGON+             #x9)
 
 (defcfun "glBegin" :void
-  (mode :int))
+  (mode :uint))
 
 (defcfun "glEnd" :void)
 
@@ -1376,7 +1395,6 @@
 
 (defcfun "SDL_GL_SwapWindow" :void
   (window :pointer))
-
 
 ;; Helpers
 
