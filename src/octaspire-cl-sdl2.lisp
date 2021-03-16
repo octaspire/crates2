@@ -1076,6 +1076,9 @@
 (defcfun "glDisable" :void
   (cap :uint32))
 
+(defcfun "glEnable" :void
+  (cap :uint32))
+
 (defcfun "glTranslatef" :void
   (x :float)
   (y :float)
@@ -1127,6 +1130,24 @@
   (x :float)
   (y :float)
   (z :float))
+
+(defcfun "glTexCoord2f" :void
+  (cs :float)
+  (ct :float))
+
+(defcfun "gluLookAt" :void
+  (eyeX    :double)
+  (eyeY    :double)
+  (eyeZ    :double)
+  (centerX :double)
+  (centerY :double)
+  (centerZ :double)
+  (upX     :double)
+  (upY     :double)
+  (upZ     :double))
+
+(defcfun "glPushMatrix" :void)
+(defcfun "glPopMatrix"  :void)
 
 ;; GLenum for real. Defined in include/GL/gl.h
 (defconstant +GL-POINTS+              #x0)
