@@ -786,6 +786,22 @@
   (file       :pointer)                 ; char*
   (windowID   :uint32))
 
+;; Declared in SDL_surface.h
+(defcstruct sdl-surface
+  "Collection of pixels."
+  (flags        :uint32)
+  (format       :pointer)
+  (w            :int)
+  (h            :int)
+  (pitch        :int)
+  (pixels       :pointer)
+  (userdata     :pointer)
+  (locked       :int)
+  (list-blitmap :pointer)
+  (clip-rect    (:struct sdl-rect))
+  (map          :pointer)
+  (refcount     :int))
+
 (defcunion sdl-event
   "General event structure (union)."
   (type      sdl-eventtype)
@@ -1058,6 +1074,19 @@
 (defconstant +GL-STACK-UNDERFLOW+     #x504)
 (defconstant +GL-OUT-OF-MEMORY+       #x505)
 
+(defconstant +GL-BYTE+                #x1400)
+(defconstant +GL-UNSIGNED-BYTE+       #x1401)
+
+(defconstant +GL-RGB+                 #x1907)
+(defconstant +GL-RGBA+                #x1908)
+
+(defconstant +GL-LIGHTING+            #x0B50)
+
+(defconstant +GL-BLEND+               #x0BE2)
+
+(defconstant +GL-TEXTURE-MIN-FILTER+  #x2801)
+(defconstant +GL-LINEAR+              #x2601)
+
 (defcfun "glewInit" :uint)
 
 (defcfun "glGetError" :uint32)           ; GLenum for real
@@ -1078,6 +1107,14 @@
 
 (defcfun "glEnable" :void
   (cap :uint32))
+
+(defcfun "glGenTextures" :void
+  (n        :uint32)
+  (textures :pointer))
+
+(defcfun "glBindTexture" :void
+  (target   :uint32)
+  (texture  :uint32))
 
 (defcfun "glTranslatef" :void
   (x :float)
@@ -1146,6 +1183,22 @@
   (upY     :double)
   (upZ     :double))
 
+(defcfun "glTexImage2D" :void
+  (target         :uint32)
+  (level          :int32)
+  (internalformat :int32)
+  (width          :uint32)
+  (height         :uint32)
+  (border         :int32)
+  (format         :uint32)
+  (type           :uint32)
+  (pixels         :pointer))
+
+(defcfun "glTexParameteri" :void
+  (texture :uint32)
+  (pname   :uint32)
+  (param   :int32))
+
 (defcfun "glPushMatrix" :void)
 (defcfun "glPopMatrix"  :void)
 
@@ -1165,6 +1218,16 @@
   (mode :uint))
 
 (defcfun "glEnd" :void)
+
+
+
+
+
+(defcfun "SDL_LockSurface" :int
+  (surface :pointer))
+
+(defcfun "SDL_UnlockSurface" :void
+  (surface :pointer))
 
 
 
