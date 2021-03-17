@@ -296,9 +296,6 @@
 
 (defparameter *fake-input* nil)
 
-(defun draw-face (index x y z)
-  )
-
 (defun check-error (&optional msg)
   (let ((err (glgeterror)))
     (unless (=  err +GL-NO-ERROR+)
@@ -323,10 +320,47 @@
   ;; (gltexcoord2f 0.0     1.0)
   ;; (glvertex3f -0.5   0.5  0.5)
 
+  ;; Top face
+  (glnormal3f 0.0  0.0  1.0)
   (gltexcoord2f 0.0     0.03125) (glvertex3f -0.5  -0.5  0.5)
   (gltexcoord2f 0.03125 0.03125) (glvertex3f  0.5  -0.5  0.5)
   (gltexcoord2f 0.03125 0.0)     (glvertex3f  0.5   0.5  0.5)
   (gltexcoord2f 0.0     0.0)     (glvertex3f -0.5   0.5  0.5)
+
+  ;; North face
+  (glnormal3f 0.0  1.0  0.0)
+  (gltexcoord2f 0.03125 0.03125) (glvertex3f -0.5   0.5 -0.5)
+  (gltexcoord2f 0.0625  0.03125) (glvertex3f -0.5   0.5  0.5)
+  (gltexcoord2f 0.0625  0.0)     (glvertex3f  0.5   0.5  0.5)
+  (gltexcoord2f 0.03125 0.0)     (glvertex3f  0.5   0.5 -0.5)
+
+  ;; South face
+  (glnormal3f 0.0  -1.0  0.0)
+  (gltexcoord2f 0.03125 0.03125) (glvertex3f -0.5   -0.5 -0.5)
+  (gltexcoord2f 0.0625  0.03125) (glvertex3f  0.5   -0.5 -0.5)
+  (gltexcoord2f 0.0625  0.0)     (glvertex3f  0.5   -0.5  0.5)
+  (gltexcoord2f 0.03125 0.0)     (glvertex3f -0.5   -0.5  0.5)
+
+  ;; West face
+  (glnormal3f -1.0  0.0  0.0)
+  (gltexcoord2f 0.03125 0.03125) (glvertex3f -0.5   -0.5 -0.5)
+  (gltexcoord2f 0.0625  0.03125) (glvertex3f -0.5   -0.5  0.5)
+  (gltexcoord2f 0.0625  0.0)     (glvertex3f -0.5    0.5  0.5)
+  (gltexcoord2f 0.03125 0.0)     (glvertex3f -0.5    0.5 -0.5)
+
+  ;; East face
+  (glnormal3f  1.0  0.0  0.0)
+  (gltexcoord2f 0.03125 0.03125) (glvertex3f  0.5   -0.5 -0.5)
+  (gltexcoord2f 0.0625  0.03125) (glvertex3f  0.5    0.5 -0.5)
+  (gltexcoord2f 0.0625  0.0)     (glvertex3f  0.5    0.5  0.5)
+  (gltexcoord2f 0.03125 0.0)     (glvertex3f  0.5   -0.5  0.5)
+
+  ;; Bottom face (inverted)
+  (glnormal3f  0.0  0.0  1.0)
+  (gltexcoord2f 0.03125 0.03125) (glvertex3f -0.5   -0.5 -0.5)
+  (gltexcoord2f 0.0625  0.03125) (glvertex3f -0.5    0.5 -0.5)
+  (gltexcoord2f 0.0625  0.0)     (glvertex3f  0.5    0.5 -0.5)
+  (gltexcoord2f 0.03125 0.0)     (glvertex3f  0.5   -0.5 -0.5)
 
   (glend)
   (check-error))
@@ -342,7 +376,7 @@
     (glbindtexture +GL-TEXTURE-2D+ (mem-aref *txids* :uint32 0))
     (glenable +GL-TEXTURE-2D+)
     (check-error "X")
-    (gldisable +GL-DEPTH-TEST+)
+    (glenable  +GL-DEPTH-TEST+)
     (gldisable +GL-CULL-FACE+)
     (gldisable +GL-ALPHA-TEST+)
     ;; (gltranslatef 5.0 5.0 -5.0)
@@ -422,7 +456,7 @@
     ;; (gluortho2d 0.0d0 (coerce screen-width 'double-float) 0.0d0 (coerce screen-height 'double-float))
     ;; (gluperspective 45.0d0 (/ (coerce screen-width 'double-float) screen-height) 0.1d0 100.0d0)
     (gluperspective 45.0d0 (/ (coerce screen-width 'double-float) screen-height) 0.1d0 100.0d0)
-    (glulookat 0.0d0 0.0d0 50.0d0   0.0d0 0.0d0 0.0d0   0.0d0 1.0d0 0.0d0)
+    (glulookat 11.0d0 -26.0d0 20.0d0   10.0d0 -10.0d0 0.0d0   0.0d0 0.0d0 1.0d0)
     (check-error "5")
     (glmatrixmode +GL-MODELVIEW+)
     (check-error "6")

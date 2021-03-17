@@ -1168,6 +1168,11 @@
   (y :float)
   (z :float))
 
+(defcfun "glNormal3f" :void
+  (nx :float)
+  (ny :float)
+  (nz :float))
+
 (defcfun "glTexCoord2f" :void
   (cs :float)
   (ct :float))
