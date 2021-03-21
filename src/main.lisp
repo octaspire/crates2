@@ -26,11 +26,11 @@
 (defparameter *errors* nil)
 (defparameter *update-counter* 0)
 (defparameter *input* nil)
-(defparameter *level-number* -1)
+(defparameter *level-number* 7)
 (defparameter *running* t)
 (defparameter *level* nil)
 (defparameter *created* nil)
-(defparameter *next-level* nil)
+(defparameter *next-level* 8)
 (defparameter *level-width* 20)
 (defparameter *level-height* 20)
 (defparameter *frame-duration-default* 0.125) ; Not zeroed in test mode.

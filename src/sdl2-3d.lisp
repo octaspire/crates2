@@ -31,23 +31,72 @@
 ;; (defparameter *texture* :pointer)
 (defparameter *visual-hash* (make-hash-table :test 'equal))
 
-(defun make-rect (index)
+(defun make-rect-for-top (tx1 ty1 tx2 ty2)
+  (let* ((hw  0.5)
+         (-hw  (- hw)))
+    (list 0.0  0.0  1.0                 ; normal
+          tx1  ty2      tx2  ty2      tx2 ty1       tx1 ty1 ; texture coordinates
+          -hw -hw  hw   hw  -hw  hw   hw  hw  hw   -hw  hw  hw)))
+
+(defun make-rect-for-north (tx1 ty1 tx2 ty2)
+  (let* ((hw  0.5)
+         (-hw  (- hw)))
+    (list 0.0  1.0  0.0
+          tx1 ty2       tx1 ty1       tx2 ty1      tx2 ty2
+          -hw hw -hw   -hw  hw  hw    hw  hw  hw   hw  hw -hw)))
+
+(defun make-rect-for-south (tx1 ty1 tx2 ty2)
+  (let* ((hw  0.5)
+         (-hw  (- hw)))
+    (list 0.0  -1.0  0.0
+          tx1  ty2       tx2 ty2       tx2 ty1     tx1 ty1
+          -hw -hw -hw    hw -hw -hw    hw -hw hw  -hw -hw hw)))
+
+(defun make-rect-for-west (tx1 ty1 tx2 ty2)
+  (let* ((hw  0.5)
+         (-hw  (- hw)))
+    (list -1.0  0.0  0.0
+          tx1 ty2        tx1 ty1       tx2 ty1     tx2 ty2
+          -hw -hw -hw   -hw -hw hw    -hw  hw hw  -hw  hw -hw)))
+
+(defun make-rect-for-bottom (tx1 ty1 tx2 ty2)
+  (let* ((hw  0.5)
+         (-hw  (- hw)))
+    (list 0.0  0.0  1.0
+          tx1 ty2        tx2 ty2       tx2 ty1      tx1 ty1
+         -hw -hw -hw     hw -hw -hw    hw  hw -hw  -hw  hw -hw)))
+
+(defun make-rect-for-east (tx1 ty1 tx2 ty2)
+  (let* ((hw  0.5)
+         (-hw  (- hw)))
+    (list 1.0  0.0  0.0
+          tx1 ty2       tx2 ty2       tx2 ty1     tx1 ty1
+          hw -hw -hw    hw  hw -hw    hw  hw hw   hw -hw hw)))
+
+(defun make-rect (index face)
   (let* ((sprites-per-row (floor iw cw))
-         (x (* cw (mod index sprites-per-row)))
-         (y (* ch (floor index sprites-per-row))))
-    (list (float (/ x  iw))
-          (float (/ y  ih))
-          (float (/ cw iw))
-          (float (/ ch ih)))))
+         (tx1 (float (/ (* cw (mod index sprites-per-row)) iw)))
+         (ty1 (float (/ (* ch (floor index sprites-per-row)) iw)))
+         (tw  (float (/ cw iw)))
+         (th  (float (/ ch ih)))
+         (tx2 (+ tx1 tw))
+         (ty2 (+ ty1 th)))
+    (ecase face
+      (:top    (make-rect-for-top    tx1 ty1 tx2 ty2))
+      (:bottom (make-rect-for-bottom tx1 ty1 tx2 ty2))
+      (:front  (make-rect-for-south  tx1 ty1 tx2 ty2))
+      (:back   (make-rect-for-north  tx1 ty1 tx2 ty2))
+      (:east   (make-rect-for-east   tx1 ty1 tx2 ty2))
+      (:west   (make-rect-for-west   tx1 ty1 tx2 ty2)))))
 
 (defun make-cube (top bottom front back east west)
   (list
-   (if top    (make-rect top)    nil)
-   (if bottom (make-rect bottom) nil)
-   (if front  (make-rect front)  nil)
-   (if back   (make-rect back)   nil)
-   (if east   (make-rect east)   nil)
-   (if west   (make-rect west)   nil)))
+   (if top    (make-rect top    :top)    nil)
+   (if bottom (make-rect bottom :bottom) nil)
+   (if front  (make-rect front  :front)  nil)
+   (if back   (make-rect back   :back)   nil)
+   (if east   (make-rect east   :east)   nil)
+   (if west   (make-rect west   :west)   nil)))
 
 (defun init-visual-hash ()
   ;; VACUUM
@@ -267,36 +316,68 @@
   (setf (gethash "bomb"          *visual-hash*) (make-cube 77 77 77 77 77 77))
   ;; ring 1
   (setf (gethash "bomb-ring-1"   *visual-hash*) (list
-                                                 (list 0 (* 16 ch) (* 1 cw) (* 1 ch))
-                                                 (list nil nil nil nil nil nil)
-                                                 (list nil nil nil nil nil nil)
-                                                 (list nil nil nil nil nil nil)
-                                                 (list nil nil nil nil nil nil)
-                                                 (list nil nil nil nil nil nil))) ; start at index 256 (y slot 16); size 1 slot
+                                                 (let* ((hw 0.5)
+                                                        (-hw (- hw))
+                                                        (tx1 0.0)
+                                                        (tx2 (+ tx1 (/ cw iw)))
+                                                        (ty1 (/ (* 16.0 ch) ih))
+                                                        (ty2 (+ ty1 (/ ch ih))))
+                                                   (list 0.0 0.0 1.0 ; normal
+                                                         tx1 ty2 tx2 ty2 tx2 ty1 tx1 ty1 ; texture coordinates
+                                                         -hw -hw 0.0 hw -hw 0.0 hw hw 0.0 -hw hw 0.0))
+                                                 nil
+                                                 nil
+                                                 nil
+                                                 nil
+                                                 nil)) ; start at index 256 (y slot 16); size 1 slot
   ;; ring 2
   (setf (gethash "bomb-ring-2"   *visual-hash*) (list
-                                                 (list 0 (* 17 ch) (* 3 cw) (* 3 ch))
-                                                 (list nil nil nil nil nil nil)
-                                                 (list nil nil nil nil nil nil)
-                                                 (list nil nil nil nil nil nil)
-                                                 (list nil nil nil nil nil nil)
-                                                 (list nil nil nil nil nil nil))) ; start at y slot 17; size 3x3 slots
+                                                 (let* ((hw 1.5)
+                                                        (-hw (- hw))
+                                                        (tx1 0.0)
+                                                        (tx2 (+ tx1 (/ (* 3 cw) iw)))
+                                                        (ty1 (/ (* 17.0 ch) ih))
+                                                        (ty2 (+ ty1 (/ (* 3 ch) ih))))
+                                                   (list 0.0 0.0 1.0 ; normal
+                                                         tx1 ty2 tx2 ty2 tx2 ty1 tx1 ty1 ; texture coordinates
+                                                         -hw -hw 0.0 hw -hw 0.0 hw hw 0.0 -hw hw 0.0))
+                                                 nil
+                                                 nil
+                                                 nil
+                                                 nil
+                                                 nil)) ; start at y slot 17; size 3x3 slots
   ;; ring 3
   (setf (gethash "bomb-ring-3"   *visual-hash*) (list
-                                                 (list 0 (* 20 ch) (* 5 cw) (* 5 ch))
-                                                 (list nil nil nil nil nil nil)
-                                                 (list nil nil nil nil nil nil)
-                                                 (list nil nil nil nil nil nil)
-                                                 (list nil nil nil nil nil nil)
-                                                 (list nil nil nil nil nil nil))) ; size 5x5 slots
+                                                 (let* ((hw 2.5)
+                                                        (-hw (- hw))
+                                                        (tx1 0.0)
+                                                        (tx2 (+ tx1 (/ (* 5 cw) iw)))
+                                                        (ty1 (/ (* 20.0 ch) ih))
+                                                        (ty2 (+ ty1 (/ (* 5 ch) ih))))
+                                                   (list 0.0 0.0 1.0 ; normal
+                                                         tx1 ty2 tx2 ty2 tx2 ty1 tx1 ty1 ; texture coordinates
+                                                         -hw -hw 0.0 hw -hw 0.0 hw hw 0.0 -hw hw 0.0))
+                                                 nil
+                                                 nil
+                                                 nil
+                                                 nil
+                                                 nil)) ; size 5x5 slots
   ;; ring 4
   (setf (gethash "bomb-ring-4"   *visual-hash*) (list
-                                                 (list 0 (* 25 ch) (* 5 cw) (* 5 ch))
-                                                 (list nil nil nil nil nil nil)
-                                                 (list nil nil nil nil nil nil)
-                                                 (list nil nil nil nil nil nil)
-                                                 (list nil nil nil nil nil nil)
-                                                 (list nil nil nil nil nil nil)))) ; size 5x5 slots
+                                                 (let* ((hw 2.5)
+                                                        (-hw (- hw))
+                                                        (tx1 0.0)
+                                                        (tx2 (+ tx1 (/ (* 5 cw) iw)))
+                                                        (ty1 (/ (* 25.0 ch) ih))
+                                                        (ty2 (+ ty1 (/ (* 5 ch) ih))))
+                                                   (list 0.0 0.0 1.0 ; normal
+                                                         tx1 ty2 tx2 ty2 tx2 ty1 tx1 ty1 ; texture coordinates
+                                                         -hw -hw 0.0 hw -hw 0.0 hw hw 0.0 -hw hw 0.0))
+                                                 nil
+                                                 nil
+                                                 nil
+                                                 nil
+                                                 nil))) ; size 5x5 slots
 
 (defparameter *fake-input* nil)
 
@@ -304,6 +385,40 @@
   (let ((err (glgeterror)))
     (unless (=  err +GL-NO-ERROR+)
       (error "GL ERROR: ~A (~A)~%" (gluErrorString err) msg))))
+
+(defun ui-render-face (face)
+  ;; TODO this could be made more efficient by using foreign
+  ;; arrays and function(s) operating on them.
+  (let* ((nx  (nth 0   face))
+         (ny  (nth 1   face))
+         (nz  (nth 2   face))
+
+         (t1  (nth 3   face))
+         (t2  (nth 4   face))
+         (t3  (nth 5   face))
+         (t4  (nth 6   face))
+         (t5  (nth 7   face))
+         (t6  (nth 8   face))
+         (t7  (nth 9   face))
+         (t8  (nth 10  face))
+
+         (v1  (nth 11  face))
+         (v2  (nth 12  face))
+         (v3  (nth 13  face))
+         (v4  (nth 14  face))
+         (v5  (nth 15  face))
+         (v6  (nth 16  face))
+         (v7  (nth 17  face))
+         (v8  (nth 18  face))
+         (v9  (nth 19  face))
+         (v10 (nth 20  face))
+         (v11 (nth 21  face))
+         (v12 (nth 22  face)))
+    (glnormal3f nx  ny  nz)
+    (gltexcoord2f t1 t2) (glvertex3f v1  v2  v3)
+    (gltexcoord2f t3 t4) (glvertex3f v4  v5  v6)
+    (gltexcoord2f t5 t6) (glvertex3f v7  v8  v9)
+    (gltexcoord2f t7 t8) (glvertex3f v10 v11 v12)))
 
 (defun ui-render-cube (faces)
   ;; top bottom front back east west
@@ -314,89 +429,29 @@
         (east   (fifth  faces))
         (west   (sixth  faces)))
     (glbegin +GL-QUADS+)
-    ;; Top face
+    ;; Top north south west east bottom
     (when top
-      (let* ((tx1 (first  top))
-             (ty1 (second top))
-             (tw  (third  top))
-             (th  (fourth top))
-             (tx2 (+ tx1 tw))
-             (ty2 (+ ty1 th)))
-        (glnormal3f 0.0  0.0  1.0)
-        (gltexcoord2f tx1 ty2) (glvertex3f -0.5  -0.5  0.5)
-        (gltexcoord2f tx2 ty2) (glvertex3f  0.5  -0.5  0.5)
-        (gltexcoord2f tx2 ty1) (glvertex3f  0.5   0.5  0.5)
-        (gltexcoord2f tx1 ty1) (glvertex3f -0.5   0.5  0.5)))
+      (ui-render-face top))
 
     ;; North face
     (when north
-      (glnormal3f 0.0  1.0  0.0)
-      (let* ((tx1 (first  north))
-             (ty1 (second north))
-             (tw  (third  north))
-             (th  (fourth north))
-             (tx2 (+ tx1 tw))
-             (ty2 (+ ty1 th)))
-        (gltexcoord2f tx1 ty2) (glvertex3f -0.5   0.5 -0.5)
-        (gltexcoord2f tx1 ty1) (glvertex3f -0.5   0.5  0.5)
-        (gltexcoord2f tx2 ty1) (glvertex3f  0.5   0.5  0.5)
-        (gltexcoord2f tx2 ty2) (glvertex3f  0.5   0.5 -0.5)))
+      (ui-render-face north))
 
     ;; South face
     (when south
-      (glnormal3f 0.0  -1.0  0.0)
-      (let* ((tx1 (first  south))
-             (ty1 (second south))
-             (tw  (third  south))
-             (th  (fourth south))
-             (tx2 (+ tx1 tw))
-             (ty2 (+ ty1 th)))
-        (gltexcoord2f tx1 ty2) (glvertex3f -0.5   -0.5 -0.5)
-        (gltexcoord2f tx2 ty2) (glvertex3f  0.5   -0.5 -0.5)
-        (gltexcoord2f tx2 ty1) (glvertex3f  0.5   -0.5  0.5)
-        (gltexcoord2f tx1 ty1) (glvertex3f -0.5   -0.5  0.5)))
+      (ui-render-face south))
 
     ;; West face
     (when west
-      (glnormal3f -1.0  0.0  0.0)
-      (let* ((tx1 (first  west))
-             (ty1 (second west))
-             (tw  (third  west))
-             (th  (fourth west))
-             (tx2 (+ tx1 tw))
-             (ty2 (+ ty1 th)))
-        (gltexcoord2f tx1 ty2) (glvertex3f -0.5   -0.5 -0.5)
-        (gltexcoord2f tx1 ty1) (glvertex3f -0.5   -0.5  0.5)
-        (gltexcoord2f tx2 ty1) (glvertex3f -0.5    0.5  0.5)
-        (gltexcoord2f tx2 ty2) (glvertex3f -0.5    0.5 -0.5)))
+      (ui-render-face west))
 
     ;; East face
     (when east
-      (glnormal3f  1.0  0.0  0.0)
-      (let* ((tx1 (first  east))
-             (ty1 (second east))
-             (tw  (third  east))
-             (th  (fourth east))
-             (tx2 (+ tx1 tw))
-             (ty2 (+ ty1 th)))
-        (gltexcoord2f tx1 ty2) (glvertex3f  0.5   -0.5 -0.5)
-        (gltexcoord2f tx2 ty2) (glvertex3f  0.5    0.5 -0.5)
-        (gltexcoord2f tx2 ty1) (glvertex3f  0.5    0.5  0.5)
-        (gltexcoord2f tx1 ty1) (glvertex3f  0.5   -0.5  0.5)))
+      (ui-render-face east))
 
     ;; Bottom face (inverted)
     (when bottom
-      (glnormal3f  0.0  0.0  1.0)
-      (let* ((tx1 (first  bottom))
-             (ty1 (second bottom))
-             (tw  (third  bottom))
-             (th  (fourth bottom))
-             (tx2 (+ tx1 tw))
-             (ty2 (+ ty1 th)))
-        (gltexcoord2f tx1 ty2) (glvertex3f -0.5   -0.5 -0.5)
-        (gltexcoord2f tx2 ty2) (glvertex3f  0.5   -0.5 -0.5)
-        (gltexcoord2f tx2 ty1) (glvertex3f  0.5    0.5 -0.5)
-        (gltexcoord2f tx1 ty1) (glvertex3f -0.5    0.5 -0.5)))
+      (ui-render-face bottom))
 
     (glend)
     (check-error)))
