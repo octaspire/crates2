@@ -1036,6 +1036,27 @@
   (flags :uint32)
   (h :int))
 
+;; Defined in SDL_keycode.h
+(defconstant +KMOD-NONE+     #x0)
+(defconstant +KMOD-LSHIFT+   #x1)
+(defconstant +KMOD-RSHIFT+   #x2)
+(defconstant +KMOD-LCTRL+    #x40)
+(defconstant +KMOD-RCTRL+    #x80)
+(defconstant +KMOD-LALT+     #x100)
+(defconstant +KMOD-RALT+     #x200)
+(defconstant +KMOD-LGUI+     #x400)
+(defconstant +KMOD-RGUI+     #x800)
+(defconstant +KMOD-NUM+      #x1000)
+(defconstant +KMOD-CAPS+     #x2000)
+(defconstant +KMOD-MODE+     #x4000)
+(defconstant +KMOD-RESERVED+ #x8000)
+(defconstant +KMOD-CTRL+     (logior +KMOD-LCTRL+  +KMOD-RCTRL+))
+(defconstant +KMOD-SHIFT+    (logior +KMOD-LSHIFT+ +KMOD-RSHIFT+))
+(defconstant +KMOD-ALT+      (logior +KMOD-LALT+   +KMOD-RALT+))
+(defconstant +KMOD-GUI+      (logior +KMOD-LGUI+   +KMOD-RGUI+))
+
+(defcfun "SDL_GetModState" :uint32)     ; SDL_Keymod in C
+
 ;; OpenGL
 
 ;; declared in GL/gl.h

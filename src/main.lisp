@@ -137,6 +137,15 @@ This is similar to 'test' but runs much slower."
           (ui-maybe-read-input))
       nil))
 
+(defun reset-to-level (num)
+  (let ((valid num)
+        (largest (- *num-levels* 1)))
+    (when (< valid 0)
+      (setf valid largest))
+    (when (> valid largest)
+      (setf valid 0))
+    (setf *next-level* valid)))
+
 (defun run (options)
   (unless *errors*
     (crates2-ui:ui-init)
@@ -160,7 +169,9 @@ This is similar to 'test' but runs much slower."
                      (setf *input* (cons input *input*))
                      (case input
                        (:back    (running nil))
-                       (:restart (setf *next-level* *level-number*)))))
+                       (:restart (reset-to-level *level-number*))
+                       (:prev    (reset-to-level (1- *level-number*)))
+                       (:next    (reset-to-level (1+ *level-number*))))))
                  (unless *next-level*
                    (update *level*))
                  (when *next-level*
