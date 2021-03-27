@@ -70,6 +70,8 @@ make install && make play level=20
 |-------------+-------------------------------|
 | SHIFT+RIGHT | Next level                    |
 |-------------+-------------------------------|
+| SPACE       | Action 1                      |
+|-------------+-------------------------------|
 | R           | Restart current level         |
 |-------------+-------------------------------|
 | B or ESC    | Go back or exit current state |

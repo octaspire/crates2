@@ -36,13 +36,16 @@
 (defmethod update ((self moving))
   (setf (moving-tail self) nil)
   (when (active self)
-    (let ((v (velocity self)))
+    (let ((v (velocity self))
+          (airborne (moving-airborne self)))
       (ecase v
         (:east  (east self))
         (:west  (west self))
         (:north (north self))
         (:south (south self))
-        (:zero))))
+        (:zero))
+      (when airborne
+        (fall self))))
   (call-next-method))
 
 (defmethod tail-x ((self moving))
@@ -81,6 +84,24 @@
 
 (defmethod set-tail ((self moving) x y z)
   (setf (moving-tail self) (list x y z)))
+
+(defmethod jump ((self moving))
+  (let* ((z (+ (crate-z self) 1))
+         (specials (moving-specials self))
+         (airborne (moving-airborne self))
+         (crate (find-at (crate-x self) (crate-y self) z)))
+    (unless airborne
+      (when specials
+        (setf (moving-specials self) (cdr (moving-specials self)))
+        (if crate
+            (handle-collision self crate)
+            (setf (moving-airborne self) 1))))))
+
+(defmethod fall ((self moving))
+  (when (moving-airborne self)
+    (setf (moving-airborne self) (1- (moving-airborne self)))
+    (when (< (moving-airborne self) 0)
+      (setf (moving-airborne self) nil))))
 
 (defmethod west ((self moving))
   (let* ((x (- (crate-x self) 1))

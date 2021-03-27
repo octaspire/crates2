@@ -134,6 +134,22 @@
   (setf (gethash "key-idle-07" *visual-hash*) (make-cube 71 71 71 71 71 71))
   (setf (gethash "key-idle-08" *visual-hash*) (make-cube 72 72 72 72 72 72))
   (setf (gethash "key-active"  *visual-hash*) (make-cube 73 73 73 73 73 73))
+  ;; SPECIAL
+  (setf (gethash "special-jump-idle-00" *visual-hash*) (make-cube nil 960 nil nil nil nil))
+  (setf (gethash "special-jump-idle-01" *visual-hash*) (make-cube nil 961 nil nil nil nil))
+  (setf (gethash "special-jump-idle-02" *visual-hash*) (make-cube nil 962 nil nil nil nil))
+  (setf (gethash "special-jump-idle-03" *visual-hash*) (make-cube nil 963 nil nil nil nil))
+  (setf (gethash "special-jump-idle-04" *visual-hash*) (make-cube nil 964 nil nil nil nil))
+  (setf (gethash "special-jump-idle-05" *visual-hash*) (make-cube nil 965 nil nil nil nil))
+  (setf (gethash "special-jump-idle-06" *visual-hash*) (make-cube nil 966 nil nil nil nil))
+  (setf (gethash "special-jump-idle-07" *visual-hash*) (make-cube nil 967 nil nil nil nil))
+  (setf (gethash "special-jump-idle-08" *visual-hash*) (make-cube nil 968 nil nil nil nil))
+  (setf (gethash "special-jump-idle-09" *visual-hash*) (make-cube nil 969 nil nil nil nil))
+  (setf (gethash "special-jump-idle-10" *visual-hash*) (make-cube nil 970 nil nil nil nil))
+  (setf (gethash "special-jump-idle-11" *visual-hash*) (make-cube nil 971 nil nil nil nil))
+  (setf (gethash "special-jump-idle-12" *visual-hash*) (make-cube nil 972 nil nil nil nil))
+  (setf (gethash "special-jump-idle-13" *visual-hash*) (make-cube nil 972 nil nil nil nil))
+  (setf (gethash "special-jump-active"  *visual-hash*) (make-cube nil 973 nil nil nil nil))
   ;; PLAYER
   (setf (gethash "player-active-00" *visual-hash*) (make-cube 32 32 32 32 32 32))
   (setf (gethash "player-active-01" *visual-hash*) (make-cube 33 33 33 33 33 33))
@@ -142,6 +158,39 @@
   (setf (gethash "player-active-04" *visual-hash*) (make-cube 36 36 36 36 36 36))
   (setf (gethash "player-active-05" *visual-hash*) (make-cube 37 37 37 37 37 37))
   (setf (gethash "player-active-06" *visual-hash*) (make-cube 38 38 38 38 38 38))
+
+  (setf (gethash "player-airborne"  *visual-hash*) (let* ((w 1.0)
+                                                          (hw (/ 1.0 2))
+                                                          (-hw (- hw))
+                                                          (tx1 0.0)
+                                                          (tx2 (+ tx1 (/ cw iw)))
+                                                          (ty1 (/ (* 1.0 ch) ih))
+                                                          (ty2 (+ ty1 (/ ch ih))))
+                                                     (list
+
+                                                      ;; top
+                                                      (list 0.0 0.0 1.0 ; normal
+                                                            tx1 ty2 tx2 ty2 tx2 ty1 tx1 ty1 ; texture coordinates
+                                                            -hw -hw (+ hw 1.0) hw -hw (+ hw 1.0) hw hw (+ hw 1.0) -hw hw (+ hw 1.0))
+                                                      ;; north
+                                                      (list 0.0 1.0 0.0
+                                                            tx1 ty2 tx1 ty1 tx2 ty1 tx2 ty2
+                                                            -hw hw (+ -hw 1.0) -hw hw (+ hw 1.0) hw hw (+ hw 1.0) hw hw (+ -hw 1.0))
+                                                      ;; south
+                                                      (list 0.0 -1.0 0.0
+                                                            tx1 ty2 tx2 ty2 tx2 ty1 tx1 ty1
+                                                            -hw -hw (+ -hw 1.0) hw -hw (+ -hw 1.0) hw -hw (+ hw 1.0) -hw -hw (+ hw 1.0))
+                                                      ;; west
+                                                      (list -1.0  0.0  0.0
+                                                            tx1 ty2        tx1 ty1       tx2 ty1     tx2 ty2
+                                                            -hw -hw (+ -hw 1.0)   -hw -hw (+ hw 1.0)    -hw  hw (+ hw 1.0)  -hw  hw (+ -hw 1.0))
+                                                      ;; bottom
+                                                      nil
+                                                      ;; east
+                                                      (list 1.0  0.0  0.0
+                                                            tx1 ty2       tx2 ty2       tx2 ty1     tx1 ty1
+                                                            hw -hw (+ -hw 1.0)    hw  hw (+ -hw 1.0)    hw  hw (+ hw 1.0)   hw -hw (+ hw 1.0)))))
+
   (setf (gethash "player-hidden"    *visual-hash*) (make-cube 15 15 15 15 15 15))
   ;; SLOPES
   (setf (gethash "slope-en"        *visual-hash*) (make-cube 384 nil 0 nil nil 0))
@@ -565,6 +614,7 @@
                                                            ((eq scancode :SDL-SCANCODE-UP)     (setf result :north))
                                                            ((eq scancode :SDL-SCANCODE-DOWN)   (setf result :south))
                                                            ((eq scancode :SDL-SCANCODE-R)      (setf result :restart))
+                                                           ((eq scancode :SDL-SCANCODE-SPACE)  (setf result :action1))
                                                            ((eq scancode :SDL-SCANCODE-B)      (setf result :back))
                                                            ((eq scancode :SDL-SCANCODE-ESCAPE) (setf result :back))))))
                          ((eq type :SDL-QUIT) (setf result :back))))))

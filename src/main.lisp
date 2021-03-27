@@ -110,23 +110,6 @@ This is similar to 'test' but runs much slower."
   (when (> *verbose* 0)
     (format t fmt args)))
 
-(defun ui-maybe-read-input ()
-  (let ((player (find-first-crate-of-type 'player)))
-    (if (null player)
-        (crates2-ui:ui-read-input)                 ; clean the event queue
-        (progn
-          (if (movingp player)
-              (let ((pending (crates2-ui:ui-read-input)))
-                (when pending
-                  (setf *pending-input* pending))
-                nil)           ; No input while player moves, in textual mode.
-              (progn (setf *last-input*
-                           (if *pending-input*
-                               *pending-input*
-                               (crates2-ui:ui-read-input)))
-                     (setf *pending-input* nil)
-                     *last-input*))))))
-
 (defun ui-input ()
   (if *level*
       (if *test-run*
@@ -134,7 +117,10 @@ This is similar to 'test' but runs much slower."
             (setf *fake-input* (cdr *fake-input*))
             (setf *last-input* input)
             input)
-          (ui-maybe-read-input))
+          (let ((pending (crates2-ui:ui-read-input)))
+            (when pending
+              (setf *last-input* pending))
+            pending))
       nil))
 
 (defun reset-to-level (num)

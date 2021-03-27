@@ -32,6 +32,7 @@
                          (:file "simple-crates")
                          (:file "exit")
                          (:file "key")
+                         (:file "special")
                          (:file "pulled")
                          (:file "toggle")
                          (:file "player")
@@ -47,6 +48,7 @@
                          (:file "level")
                          (:file "octaspire-cl-sdl2")
                          (:file "sdl2-3d")
+                         (:file "sdl2-common")
                          (:file "levels")
                          (:file "main"))))
   :build-operation program-op

@@ -43,8 +43,12 @@
            :initform t
            :accessor active)
    (tail :initarg :tail
-           :initform nil
-           :accessor moving-tail)))
+         :initform nil
+         :accessor moving-tail)
+   (specials :initform nil
+             :accessor moving-specials)
+   (airborne :initform nil
+          :accessor moving-airborne)))
 
 (defclass wall (crate)
   ())
@@ -160,6 +164,14 @@
                 :initform 0
                 :accessor key-active-step)))
 
+(defclass special-jump (crate)
+  ((active-step :initarg :active-step
+                :initform 0
+                :accessor special-jump-active-step)
+   (target :initarg :target
+                :initform nil
+                :accessor special-jump-target)))
+
 (defclass pulled (moving)
   ((puller :initarg :puller
            :accessor pulled-puller
@@ -193,7 +205,9 @@
 
 (defclass player (moving)
   ((delay :initform 0
-          :accessor player-delay)))
+          :accessor player-delay)
+   (pending-input :initform nil
+                  :accessor player-pending-input)))
 
 (defclass vacuum (crate)
   ((full :initarg :full

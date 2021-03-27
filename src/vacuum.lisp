@@ -22,7 +22,7 @@
      (let ((frame (1+ (crate-frame self)))
            (crate (find-at-of-type (crate-x self) (crate-y self) 0 'moving)))
        (setf (crate-frame self) (mod frame 8))
-       (when crate
+       (when (and crate (not (moving-airborne crate)))
          (setf (crate-state self) :broken)
          (lament crate))))
     (:broken nil))

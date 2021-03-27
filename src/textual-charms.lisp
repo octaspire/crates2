@@ -34,6 +34,9 @@
   (let ((c (cl-charms/low-level:wgetch *crates2-window*)))
     (log:debug "Input is ~A" c)
     (cond
+      ((= c cl-charms/low-level:KEY_SLEFT) :prev)
+      ((= c cl-charms/low-level:KEY_SRIGHT) :next)
+      ((= c (char-code #\Space)) :action1)
       ((or (= c (char-code #\w))
            (= c cl-charms/low-level:KEY_UP)) :north)
       ((or (= c (char-code #\s))
