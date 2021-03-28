@@ -484,17 +484,17 @@
   ;; TOGGLE
   (setf (gethash "toggle-idle"                *visual-hash*) (make-cube 39 39 39 39 39 39))
   ;; east
-  (setf (gethash "toggle-east-on"             *visual-hash*) (make-cube 40 nil nil nil nil nil))
-  (setf (gethash "toggle-east-off"            *visual-hash*) (make-cube 50 nil nil nil nil nil))
+  (setf (gethash "toggle-east-on"             *visual-hash*) (make-transparent-top 40))
+  (setf (gethash "toggle-east-off"            *visual-hash*) (make-transparent-top 50))
   ;; west
-  (setf (gethash "toggle-west-on"             *visual-hash*) (make-cube 42 nil nil nil nil nil))
-  (setf (gethash "toggle-west-off"            *visual-hash*) (make-cube 50 nil nil nil nil nil))
+  (setf (gethash "toggle-west-on"             *visual-hash*) (make-transparent-top 42 0.16))
+  (setf (gethash "toggle-west-off"            *visual-hash*) (make-transparent-top 50 0.16))
   ;; north
-  (setf (gethash "toggle-north-on"            *visual-hash*) (make-cube 41 nil nil nil nil nil))
-  (setf (gethash "toggle-north-off"           *visual-hash*) (make-cube 50 nil nil nil nil nil))
+  (setf (gethash "toggle-north-on"            *visual-hash*) (make-transparent-top 41 0.22))
+  (setf (gethash "toggle-north-off"           *visual-hash*) (make-transparent-top 50 0.22))
   ;; south
-  (setf (gethash "toggle-south-on"            *visual-hash*) (make-cube 43 nil nil nil nil nil))
-  (setf (gethash "toggle-south-off"           *visual-hash*) (make-cube 50 nil nil nil nil nil))
+  (setf (gethash "toggle-south-on"            *visual-hash*) (make-transparent-top 43 0.28))
+  (setf (gethash "toggle-south-off"           *visual-hash*) (make-transparent-top 50 0.28))
   ;; BOMB
   (setf (gethash "bomb-durable"  *visual-hash*) (make-cube 76 76 76 76 76 76))
   (setf (gethash "bomb"          *visual-hash*) (make-cube 77 77 77 77 77 77))
