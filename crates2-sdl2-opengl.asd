@@ -12,7 +12,7 @@
 ;; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ;; See the License for the specific language governing permissions and
 ;; limitations under the License.
-(asdf:defsystem "crates2-sdl2"
+(asdf:defsystem "crates2-sdl2-opengl"
   :depends-on (:alexandria
                :unix-opts
                :parse-float
@@ -47,10 +47,10 @@
                          (:file "stepper")
                          (:file "level")
                          (:file "octaspire-cl-sdl2")
-                         (:file "sdl2-2d")
+                         (:file "sdl2-3d")
                          (:file "sdl2-common")
                          (:file "levels")
                          (:file "main"))))
   :build-operation program-op
-  :build-pathname "crates2-sdl2"
+  :build-pathname "crates2-sdl2-opengl"
   :entry-point "crates2:main")

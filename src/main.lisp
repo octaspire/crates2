@@ -26,11 +26,11 @@
 (defparameter *errors* nil)
 (defparameter *update-counter* 0)
 (defparameter *input* nil)
-(defparameter *level-number* -1)
+(defparameter *level-number* 7)
 (defparameter *running* t)
 (defparameter *level* nil)
 (defparameter *created* nil)
-(defparameter *next-level* nil)
+(defparameter *next-level* 8)
 (defparameter *level-width* 20)
 (defparameter *level-height* 20)
 (defparameter *frame-duration-default* 0.125) ; Not zeroed in test mode.
@@ -110,23 +110,6 @@ This is similar to 'test' but runs much slower."
   (when (> *verbose* 0)
     (format t fmt args)))
 
-(defun ui-maybe-read-input ()
-  (let ((player (find-first-crate-of-type 'player)))
-    (if (null player)
-        (crates2-ui:ui-read-input)                 ; clean the event queue
-        (progn
-          (if (movingp player)
-              (let ((pending (crates2-ui:ui-read-input)))
-                (when pending
-                  (setf *pending-input* pending))
-                nil)           ; No input while player moves, in textual mode.
-              (progn (setf *last-input*
-                           (if *pending-input*
-                               *pending-input*
-                               (crates2-ui:ui-read-input)))
-                     (setf *pending-input* nil)
-                     *last-input*))))))
-
 (defun ui-input ()
   (if *level*
       (if *test-run*
@@ -134,8 +117,20 @@ This is similar to 'test' but runs much slower."
             (setf *fake-input* (cdr *fake-input*))
             (setf *last-input* input)
             input)
-          (ui-maybe-read-input))
+          (let ((pending (crates2-ui:ui-read-input)))
+            (when pending
+              (setf *last-input* pending))
+            pending))
       nil))
+
+(defun reset-to-level (num)
+  (let ((valid num)
+        (largest (- *num-levels* 1)))
+    (when (< valid 0)
+      (setf valid largest))
+    (when (> valid largest)
+      (setf valid 0))
+    (setf *next-level* valid)))
 
 (defun run (options)
   (unless *errors*
@@ -160,7 +155,9 @@ This is similar to 'test' but runs much slower."
                      (setf *input* (cons input *input*))
                      (case input
                        (:back    (running nil))
-                       (:restart (setf *next-level* *level-number*)))))
+                       (:restart (reset-to-level *level-number*))
+                       (:prev    (reset-to-level (1- *level-number*)))
+                       (:next    (reset-to-level (1+ *level-number*))))))
                  (unless *next-level*
                    (update *level*))
                  (when *next-level*

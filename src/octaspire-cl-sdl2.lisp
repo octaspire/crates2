@@ -39,10 +39,25 @@
   (:darwin (:or (:framework "SDL2_mixer") (:default "libSDL2_mixer")))
   (:unix (:or "libSDL2_mixer-2.0.so")))
 
+(define-foreign-library libgl
+  (:darwin (:or (:framework "GL") (:default "libGL")))
+  (:unix (:or "libGL.so")))
+
+(define-foreign-library libglu
+    (:darwin (:or (:framework "GLU") (:default "libGLU")))
+  (:unix (:or "libGLU.so")))
+
+(define-foreign-library libglew
+    (:darwin (:or (:framework "GLEW") (:default "libGLEW")))
+  (:unix (:or "libGLEW.so")))
+
 (use-foreign-library libsdl2)
 (use-foreign-library libsdl2-image)
 (use-foreign-library libsdl2-ttf)
 (use-foreign-library libsdl2-mixer)
+(use-foreign-library libgl)
+(use-foreign-library libglu)
+(use-foreign-library libglew)
 
 (defcfun "SDL_Init" :int
   (flags :long))
@@ -771,6 +786,22 @@
   (file       :pointer)                 ; char*
   (windowID   :uint32))
 
+;; Declared in SDL_surface.h
+(defcstruct sdl-surface
+  "Collection of pixels."
+  (flags        :uint32)
+  (format       :pointer)
+  (w            :int)
+  (h            :int)
+  (pitch        :int)
+  (pixels       :pointer)
+  (userdata     :pointer)
+  (locked       :int)
+  (list-blitmap :pointer)
+  (clip-rect    (:struct sdl-rect))
+  (map          :pointer)
+  (refcount     :int))
+
 (defcunion sdl-event
   "General event structure (union)."
   (type      sdl-eventtype)
@@ -965,6 +996,38 @@
       (:SDL-LASTEVENT                (format nil "TYPE: LastEvent")))))
 
 ;; Declared in include/SDL_video.h
+(eval (let ((sdl-win-fullscr #x01))
+        `(defcenum sdl-windowflags
+           "Flags for a window"
+           (:SDL-WINDOW-FULLSCREEN    ,sdl-win-fullscr)
+           (:SDL-WINDOW-OPENGL        #x02)
+           (:SDL-WINDOW-SHOWN         #x04)
+           (:SDL-WINDOW-HIDDEN        #x08)
+           (:SDL-WINDOW-BORDERLESS    #x10)
+           (:SDL-WINDOW-RESIZABLE     #x20)
+           (:SDL-WINDOW-MINIMIZED     #x40)
+           (:SDL-WINDOW-MAXIMIZED     #x80)
+           (:SDL-WINDOW-INPUT-GRABBED #x100)
+           (:SDL-WINDOW-INPUT-FOCUS   #x200)
+           (:SDL-WINDOW-MOUSE-FOCUS   #x400)
+           (:SDL-WINDOW-FULLSCREEN-DESKTOP ,(logior sdl-win-fullscr #x1000))
+           (:SDL-WINDOW-FOREIGN       #x800)
+           (:SDL-WINDOW-ALLOW-HIGHDPI #x2000)
+           (:SDL-WINDOW-MOUSE-CAPTURE #x4000)
+           (:SDL-WINDOW-ALWAYS-ON-TOP #x8000)
+           (:SDL-WINDOW-SKIP-TASKBAR  #x10000)
+           (:SDL-WINDOW-UTILITY       #x20000)
+           (:SDL-WINDOW-TOOLTIP       #x40000)
+           (:SDL-WINDOW-POPUP-MENU    #x80000)
+           (:SDL-WINDOW-VULKAN        #x10000000)
+           (:SDL-WINDOW-METAL         #x20000000))))
+
+(defcfun "SDL_GL_CreateContext" :pointer
+  (window :pointer))
+
+(defcfun "SDL_GL_SetSwapInterval" :int
+  (interval :int))
+
 (defcfun "SDL_CreateWindow" :pointer
   (title (:string :encoding :utf-8))
   (x :int)
@@ -973,7 +1036,261 @@
   (flags :uint32)
   (h :int))
 
+;; Defined in SDL_keycode.h
+(defconstant +KMOD-NONE+     #x0)
+(defconstant +KMOD-LSHIFT+   #x1)
+(defconstant +KMOD-RSHIFT+   #x2)
+(defconstant +KMOD-LCTRL+    #x40)
+(defconstant +KMOD-RCTRL+    #x80)
+(defconstant +KMOD-LALT+     #x100)
+(defconstant +KMOD-RALT+     #x200)
+(defconstant +KMOD-LGUI+     #x400)
+(defconstant +KMOD-RGUI+     #x800)
+(defconstant +KMOD-NUM+      #x1000)
+(defconstant +KMOD-CAPS+     #x2000)
+(defconstant +KMOD-MODE+     #x4000)
+(defconstant +KMOD-RESERVED+ #x8000)
+(defconstant +KMOD-CTRL+     (logior +KMOD-LCTRL+  +KMOD-RCTRL+))
+(defconstant +KMOD-SHIFT+    (logior +KMOD-LSHIFT+ +KMOD-RSHIFT+))
+(defconstant +KMOD-ALT+      (logior +KMOD-LALT+   +KMOD-RALT+))
+(defconstant +KMOD-GUI+      (logior +KMOD-LGUI+   +KMOD-RGUI+))
 
+(defcfun "SDL_GetModState" :uint32)     ; SDL_Keymod in C
+
+;; OpenGL
+
+;; declared in GL/gl.h
+(defconstant +GL-CURRENT-BIT+         #x1)
+(defconstant +GL-POINT-BIT+           #x2)
+(defconstant +GL-LINE-BIT+            #x4)
+(defconstant +GL-POLYGON-BIT+         #x8)
+(defconstant +GL-POLYGON-STIPPLE-BIT+ #x10)
+(defconstant +GL-PIXEL-MODE-BIT+      #x20)
+(defconstant +GL-LIGHTING-BIT+        #x40)
+(defconstant +GL-FOG-BIT+             #x80)
+(defconstant +GL-DEPTH-BUFFER-BIT+    #x100)
+(defconstant +GL-ACCUM-BUFFER-BIT+    #x200)
+(defconstant +GL-STENCIL-BUFFER-BIT+  #x400)
+(defconstant +GL-VIEWPORT-BIT+        #x800)
+(defconstant +GL-TRANSFORM-BIT+       #x1000)
+(defconstant +GL-ENABLE-BIT+          #x2000)
+(defconstant +GL-COLOR-BUFFER-BIT+    #x4000)
+(defconstant +GL-EVAL-BIT+            #x10000)
+(defconstant +GL-LIST-BIT+            #x20000)
+(defconstant +GL-TEXTURE-BIT+         #x40000)
+(defconstant +GL-SCISSOR-BIT+         #x80000)
+(defconstant +GL-ALL-ATTRIB-BITS+     #xFFFFFFFF)
+
+(defconstant +GL-TEXTURE-2D+          #x0DE1)
+(defconstant +GL-DEPTH-TEST+          #x0B71)
+(defconstant +GL-DEPTH-TEST+          #x0B71)
+(defconstant +GL-CULL-FACE+           #x0B44)
+(defconstant +GL-ALPHA-TEST+          #x0BC0)
+
+(defconstant +GL-NO-ERROR+            #x0)
+(defconstant +GL-INVALID-ENUM+        #x500)
+(defconstant +GL-INVALID-VALUE+       #x501)
+(defconstant +GL-INVALID-OPERATION+   #x502)
+(defconstant +GL-STACK-OVERFLOW+      #x503)
+(defconstant +GL-STACK-UNDERFLOW+     #x504)
+(defconstant +GL-OUT-OF-MEMORY+       #x505)
+
+(defconstant +GL-BYTE+                #x1400)
+(defconstant +GL-UNSIGNED-BYTE+       #x1401)
+
+(defconstant +GL-RGB+                 #x1907)
+(defconstant +GL-RGBA+                #x1908)
+
+(defconstant +GL-LIGHTING+            #x0B50)
+
+(defconstant +GL-BLEND+               #x0BE2)
+
+(defcfun "glewInit" :uint)
+
+(defcfun "glGetError" :uint32)           ; GLenum for real
+(defcfun "gluErrorString" (:string :encoding :utf-8)
+  (error :uint32)) ;; GLenum for real
+
+(defcfun "glClear" :void
+  (mask :uint32))
+
+(defcfun "glClearColor" :void
+  (red   :float)
+  (green :float)
+  (blue  :float)
+  (alpha :float))
+
+(defcfun "glDisable" :void
+  (cap :uint32))
+
+(defcfun "glEnable" :void
+  (cap :uint32))
+
+(defcfun "glBlendFunc" :void
+  (sfactor :uint32)
+  (dfactor :uint32))
+
+(defcfun "glGenTextures" :void
+  (n        :uint32)
+  (textures :pointer))
+
+(defcfun "glBindTexture" :void
+  (target   :uint32)
+  (texture  :uint32))
+
+(defcfun "glTranslatef" :void
+  (x :float)
+  (y :float)
+  (z :float))
+
+(defcfun "glViewport" :void
+  (x :int32)
+  (y :int32)
+  (w :uint32)
+  (h :uint32))
+
+(defcfun "glFlush" :void)
+
+;; GLenum for real. Defined in include/GL/gl.h
+(defconstant +GL-MODELVIEW+  #x1700)
+(defconstant +GL-PROJECTION+ #x1701)
+(defconstant +GL-TEXTURE+    #x1702)
+(defconstant +GL-COLOR+      #x1800)
+
+(defcfun "glMatrixMode" :void
+  (mode :uint))
+
+(defcfun "glLoadIdentity" :void)
+
+(defcfun "gluPerspective" :void
+  (fovy   :double)
+  (aspect :double)
+  (znear  :double)
+  (zfar   :double))
+
+(defcfun "gluOrtho2D" :void
+  (left   :double)
+  (rightt :double)
+  (bottom :double)
+  (top    :double))
+
+(defcfun "glColor3f" :void
+  (red   :float)
+  (green :float)
+  (blue  :float))
+
+(defcfun "glColor4f" :void
+  (red   :float)
+  (green :float)
+  (blue  :float)
+  (alpha :float))
+
+(defcfun "glVertex3f" :void
+  (x :float)
+  (y :float)
+  (z :float))
+
+(defcfun "glNormal3f" :void
+  (nx :float)
+  (ny :float)
+  (nz :float))
+
+(defcfun "glTexCoord2f" :void
+  (cs :float)
+  (ct :float))
+
+(defcfun "gluLookAt" :void
+  (eyeX    :double)
+  (eyeY    :double)
+  (eyeZ    :double)
+  (centerX :double)
+  (centerY :double)
+  (centerZ :double)
+  (upX     :double)
+  (upY     :double)
+  (upZ     :double))
+
+(defcfun "glTexImage2D" :void
+  (target         :uint32)
+  (level          :int32)
+  (internalformat :int32)
+  (width          :uint32)
+  (height         :uint32)
+  (border         :int32)
+  (format         :uint32)
+  (type           :uint32)
+  (pixels         :pointer))
+
+(defcfun "glTexParameteri" :void
+  (texture :uint32)
+  (pname   :uint32)
+  (param   :int32))
+
+(defcfun "glPushMatrix" :void)
+(defcfun "glPopMatrix"  :void)
+
+;; GLenum for real. Defined in include/GL/gl.h
+(defconstant +GL-POINTS+              #x0)
+(defconstant +GL-LINES+               #x1)
+(defconstant +GL-LINE-LOOP+           #x2)
+(defconstant +GL-LINE-STRIP+          #x3)
+(defconstant +GL-TRIANGLES+           #x4)
+(defconstant +GL-TRIANGLE-STRIP+      #x5)
+(defconstant +GL-TRIANGLE-FAN+        #x6)
+(defconstant +GL-QUADS+               #x7)
+(defconstant +GL-QUAD-STRIP+          #x8)
+(defconstant +GL-POLYGON+             #x9)
+
+;; Blending.
+(defconstant +GL-BLEND+               #x0BE2)
+(defconstant +GL-BLEND-SRC+           #x0BE1)
+(defconstant +GL-BLEND-DST+           #x0BE0)
+(defconstant +GL-ZERO+                #x0)
+(defconstant +GL-ONE+                 #x1)
+(defconstant +GL-SRC-COLOR+           #x0300)
+(defconstant +GL-ONE-MINUS-SRC-COLOR+ #x0301)
+(defconstant +GL-SRC-ALPHA+           #x0302)
+(defconstant +GL-ONE-MINUS-SRC-ALPHA+ #x0303)
+(defconstant +GL-DST-ALPHA+           #x0304)
+(defconstant +GL-ONE-MINUS-DST-ALPHA+ #x0305)
+(defconstant +GL-DST-COLOR+           #x0306)
+(defconstant +GL-ONE-MINUS-DST-COLOR+ #x0307)
+(defconstant +GL-SRC-ALPHA-SATURATE+  #x0308)
+
+;; Hints
+(defconstant +GL-PERSPECTIVE-CORRECTION-HINT+ #x0C50)
+(defconstant +GL-POINT-SMOOTH-HINT+           #x0C51)
+(defconstant +GL-LINE-SMOOTH-HINT+            #x0C52)
+(defconstant +GL-POLYGON-SMOOTH-HINT+         #x0C53)
+(defconstant +GL-FOG-HINT+                    #x0C54)
+(defconstant +GL-DONT-CARE+                   #x1100)
+(defconstant +GL-FASTEST+                     #x1101)
+(defconstant +GL-NICEST+                      #x1102)
+
+;; Texture mapping
+(defconstant +GL-TEXTURE-MAG-FILTER+          #x2800)
+(defconstant +GL-TEXTURE-MIN-FILTER+          #x2801)
+(defconstant +GL-LINEAR+                      #x2601)
+(defconstant +GL-NEAREST+                     #x2600)
+
+(defcfun "glBegin" :void
+  (mode :uint))
+
+(defcfun "glEnd" :void)
+
+(defcfun "glHint" :void
+  (target :uint32)
+  (mode   :uint32))
+
+
+
+
+
+(defcfun "SDL_LockSurface" :int
+  (surface :pointer))
+
+(defcfun "SDL_UnlockSurface" :void
+  (surface :pointer))
 
 
 
@@ -1181,8 +1498,50 @@
        (mix-closeaudio))))
 
 
+;;; OpenGL
 
+(defcenum sdl-glattr
+  "OpenGL configuration attributes"
+  (:SDL-GL-RED-SIZE 0)
+  (:SDL-GL-GREEN-SIZE)
+  (:SDL-GL-BLUE-SIZE)
+  (:SDL-GL-ALPHA-SIZE)
+  (:SDL-GL-BUFFER-SIZE)
+  (:SDL-GL-DOUBLEBUFFER)
+  (:SDL-GL-DEPTH-SIZE)
+  (:SDL-GL-STENCIL-SIZE)
+  (:SDL-GL-ACCUM-RED-SIZE)
+  (:SDL-GL-ACCUM-GREEN-SIZE)
+  (:SDL-GL-ACCUM-BLUE-SIZE)
+  (:SDL-GL-ACCUM-ALPHA-SIZE)
+  (:SDL-GL-STEREO)
+  (:SDL-GL-MULTISAMPLEBUFFERS)
+  (:SDL-GL-MULTISAMPLESAMPLES)
+  (:SDL-GL-ACCELERATED-VISUAL)
+  (:SDL-GL-RETAINED-BACKING)
+  (:SDL-GL-CONTEXT-MAJOR-VERSION)
+  (:SDL-GL-CONTEXT-MINOR-VERSION)
+  (:SDL-GL-CONTEXT-EGL)
+  (:SDL-GL-CONTEXT-FLAGS)
+  (:SDL-GL-CONTEXT-PROFILE-MASK)
+  (:SDL-GL-SHARE-WITH-CURRENT-CONTEXT)
+  (:SDL-GL-FRAMEBUFFER_SRGB_CAPABLE)
+  (:SDL-GL-CONTEXT-RELEASE-BEHAVIOR)
+  (:SDL-GL-CONTEXT-RESET-NOTIFICATION)
+  (:SDL-GL-CONTEXT-NO-ERROR))
 
+(defcenum sdl-glprofile
+  "Profile mask"
+  (:SDL-GL-CONTEXT-PROFILE-CORE          #x01)
+  (:SDL-GL-CONTEXT-PROFILE-COMPATIBILITY #x02)
+  (:SDL-GL-CONTEXT-PROFILE-ES            #x04))
+
+(defcfun "SDL_GL_SetAttribute" :int
+  (attr  sdl-glattr)
+  (value :int))
+
+(defcfun "SDL_GL_SwapWindow" :void
+  (window :pointer))
 
 ;; Helpers
 

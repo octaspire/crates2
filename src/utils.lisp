@@ -67,21 +67,25 @@ directions."
   (if other
       (let ((ix (crate-x i))
             (iy (crate-y i))
+            (iz (crate-z i))
             (ox (crate-x other))
-            (oy (crate-y other)))
-        (if (= iy oy)
-            (if (between-inclusive-p ix (- ox 1) (- ox 1 slack))
-                :west
-                (if (between-inclusive-p ix (+ ox 1) (+ ox 1 slack))
-                    :east
-                    :zero))
-            (if (= ix ox)
-                (if (between-inclusive-p iy (- oy 1) (- oy 1 slack))
-                    :north
-                    (if (between-inclusive-p iy (+ oy 1) (+ oy 1 slack))
-                        :south
+            (oy (crate-y other))
+            (oz (crate-z other)))
+        (if (= iz oz)
+            (if (= iy oy)
+                (if (between-inclusive-p ix (- ox 1) (- ox 1 slack))
+                    :west
+                    (if (between-inclusive-p ix (+ ox 1) (+ ox 1 slack))
+                        :east
                         :zero))
-                :zero)))
+                (if (= ix ox)
+                    (if (between-inclusive-p iy (- oy 1) (- oy 1 slack))
+                        :north
+                        (if (between-inclusive-p iy (+ oy 1) (+ oy 1 slack))
+                            :south
+                            :zero))
+                    :zero))
+            :zero))
       :zero))
 
 (defun on-which-side-is-other (i other &optional (slack 0))

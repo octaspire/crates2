@@ -8,11 +8,12 @@ is to be added.
 *Please note that this is still Work In Progress.*
 
 * Getting Started
+** Prerequisites
 
-Prerequisites:
+At this stage: =Common Lisp= implementation (tested with SBCL), =Quicklisp=, =make=,
+=libffi=, =SDL2=, =SDL2-image=, =SDL2-mixer=, =GL= and =GLU= libraries.
 
-At this stage: =Common Lisp= implementation (tested with SBCL), =Quicklisp=, =make=
-and =SDL2= library.
+*** Cloning and Building
 
 Get sources and build by issuing commands:
 
@@ -30,6 +31,16 @@ But please note, that the path given in that file probably
 has to be changed to match the location of the cloned directory
 on your machine.
 
+If =libffi= is not found on a UNIX like system, the
+following change to file
+=$HOME/quicklisp/dists/quicklisp/software/cffi_0.23.0/libffi/libffi.lisp=
+might help:
+
+#+begin_src diff
+-  (:unix (:or "libffi.so.7" "libffi32.so.7" "libffi.so.6" "libffi32.so.6" "libffi.so.5" "libffi32.so.5"))
++  (:unix (:or "libffi.so.7" "libffi32.so.7" "libffi.so.6" "libffi32.so.6" "libffi.so.5" "libffi32.so.5" "libffi.so"))
+#+end_src
+
 You can also build and run by issuing command:
 
 #+begin_src shell
@@ -42,8 +53,31 @@ To install and start playing from level 20:
 make install && make play level=20
 #+end_src
 
-** Platform Specific Notes
+*** Controls
+**** In 3D Mode
 
+| Key         | Action                        |
+|-------------+-------------------------------|
+| LEFT        | Move west                     |
+|-------------+-------------------------------|
+| RIGHT       | Move east                     |
+|-------------+-------------------------------|
+| UP          | Move north                    |
+|-------------+-------------------------------|
+| DOWN        | Move south                    |
+|-------------+-------------------------------|
+| SHIFT+LEFT  | Previous level                |
+|-------------+-------------------------------|
+| SHIFT+RIGHT | Next level                    |
+|-------------+-------------------------------|
+| SPACE       | Action 1                      |
+|-------------+-------------------------------|
+| R           | Restart current level         |
+|-------------+-------------------------------|
+| B or ESC    | Go back or exit current state |
+|-------------+-------------------------------|
+
+** Platform Specific Notes
 *** OpenBSD
 
 To use crates2 in OpenBSD without Common Lisp REPL - i.e. by running the generated

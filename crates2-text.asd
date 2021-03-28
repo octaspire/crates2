@@ -25,6 +25,7 @@
                  (:file "simple-crates")
                  (:file "exit")
                  (:file "key")
+                 (:file "special")
                  (:file "pulled")
                  (:file "toggle")
                  (:file "player")

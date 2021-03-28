@@ -18,7 +18,9 @@
 
 (defmethod visual ((self player))
   (if (active self)
-      (list (format nil "player-active-~2,'0d" (crate-frame self)))
+      (if (moving-airborne self)
+          (list "player-airborne")
+          (list (format nil "player-active-~2,'0d" (crate-frame self))))
       (list "player-hidden")))
 
 (defmethod update ((self player))
@@ -38,12 +40,14 @@
   (call-next-method))
 
 (defmethod handle-input ((self player) input)
-  (when (active self)
+  (when (and input (active self))
     (ecase input
-      (:east  (setf (velocity self) input))
-      (:west  (setf (velocity self) input))
-      (:north (setf (velocity self) input))
-      (:south (setf (velocity self) input)))))
+      (:east    (setf (velocity self) input))
+      (:west    (setf (velocity self) input))
+      (:north   (setf (velocity self) input))
+      (:south   (setf (velocity self) input))
+      (:action1 (jump self)))
+    (setf (player-pending-input self) nil)))
 
 (defmethod collide ((self player) (target pushed))
   (let ((vplayer (velocity self))
@@ -55,12 +59,21 @@
 
 ;; Functions
 
+(defmethod get-input ((self player))
+  (let ((input (car *input*)))
+    (unless input
+      (setf input (player-pending-input self)))
+    input))
+
 (defun player-update-idle (self)
-  (let ((input (car *input*))
+  (let ((input (get-input self))
         (frame (1+ (crate-frame self))))
     (setf (crate-frame self) (mod frame 7))
-    (when (and input (stationaryp self))
-      (handle-input self input))))
+    (if (stationaryp self)
+        (handle-input self input)
+        (if (eq input :action1)
+            (handle-input self input)
+            (setf (player-pending-input self) input)))))
 
 (defun player-update-lamented (self)
   (incf (player-delay self))

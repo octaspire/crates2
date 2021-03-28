@@ -1,6 +1,7 @@
 crates2-text
 crates2-charms
 crates2-sdl2
+crates2-sdl2-opengl
 .#*
 expected.txt.bz2
 expected.txt
