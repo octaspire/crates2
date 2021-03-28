@@ -1105,9 +1105,6 @@
 
 (defconstant +GL-BLEND+               #x0BE2)
 
-(defconstant +GL-TEXTURE-MIN-FILTER+  #x2801)
-(defconstant +GL-LINEAR+              #x2601)
-
 (defcfun "glewInit" :uint)
 
 (defcfun "glGetError" :uint32)           ; GLenum for real
@@ -1260,10 +1257,30 @@
 (defconstant +GL-ONE-MINUS-DST-COLOR+ #x0307)
 (defconstant +GL-SRC-ALPHA-SATURATE+  #x0308)
 
+;; Hints
+(defconstant +GL-PERSPECTIVE-CORRECTION-HINT+ #x0C50)
+(defconstant +GL-POINT-SMOOTH-HINT+           #x0C51)
+(defconstant +GL-LINE-SMOOTH-HINT+            #x0C52)
+(defconstant +GL-POLYGON-SMOOTH-HINT+         #x0C53)
+(defconstant +GL-FOG-HINT+                    #x0C54)
+(defconstant +GL-DONT-CARE+                   #x1100)
+(defconstant +GL-FASTEST+                     #x1101)
+(defconstant +GL-NICEST+                      #x1102)
+
+;; Texture mapping
+(defconstant +GL-TEXTURE-MAG-FILTER+          #x2800)
+(defconstant +GL-TEXTURE-MIN-FILTER+          #x2801)
+(defconstant +GL-LINEAR+                      #x2601)
+(defconstant +GL-NEAREST+                     #x2600)
+
 (defcfun "glBegin" :void
   (mode :uint))
 
 (defcfun "glEnd" :void)
+
+(defcfun "glHint" :void
+  (target :uint32)
+  (mode   :uint32))
 
 
 
