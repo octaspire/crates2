@@ -1129,6 +1129,10 @@
 (defcfun "glEnable" :void
   (cap :uint32))
 
+(defcfun "glBlendFunc" :void
+  (sfactor :uint32)
+  (dfactor :uint32))
+
 (defcfun "glGenTextures" :void
   (n        :uint32)
   (textures :pointer))
@@ -1239,6 +1243,22 @@
 (defconstant +GL-QUADS+               #x7)
 (defconstant +GL-QUAD-STRIP+          #x8)
 (defconstant +GL-POLYGON+             #x9)
+
+;; Blending.
+(defconstant +GL-BLEND+               #x0BE2)
+(defconstant +GL-BLEND-SRC+           #x0BE1)
+(defconstant +GL-BLEND-DST+           #x0BE0)
+(defconstant +GL-ZERO+                #x0)
+(defconstant +GL-ONE+                 #x1)
+(defconstant +GL-SRC-COLOR+           #x0300)
+(defconstant +GL-ONE-MINUS-SRC-COLOR+ #x0301)
+(defconstant +GL-SRC-ALPHA+           #x0302)
+(defconstant +GL-ONE-MINUS-SRC-ALPHA+ #x0303)
+(defconstant +GL-DST-ALPHA+           #x0304)
+(defconstant +GL-ONE-MINUS-DST-ALPHA+ #x0305)
+(defconstant +GL-DST-COLOR+           #x0306)
+(defconstant +GL-ONE-MINUS-DST-COLOR+ #x0307)
+(defconstant +GL-SRC-ALPHA-SATURATE+  #x0308)
 
 (defcfun "glBegin" :void
   (mode :uint))
