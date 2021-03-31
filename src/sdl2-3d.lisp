@@ -467,16 +467,16 @@
   (setf (gethash "pulled-east-handle-idle"   *visual-hash*) (make-transparent-top 7))
   (setf (gethash "pulled-east-no-handle"     *visual-hash*) (make-cube nil nil nil nil nil nil))
   ;; west
-  (setf (gethash "pulled-west-handle-active" *visual-hash*) (make-transparent-top 13 0.16))
-  (setf (gethash "pulled-west-handle-idle"   *visual-hash*) (make-transparent-top 9  0.16))
+  (setf (gethash "pulled-west-handle-active" *visual-hash*) (make-transparent-top 13))
+  (setf (gethash "pulled-west-handle-idle"   *visual-hash*) (make-transparent-top 9))
   (setf (gethash "pulled-west-no-handle"     *visual-hash*) (make-cube nil nil nil nil nil nil))
   ;; north
-  (setf (gethash "pulled-north-handle-active" *visual-hash*) (make-transparent-top 12 0.22))
-  (setf (gethash "pulled-north-handle-idle"   *visual-hash*) (make-transparent-top 8  0.22))
+  (setf (gethash "pulled-north-handle-active" *visual-hash*) (make-transparent-top 12))
+  (setf (gethash "pulled-north-handle-idle"   *visual-hash*) (make-transparent-top 8))
   (setf (gethash "pulled-north-no-handle"     *visual-hash*) (make-cube nil nil nil nil nil nil))
   ;; south
-  (setf (gethash "pulled-south-handle-active" *visual-hash*) (make-transparent-top 14 0.28))
-  (setf (gethash "pulled-south-handle-idle"   *visual-hash*) (make-transparent-top 10 0.28))
+  (setf (gethash "pulled-south-handle-active" *visual-hash*) (make-transparent-top 14))
+  (setf (gethash "pulled-south-handle-idle"   *visual-hash*) (make-transparent-top 10))
   (setf (gethash "pulled-south-no-handle"     *visual-hash*) (make-cube nil nil nil nil nil nil))
   ;; STEPPER
   (setf (gethash "stepper-idle"               *visual-hash*) (make-transparent-top 74))
@@ -487,14 +487,14 @@
   (setf (gethash "toggle-east-on"             *visual-hash*) (make-transparent-top 40))
   (setf (gethash "toggle-east-off"            *visual-hash*) (make-transparent-top 50))
   ;; west
-  (setf (gethash "toggle-west-on"             *visual-hash*) (make-transparent-top 42 0.16))
-  (setf (gethash "toggle-west-off"            *visual-hash*) (make-transparent-top 50 0.16))
+  (setf (gethash "toggle-west-on"             *visual-hash*) (make-transparent-top 42))
+  (setf (gethash "toggle-west-off"            *visual-hash*) (make-transparent-top 50))
   ;; north
-  (setf (gethash "toggle-north-on"            *visual-hash*) (make-transparent-top 41 0.22))
-  (setf (gethash "toggle-north-off"           *visual-hash*) (make-transparent-top 50 0.22))
+  (setf (gethash "toggle-north-on"            *visual-hash*) (make-transparent-top 41))
+  (setf (gethash "toggle-north-off"           *visual-hash*) (make-transparent-top 50))
   ;; south
-  (setf (gethash "toggle-south-on"            *visual-hash*) (make-transparent-top 43 0.28))
-  (setf (gethash "toggle-south-off"           *visual-hash*) (make-transparent-top 50 0.28))
+  (setf (gethash "toggle-south-on"            *visual-hash*) (make-transparent-top 43))
+  (setf (gethash "toggle-south-off"           *visual-hash*) (make-transparent-top 50))
   ;; BOMB
   (setf (gethash "bomb-durable"  *visual-hash*) (make-cube 76 76 76 76 76 76))
   (setf (gethash "bomb"          *visual-hash*) (make-cube 77 77 77 77 77 77))
@@ -664,10 +664,14 @@
                         (y (if (and (= step 0) (typep crate 'crates2:moving)) (tail-y crate) (crate-y crate)))
                         (z (if (and (= step 0) (typep crate 'crates2:moving)) (tail-z crate) (crate-z crate)))
                         (vids (visual crate)))
+                   (glenable +GL-DEPTH-TEST+)
                    (loop for vid in vids
+                         for i from 0
                          do
                             (let ((viv (gethash vid *visual-hash*)))
                               (when viv
+                                (when (= i 1)
+                                  (gldisable +GL-DEPTH-TEST+))
                                 (glpushmatrix)
                                 (gltranslatef (float x) (- (float y)) (float z))
                                 (ui-render-cube viv)
