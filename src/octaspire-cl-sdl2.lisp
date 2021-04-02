@@ -1060,6 +1060,8 @@
 ;; OpenGL
 
 ;; declared in GL/gl.h
+(defconstant +GL-FALSE+               #x0)
+(defconstant +GL-TRUE+                #x1)
 (defconstant +GL-CURRENT-BIT+         #x1)
 (defconstant +GL-POINT-BIT+           #x2)
 (defconstant +GL-LINE-BIT+            #x4)
@@ -1110,6 +1112,9 @@
 (defcfun "glGetError" :uint32)           ; GLenum for real
 (defcfun "gluErrorString" (:string :encoding :utf-8)
   (error :uint32)) ;; GLenum for real
+
+(defcfun "glGetString" (:string :encoding :utf-8)
+  (name :uint32))
 
 (defcfun "glClear" :void
   (mask :uint32))
@@ -1257,6 +1262,10 @@
 (defconstant +GL-ONE-MINUS-DST-COLOR+ #x0307)
 (defconstant +GL-SRC-ALPHA-SATURATE+  #x0308)
 
+;; Utility
+
+(defconstant +GL-VERSION+ #x1F02)
+
 ;; Hints
 (defconstant +GL-PERSPECTIVE-CORRECTION-HINT+ #x0C50)
 (defconstant +GL-POINT-SMOOTH-HINT+           #x0C51)
@@ -1272,9 +1281,17 @@
 (defconstant +GL-TEXTURE-MIN-FILTER+          #x2801)
 (defconstant +GL-LINEAR+                      #x2601)
 (defconstant +GL-NEAREST+                     #x2600)
+;; ...
+(defconstant +GL-LINEAR-MIPMAP-LINEAR+        #x2703)
+
+;; Defined in include/GL/glext.h
+(defconstant +GL-GENERATE-MIPMAP+ #x8191)
 
 (defcfun "glBegin" :void
   (mode :uint))
+
+(defcfun "glGenerateMipmap" :void
+  (target :uint32))
 
 (defcfun "glEnd" :void)
 

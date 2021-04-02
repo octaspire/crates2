@@ -1,2 +1,4 @@
+- Add more accurate dependencies in Makefile so that (for example)
+  modifying 3D representation doesn't build textual and 2D representations.
 - Run ~rg '\(/'~ and check ~/~ usage. Replace with ~floor~ if necessary.
 - Add command line option for setting the logging level.
