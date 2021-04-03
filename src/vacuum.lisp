@@ -24,7 +24,10 @@
        (setf (crate-frame self) (mod frame 8))
        (when (and crate (not (moving-airborne crate)))
          (setf (crate-state self) :broken)
-         (lament crate))))
+         (lament crate)
+         (when (subtypep (type-of crate) 'moving)
+           (setf (velocity crate) :zero)
+           (move-to crate (crate-x self) (crate-y self) (crate-z self))))))
     (:broken nil))
   (call-next-method))
 
