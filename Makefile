@@ -12,33 +12,35 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-LISP    ?= sbcl
-EVAL    ?= "--eval"
-level   ?= 0
+LISP      ?= sbcl
+EVAL      ?= "--eval"
+level     ?= 0
+FFIDIR    ?= src/ffi/
+VISUALDIR ?= src/visual/
 
 all: crates2-text crates2-charms crates2-sdl2 crates2-sdl2-opengl
 
 .PHONY: slime clean help test
 
-crates2-text: Makefile crates2-text.asd src/*.lisp etc/*.*
+crates2-text: Makefile crates2-text.asd src/*.lisp $(VISUALDIR)textual-common.lisp $(VISUALDIR)textual-plain.lisp etc/*.*
 	@$(LISP) $(EVAL) "(progn (declaim (optimize (speed 0) (space 0) (safety 3) (debug 3))) \
                                  (ql:quickload :crates2-text)                                  \
                                  (asdf:make :crates2-text)                                     \
                                  (quit))"
 
-crates2-charms: Makefile crates2-charms.asd src/*.lisp etc/*.*
+crates2-charms: Makefile crates2-charms.asd src/*.lisp $(VISUALDIR)textual-common.lisp $(VISUALDIR)textual-charms.lisp etc/*.*
 	@$(LISP) $(EVAL) "(progn (declaim (optimize (speed 0) (space 0) (safety 3) (debug 3))) \
                                  (ql:quickload :crates2-charms)                                \
                                  (asdf:make :crates2-charms)                                   \
                                  (quit))"
 
-crates2-sdl2: Makefile crates2-sdl2.asd src/*.lisp etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf etc/assets/texture/texture32.png
+crates2-sdl2: Makefile crates2-sdl2.asd src/*.lisp $(FFIDIR)octaspire-cl-sdl2.lisp $(VISUALDIR)sdl2-common.lisp $(VISUALDIR)sdl2-2d.lisp etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf etc/assets/texture/texture32.png
 	@$(LISP) $(EVAL) "(progn (declaim (optimize (speed 0) (space 0) (safety 3) (debug 3))) \
                                  (ql:quickload :crates2-sdl2)                                  \
                                  (asdf:make :crates2-sdl2)                                     \
                                  (quit))"
 
-crates2-sdl2-opengl: Makefile crates2-sdl2-opengl.asd src/*.lisp etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf etc/assets/texture/texture32.png
+crates2-sdl2-opengl: Makefile crates2-sdl2-opengl.asd src/*.lisp $(FFIDIR)octaspire-cl-sdl2.lisp $(VISUALDIR)sdl2-common.lisp $(VISUALDIR)sdl2-3d.lisp etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf etc/assets/texture/texture32.png
 	@$(LISP) $(EVAL) "(progn (declaim (optimize (speed 0) (space 0) (safety 3) (debug 3))) \
                                  (ql:quickload :crates2-sdl2-opengl)                           \
                                  (asdf:make :crates2-sdl2-opengl)                              \

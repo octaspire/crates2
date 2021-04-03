@@ -46,9 +46,9 @@
                          (:file "vacuum")
                          (:file "stepper")
                          (:file "level")
-                         (:file "octaspire-cl-sdl2")
-                         (:file "sdl2-3d")
-                         (:file "sdl2-common")
+                         (:file "ffi/octaspire-cl-sdl2")
+                         (:file "visual/sdl2-3d")
+                         (:file "visual/sdl2-common")
                          (:file "levels")
                          (:file "main"))))
   :build-operation program-op
