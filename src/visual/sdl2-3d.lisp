@@ -31,51 +31,45 @@
 ;; (defparameter *texture* :pointer)
 (defparameter *visual-hash* (make-hash-table :test 'equal))
 
-(defun make-rect-for-top (tx1 ty1 tx2 ty2 &optional (delta 0.0))
-  (let* ((hw  0.5)
-         (-hw  (- hw))
+(defun make-rect-for-top (tx1 ty1 tx2 ty2 hw delta)
+  (let* ((-hw  (- hw))
          (z    (+ hw delta)))
     (list 0.0  0.0  1.0                 ; normal
           tx1  ty2      tx2  ty2      tx2 ty1       tx1 ty1 ; texture coordinates
           -hw -hw  z   hw  -hw  z   hw  hw  z   -hw  hw  z)))
 
-(defun make-rect-for-north (tx1 ty1 tx2 ty2)
-  (let* ((hw  0.5)
-         (-hw  (- hw)))
+(defun make-rect-for-north (tx1 ty1 tx2 ty2 hw)
+  (let* ((-hw  (- hw)))
     (list 0.0  1.0  0.0
           tx1 ty2       tx1 ty1       tx2 ty1      tx2 ty2
           -hw hw -hw   -hw  hw  hw    hw  hw  hw   hw  hw -hw)))
 
-(defun make-rect-for-south (tx1 ty1 tx2 ty2)
-  (let* ((hw  0.5)
-         (-hw  (- hw)))
+(defun make-rect-for-south (tx1 ty1 tx2 ty2 hw)
+  (let* ((-hw  (- hw)))
     (list 0.0  -1.0  0.0
           tx1  ty2       tx2 ty2       tx2 ty1     tx1 ty1
           -hw -hw -hw    hw -hw -hw    hw -hw hw  -hw -hw hw)))
 
-(defun make-rect-for-west (tx1 ty1 tx2 ty2)
-  (let* ((hw  0.5)
-         (-hw  (- hw)))
+(defun make-rect-for-west (tx1 ty1 tx2 ty2 hw)
+  (let* ((-hw  (- hw)))
     (list -1.0  0.0  0.0
           tx1 ty2        tx1 ty1       tx2 ty1     tx2 ty2
           -hw -hw -hw   -hw -hw hw    -hw  hw hw  -hw  hw -hw)))
 
-(defun make-rect-for-bottom (tx1 ty1 tx2 ty2 &optional (delta 0.0))
-  (let* ((hw  0.5)
-         (-hw  (- hw))
+(defun make-rect-for-bottom (tx1 ty1 tx2 ty2 hw delta)
+  (let* ((-hw  (- hw))
          (z    (+ -hw delta)))
     (list 0.0  0.0  1.0
           tx1 ty2        tx2 ty2       tx2 ty1      tx1 ty1
          -hw -hw z       hw -hw z      hw  hw z    -hw  hw z)))
 
-(defun make-rect-for-east (tx1 ty1 tx2 ty2)
-  (let* ((hw  0.5)
-         (-hw  (- hw)))
+(defun make-rect-for-east (tx1 ty1 tx2 ty2 hw)
+  (let* ((-hw  (- hw)))
     (list 1.0  0.0  0.0
           tx1 ty2       tx2 ty2       tx2 ty1     tx1 ty1
           hw -hw -hw    hw  hw -hw    hw  hw hw   hw -hw hw)))
 
-(defun make-rect (index face)
+(defun make-rect (index face &optional (hw 0.5))
   (let* ((sprites-per-row (floor iw cw))
          (tx1 (float (/ (* cw (mod index sprites-per-row)) iw)))
          (ty1 (float (/ (* ch (floor index sprites-per-row)) iw)))
@@ -84,12 +78,12 @@
          (tx2 (+ tx1 tw))
          (ty2 (+ ty1 th)))
     (ecase face
-      (:top    (make-rect-for-top    tx1 ty1 tx2 ty2))
-      (:bottom (make-rect-for-bottom tx1 ty1 tx2 ty2))
-      (:front  (make-rect-for-south  tx1 ty1 tx2 ty2))
-      (:back   (make-rect-for-north  tx1 ty1 tx2 ty2))
-      (:east   (make-rect-for-east   tx1 ty1 tx2 ty2))
-      (:west   (make-rect-for-west   tx1 ty1 tx2 ty2)))))
+      (:top    (make-rect-for-top    tx1 ty1 tx2 ty2 hw 0.0))
+      (:bottom (make-rect-for-bottom tx1 ty1 tx2 ty2 hw 0.0))
+      (:front  (make-rect-for-south  tx1 ty1 tx2 ty2 hw))
+      (:back   (make-rect-for-north  tx1 ty1 tx2 ty2 hw))
+      (:east   (make-rect-for-east   tx1 ty1 tx2 ty2 hw))
+      (:west   (make-rect-for-west   tx1 ty1 tx2 ty2 hw)))))
 
 (defun make-transparent-top (index &optional (z 0.08))
   (let* ((sprites-per-row (floor iw cw))
@@ -100,7 +94,7 @@
          (tx2 (+ tx1 tw))
          (ty2 (+ ty1 th)))
     (list
-     (make-rect-for-top    tx1 ty1 tx2 ty2 z)
+     (make-rect-for-top    tx1 ty1 tx2 ty2 0.5 z)
      nil
      nil
      nil
@@ -117,20 +111,20 @@
          (ty2 (+ ty1 th)))
     (list
      nil
-     (make-rect-for-bottom tx1 ty1 tx2 ty2 z)
+     (make-rect-for-bottom tx1 ty1 tx2 ty2 0.5 z)
      nil
      nil
      nil
      nil)))
 
-(defun make-cube (top bottom front back east west)
+(defun make-cube (top bottom front back east west &optional (hw 0.5))
   (list
-   (if top    (make-rect top    :top)    nil)
-   (if bottom (make-rect bottom :bottom) nil)
-   (if front  (make-rect front  :front)  nil)
-   (if back   (make-rect back   :back)   nil)
-   (if east   (make-rect east   :east)   nil)
-   (if west   (make-rect west   :west)   nil)))
+   (if top    (make-rect top    :top    hw) nil)
+   (if bottom (make-rect bottom :bottom hw) nil)
+   (if front  (make-rect front  :front  hw) nil)
+   (if back   (make-rect back   :back   hw) nil)
+   (if east   (make-rect east   :east   hw) nil)
+   (if west   (make-rect west   :west   hw) nil)))
 
 (defun init-visual-hash ()
   ;; VACUUM
@@ -185,13 +179,13 @@
   (setf (gethash "special-jump-idle-13" *visual-hash*) (make-cube nil 972 nil nil nil nil))
   (setf (gethash "special-jump-active"  *visual-hash*) (make-cube nil 973 nil nil nil nil))
   ;; PLAYER
-  (setf (gethash "player-active-00" *visual-hash*) (make-cube 32 32 32 32 32 32))
-  (setf (gethash "player-active-01" *visual-hash*) (make-cube 33 33 33 33 33 33))
-  (setf (gethash "player-active-02" *visual-hash*) (make-cube 34 34 34 34 34 34))
-  (setf (gethash "player-active-03" *visual-hash*) (make-cube 35 35 35 35 35 35))
-  (setf (gethash "player-active-04" *visual-hash*) (make-cube 36 36 36 36 36 36))
-  (setf (gethash "player-active-05" *visual-hash*) (make-cube 37 37 37 37 37 37))
-  (setf (gethash "player-active-06" *visual-hash*) (make-cube 38 38 38 38 38 38))
+  (setf (gethash "player-active-00" *visual-hash*) (make-cube 32 32 32 32 32 32 0.41))
+  (setf (gethash "player-active-01" *visual-hash*) (make-cube 33 33 33 33 33 33 0.41))
+  (setf (gethash "player-active-02" *visual-hash*) (make-cube 34 34 34 34 34 34 0.41))
+  (setf (gethash "player-active-03" *visual-hash*) (make-cube 35 35 35 35 35 35 0.41))
+  (setf (gethash "player-active-04" *visual-hash*) (make-cube 36 36 36 36 36 36 0.41))
+  (setf (gethash "player-active-05" *visual-hash*) (make-cube 37 37 37 37 37 37 0.41))
+  (setf (gethash "player-active-06" *visual-hash*) (make-cube 38 38 38 38 38 38 0.41))
 
   (setf (gethash "player-airborne"  *visual-hash*) (let* ((w 1.0)
                                                           (hw (/ 1.0 2))
