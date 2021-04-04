@@ -16,7 +16,7 @@
 
 (defparameter *crates2-window* nil)
 
-(defun ui-init ()
+(defun ui-init (options)
   (setf *crates2-window* (cl-charms/low-level:initscr))
   (cl-charms:disable-echoing)
   (cl-charms:enable-raw-input)

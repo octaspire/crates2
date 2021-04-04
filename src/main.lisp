@@ -38,7 +38,6 @@
 (defparameter *test-run* nil)
 (defparameter *test-run-max-updates* 3000)
 (defparameter *last-input* nil)
-(defparameter *pending-input* nil)
 
 (defun verbose-parser (x)
   (setf *verbose* (parse-integer x)))
@@ -95,9 +94,6 @@ to see what happens."
 This is similar to 'test' but runs much slower."
    :long "autoplay"
    :arg-parser #'autoplay-parser)
-  (:name :log-input
-   :description "Log and show user input after quitting game."
-   :long "log-input")
   (:name :log-file
    :description "Log to given file."
    :long "log-file"
@@ -132,46 +128,39 @@ This is similar to 'test' but runs much slower."
       (setf valid 0))
     (setf *next-level* valid)))
 
+(defun main-handle-input ()
+  (let ((input (ui-input)))
+    (when input
+      (setf *input* (cons input *input*))
+      (case input
+        (:back    (running nil))
+        (:restart (reset-to-level *level-number*))
+        (:prev    (reset-to-level (1- *level-number*)))
+        (:next    (reset-to-level (1+ *level-number*)))))))
+
 (defun run (options)
   (unless *errors*
-    (crates2-ui:ui-init)
+    (crates2-ui:ui-init options)
     (crates2-ui:init-visual-hash)
     (request-next-level)
-    (let ((str (make-array 2048 :element-type 'character :fill-pointer 0 :adjustable t))
-          (log-input (getf options :log-input))
-          (half-frame-duration (* 0.5 *frame-duration*)))
-      (with-output-to-string (s str)
-        (loop while (and (runningp)
-                         (or (not *test-run*)
-                             (< *update-counter* *test-run-max-updates*)))
-              do (setf *input* nil)
-                 (crates2-ui:ui-render *level* 0)
-                 (sleep half-frame-duration)
-                 (crates2-ui:ui-render *level* 1)
-                 (let ((input (ui-input)))
-                   (when log-input
-                     (format s (if (keywordp input) "~%~S " "~S " ) input))
-                   (when input
-                     (setf *input* (cons input *input*))
-                     (case input
-                       (:back    (running nil))
-                       (:restart (reset-to-level *level-number*))
-                       (:prev    (reset-to-level (1- *level-number*)))
-                       (:next    (reset-to-level (1+ *level-number*))))))
-                 (unless *next-level*
-                   (update *level*))
-                 (when *next-level*
-                   (load-next-level)
-                   (trivial-garbage:gc :full t)
-                   (when log-input
-                     (format s "~%----------LEVEL ~A----------~%" *level-number*)))
-                 (incf *update-counter*)
-                 (sleep half-frame-duration))
-        (when (>= *update-counter* *test-run-max-updates*)
-          (format t "~%CRATES2: WARNING EXECUTION STOPPED ON TOO LARGE UPDATE COUNT~%"))
-        (setf str (nstring-downcase str))
-        (when log-input
-          (format t "~%~A~%" str))))
+    (let ((half-frame-duration (* 0.5 *frame-duration*)))
+      (loop while (and (runningp)
+                       (or (not *test-run*)
+                           (< *update-counter* *test-run-max-updates*)))
+            do (setf *input* nil)
+               (crates2-ui:ui-render *level* 0)
+               (sleep half-frame-duration)
+               (crates2-ui:ui-render *level* 1)
+               (main-handle-input)
+               (unless *next-level*
+                 (update *level*))
+               (when *next-level*
+                 (load-next-level)
+                 (trivial-garbage:gc :full t))
+               (incf *update-counter*)
+               (sleep half-frame-duration))
+      (when (>= *update-counter* *test-run-max-updates*)
+        (format t "~%CRATES2: WARNING EXECUTION STOPPED ON TOO LARGE UPDATE COUNT~%")))
     (crates2-ui:ui-delete)))
 
 (defun usage ()
@@ -223,7 +212,6 @@ This is similar to 'test' but runs much slower."
       (let ((level-number (mod *next-level* *num-levels*)))
         (setf *next-level* nil)
         (setf *fake-input* nil)
-        (setf *pending-input* nil)
         (setf *level-number* level-number)
         (setf *level* nil)
         (let ((loaded (load-level *level-number*)))

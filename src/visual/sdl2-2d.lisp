@@ -314,7 +314,7 @@
                                   (sdl-rendercopy *crates2-renderer* *texture* rect1pointer rect2pointer))))))))
       (sdl-renderpresent *crates2-renderer*))))
 
-(defun ui-init ()
+(defun ui-init (options)
   (sb-int:with-float-traps-masked (:invalid :inexact :overflow)
     (sdl-init +SDL-INIT-VIDEO+)
     (setf *crates2-window* (sdl-createwindow "Crates 2" 0 0 screen-width screen-height 0))

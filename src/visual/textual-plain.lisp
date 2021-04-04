@@ -14,7 +14,7 @@
 ;; limitations under the License.
 (in-package :crates2-ui)
 
-(defun ui-init ()
+(defun ui-init (options)
   ;; Nothing to do.
   )
 

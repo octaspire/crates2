@@ -101,6 +101,9 @@
   (defconstant +AUDIO-S32SYS+ +AUDIO-S32MSB+)
   (defconstant +AUDIO-F32SYS+ +AUDIO-F32MSB+))
 
+;; Declared in include/SDL_stdinc.h
+(defconstant +SDL-FALSE+ #0x0)
+(defconstant +SDL-TRUE+  #0x1)
 
 ;; Declared in include/SDL.h
 (defconstant +SDL-INIT-TIMER+                 #x001)
@@ -1035,6 +1038,11 @@
   (w :int)
   (flags :uint32)
   (h :int))
+
+;; Declared in include/SDL_video.h
+(defcfun "SDL_SetWindowFullscreen" :int
+  (window :pointer)
+  (flags  :uint32))
 
 ;; Defined in SDL_keycode.h
 (defconstant +KMOD-NONE+     #x0)

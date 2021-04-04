@@ -673,7 +673,7 @@
       (sdl-gl-swapwindow *crates2-window*)
       (check-error))))
 
-(defun ui-init ()
+(defun ui-init (options)
   (sb-int:with-float-traps-masked (:invalid :inexact :overflow)
     (sdl-init +SDL-INIT-VIDEO+)
     ;; (sdl-gl-setattribute :SDL-GL-CONTEXT-MAJOR-VERSION 2)
@@ -682,6 +682,8 @@
     ;; (sdl-gl-setattribute :SDL-GL-DOUBLEBUFFER 1)
     (setf *crates2-window* (sdl-createwindow "Crates 2" 0 0 screen-width screen-height (logior (foreign-enum-value 'sdl-windowflags :SDL-WINDOW-OPENGL) (foreign-enum-value 'sdl-windowflags :SDL-WINDOW-SHOWN))))
     (setf *crates2-gl-context* (sdl-gl-createcontext *crates2-window*))
+    (when (getf options :fullscreen)
+      (sdl-setwindowfullscreen *crates2-window* +SDL-TRUE+))
     (glewinit)
     (format t "OpenGL version is ~A~%" (glgetstring +GL-VERSION+))
     (glenable +GL-TEXTURE-2D+)
