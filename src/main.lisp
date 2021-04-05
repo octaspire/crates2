@@ -33,6 +33,14 @@
 (defparameter *next-level* 8)
 (defparameter *level-width* 20)
 (defparameter *level-height* 20)
+(defparameter *level-min-x* 0)
+(defparameter *level-max-x* *level-width*)
+(defparameter *level-min-y* 0)
+(defparameter *level-max-y* *level-height*)
+(defparameter *level-center-x* 0)
+(defparameter *level-center-y* 0)
+(defparameter *level-count-x*  0)
+(defparameter *level-count-y*  0)
 (defparameter *frame-duration-default* 0.125) ; Not zeroed in test mode.
 (defparameter *frame-duration* *frame-duration-default*) ; Zeroed in test mode.
 (defparameter *test-run* nil)
@@ -206,6 +214,21 @@ This is similar to 'test' but runs much slower."
 (defun sort-level (level)
   (sort level #'compare-crate))
 
+(defun store-level-extent (level)
+  (setf *level-min-x* *level-width*)
+  (setf *level-min-y* *level-height*)
+  (setf *level-max-x* 0)
+  (setf *level-max-y* 0)
+  (loop for crate in level
+        do (setf *level-min-x* (min *level-min-x* (crate-x crate)))
+           (setf *level-max-x* (max *level-max-x* (crate-x crate)))
+           (setf *level-min-y* (min *level-min-y* (crate-y crate)))
+           (setf *level-max-y* (max *level-max-y* (crate-y crate))))
+  (setf *level-count-x* (- *level-max-x* *level-min-x*))
+  (setf *level-count-y* (- *level-max-y* *level-min-y*))
+  (setf *level-center-x* (+ *level-min-x* (floor *level-count-x* 2)))
+  (setf *level-center-y* (+ *level-min-y* (floor *level-count-y* 2))))
+
 (defun load-next-level ()
   (if (and *test-run* (>= *next-level* *num-levels*))
       (running nil)
@@ -216,7 +239,9 @@ This is similar to 'test' but runs much slower."
         (setf *level* nil)
         (let ((loaded (load-level *level-number*)))
           (setf *level* (sort-level (cadr loaded)))
-          (setf *fake-input* (car loaded))))))
+          (setf *fake-input* (car loaded)))
+        (store-level-extent *level*)
+        (crates2-ui:ui-look-at *level-center-x* *level-center-y* (max *level-count-x* *level-count-y*)))))
 
 (defun request-next-level ()
   ;; Don't override previous request, if present.

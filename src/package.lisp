@@ -43,4 +43,5 @@
            #:ui-read-input
            #:init-visual-hash
            #:ui-render
+           #:ui-look-at
            #:ui-delete))

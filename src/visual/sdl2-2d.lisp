@@ -318,6 +318,8 @@
   (sb-int:with-float-traps-masked (:invalid :inexact :overflow)
     (sdl-init +SDL-INIT-VIDEO+)
     (setf *crates2-window* (sdl-createwindow "Crates 2" 0 0 screen-width screen-height 0))
+    (when (getf options :fullscreen)
+      (sdl-setwindowfullscreen *crates2-window* +SDL-TRUE+))
     (setf *crates2-renderer* (sdl-createrenderer *crates2-window* -1 +SDL_RENDERER_SOFTWARE+))
     (setf *image* (img-load "etc/assets/texture/texture32.png"))
     (setf *texture* (sdl-createtexturefromsurface
