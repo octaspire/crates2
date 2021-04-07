@@ -241,7 +241,13 @@ This is similar to 'test' but runs much slower."
           (setf *level* (sort-level (cadr loaded)))
           (setf *fake-input* (car loaded)))
         (store-level-extent *level*)
-        (crates2-ui:ui-look-at *level-center-x* *level-center-y* (max *level-count-x* *level-count-y*)))))
+        (crates2-ui:ui-look-at *level-center-x*
+                               *level-center-y*
+                               (max *level-count-x* *level-count-y*)
+                               *level-min-x*
+                               *level-min-y*
+                               *level-max-x*
+                               *level-max-y*))))
 
 (defun request-next-level ()
   ;; Don't override previous request, if present.

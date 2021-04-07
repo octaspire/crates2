@@ -673,7 +673,7 @@
       (sdl-gl-swapwindow *crates2-window*)
       (check-error))))
 
-(defun ui-look-at (x y m)
+(defun ui-look-at (x y m minx miny maxx maxy)
   (glmatrixmode +GL-PROJECTION+)
   (glHint +GL-PERSPECTIVE-CORRECTION-HINT+ +GL-NICEST+)
   (glloadidentity)
@@ -706,7 +706,7 @@
     (gldisable +GL-LIGHTING+)
     (glenable +GL-BLEND+)
     (glblendfunc +GL-SRC-ALPHA+ +GL-ONE-MINUS-SRC-ALPHA+)
-    (ui-look-at 10 10 10)
+    (ui-look-at 10 10 10 0 0 0 0)
     (glmatrixmode +GL-MODELVIEW+)
     (glloadidentity)
     (setf *image* (img-load "etc/assets/texture/texture64.png"))

@@ -28,6 +28,9 @@
 (defparameter *texture* :pointer)
 (defparameter *visual-hash* (make-hash-table :test 'equal))
 
+(defparameter *look-at-x* 0)
+(defparameter *look-at-y* 0)
+
 (defun make-rect (index)
   (let* ((sprites-per-row (floor iw cw))
          (x (* cw (mod index sprites-per-row)))
@@ -310,12 +313,13 @@
                                        (finy (+ (* y ch) dy))
                                        (deltax (+ (* x cw) dx)))
                                   (set-rect rect1 rx ry vivw vivh)
-                                  (set-rect rect2 deltax finy vivw vivh)
+                                  (set-rect rect2 (+ deltax *look-at-x*) (+ finy *look-at-y*) vivw vivh)
                                   (sdl-rendercopy *crates2-renderer* *texture* rect1pointer rect2pointer))))))))
       (sdl-renderpresent *crates2-renderer*))))
 
-(defun ui-look-at (x y m)
-  )
+(defun ui-look-at (x y m minx miny maxx maxy)
+  (setf *look-at-x* (* (+ (floor (- (- *level-width* maxx) minx) 2) 2) cw))
+  (setf *look-at-y* (* (1- (floor (- (- *level-height* maxy) miny) 2)) ch)))
 
 (defun ui-init (options)
   (sb-int:with-float-traps-masked (:invalid :inexact :overflow)
