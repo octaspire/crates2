@@ -682,8 +682,8 @@
   (let* ((xd (coerce x 'double-float))
          (yd (- (coerce y 'double-float)))
          (ex xd)
-         (ey (coerce (- yd (* m 1.2)) 'double-float))
-         (ez (coerce m 'double-float)))
+         (ey (coerce (- (- maxy) 6) 'double-float))
+         (ez (* (coerce (- maxx minx) 'double-float) 1.5)))
     (glulookat ex          ey          ez
                xd          yd          1.0d0
                0.0d0       0.0d0       1.0d0))

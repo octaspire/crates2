@@ -22,7 +22,7 @@
 (defparameter *look-at-y* 0)
 
 (defun ui-look-at (x y m minx miny maxx maxy)
-  (setf *look-at-x* (* (+ (floor (- (- *level-width* maxx) minx) 2) 2) cw))
+  (setf *look-at-x* (floor (- (- *level-width* maxx) minx) 2))
   (setf *look-at-y* (* (1- (floor (- (- *level-height* maxy) miny) 2)) ch)))
 
 (defparameter *visual-hash* (make-hash-table :test 'equal))
@@ -387,10 +387,10 @@
                                       do (let* ((str (aref viv liney))
                                                 (vivw (length str))
                                                 (dx (truncate (/ (- cw vivw) 2)))
-                                                (finy (truncate (+ (* y ch) dy liney))))
+                                                (finy (+ (truncate (+ (* y ch) dy liney)) *look-at-y*)))
                                            (when (>= finy 0)
                                              (let* ((line (aref lines finy))
-                                                    (finx (* x cw))
+                                                    (finx (* (+ x *look-at-x*) cw))
                                                     (deltax (truncate (+ finx dx))))
                                                (setf line (replace-substr-at-transparent-whitespace line deltax str)))))))))))))
     (values lines x-axis bar)))
