@@ -240,6 +240,9 @@
   (setf (gethash "number-98"        *visual-hash*) #("      " "    98" "      "))
   (setf (gethash "number-99"        *visual-hash*) #("      " "    99" "      "))
   (setf (gethash "number-100"       *visual-hash*) #("      " "    100" "      "))
+    ;; BOTTOM NUMBERS
+  (loop for i from 1 to 100
+        do (setf (gethash (format nil "number-bottom-~2,'0d" i) *visual-hash*) (vector "      " (format nil "   ~3,' d" i) "      ")))
   ;; BLOCK-COUNTER
   (setf (gethash "block-counter"   *visual-hash*) #("+----+" "BCXX  " "+----+"))
   ;; PASS-COUNTER

@@ -226,6 +226,9 @@
   (setf (gethash "number-98"        *visual-hash*) (make-rect 394))
   (setf (gethash "number-99"        *visual-hash*) (make-rect 395))
   (setf (gethash "number-100"       *visual-hash*) (make-rect 396))
+  ;; BOTTOM NUMBERS
+  (loop for i from 1 to 100
+        do (setf (gethash (format nil "number-bottom-~2,'0d" i) *visual-hash*) (make-rect (+ i 98))))
   ;; BLOCK-COUNTER
   (setf (gethash "block-counter"    *visual-hash*) (make-rect 0))
   ;; PASS-COUNTER
