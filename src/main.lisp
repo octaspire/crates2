@@ -199,7 +199,7 @@ This is similar to 'test' but runs much slower."
 (defun compare-crate (a b)
   (let ((az (crate-z a))
         (bz (crate-z b)))
-    (if (= az az)
+    (if (= az bz)
         (progn
           (when (eq (type-of a) 'player)
             (return-from compare-crate t))
