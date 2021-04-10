@@ -70,13 +70,13 @@
           hw -hw -hw    hw  hw -hw    hw  hw hw   hw -hw hw)))
 
 (defun make-rect (index face &optional (hw 0.5))
-  (let* ((sprites-per-row (floor iw cw))
-         (tx1 (float (/ (* cw (mod index sprites-per-row)) iw)))
-         (ty1 (float (/ (* ch (floor index sprites-per-row)) iw)))
-         (tw  (float (/ cw iw)))
-         (th  (float (/ ch ih)))
-         (tx2 (+ tx1 tw))
-         (ty2 (+ ty1 th)))
+  (let* ((sprites-per-row (coerce (floor iw cw) 'double-float))
+         (tx1 (coerce (/ (* cw (mod index sprites-per-row)) iw) 'double-float))
+         (ty1 (coerce (/ (* ch (floor index sprites-per-row)) iw) 'double-float))
+         (tw  (coerce (/ cw iw) 'double-float))
+         (th  (coerce (/ ch ih) 'double-float))
+         (tx2 (coerce (+ tx1 tw) 'double-float))
+         (ty2 (coerce (+ ty1 th) 'double-float)))
     (ecase face
       (:top    (make-rect-for-top    tx1 ty1 tx2 ty2 hw 0.0))
       (:bottom (make-rect-for-bottom tx1 ty1 tx2 ty2 hw 0.0))
@@ -86,13 +86,17 @@
       (:west   (make-rect-for-west   tx1 ty1 tx2 ty2 hw)))))
 
 (defun make-transparent-top (index &optional (z 0.08))
-  (let* ((sprites-per-row (floor iw cw))
-         (tx1 (float (/ (* cw (mod index sprites-per-row)) iw)))
-         (ty1 (float (/ (* ch (floor index sprites-per-row)) iw)))
-         (tw  (float (/ cw iw)))
-         (th  (float (/ ch ih)))
-         (tx2 (+ tx1 tw))
-         (ty2 (+ ty1 th)))
+  (let* ((iwd (coerce iw 'double-float))
+         (ihd (coerce ih 'double-float))
+         (cwd (coerce cw 'double-float))
+         (chd (coerce ch 'double-float))
+         (sprites-per-row (coerce (floor iwd cwd) 'double-float))
+         (tx1 (coerce (/ (* cwd (coerce (mod index sprites-per-row) 'double-float)) iwd) 'double-float))
+         (ty1 (coerce (/ (* chd (coerce (floor index sprites-per-row) 'double-float)) iwd) 'double-float))
+         (tw  (coerce (/ cwd iwd) 'double-float))
+         (th  (coerce (/ chd ihd) 'double-float))
+         (tx2 (coerce (+ tx1 tw) 'double-float))
+         (ty2 (coerce (+ ty1 th) 'double-float)))
     (list
      (make-rect-for-top    tx1 ty1 tx2 ty2 0.5 z)
      nil
@@ -102,13 +106,13 @@
      nil)))
 
 (defun make-transparent-bottom (index &optional (z 0.08))
-  (let* ((sprites-per-row (floor iw cw))
-         (tx1 (float (/ (* cw (mod index sprites-per-row)) iw)))
-         (ty1 (float (/ (* ch (floor index sprites-per-row)) iw)))
-         (tw  (float (/ cw iw)))
-         (th  (float (/ ch ih)))
-         (tx2 (+ tx1 tw))
-         (ty2 (+ ty1 th)))
+  (let* ((sprites-per-row (coerce (floor iw cw) 'double-float))
+         (tx1 (coerce (/ (* cw (mod index sprites-per-row)) iw) 'double-float))
+         (ty1 (coerce (/ (* ch (floor index sprites-per-row)) iw) 'double-float))
+         (tw  (coerce (/ cw iw) 'double-float))
+         (th  (coerce (/ ch ih) 'double-float))
+         (tx2 (coerce (+ tx1 tw) 'double-float))
+         (ty2 (coerce (+ ty1 th) 'double-float)))
     (list
      nil
      (make-rect-for-bottom tx1 ty1 tx2 ty2 0.5 z)
@@ -138,10 +142,10 @@
   (setf (gethash "gear-06"     *visual-hash*) (make-transparent-bottom 489))
   (setf (gethash "gear-07"     *visual-hash*) (make-transparent-bottom 490))
   ;; WALL
-  (setf (gethash "wall-idle-00" *visual-hash*) (make-cube 0 0 0 0 0 0))
-  (setf (gethash "wall-idle-01" *visual-hash*) (make-cube 1 1 1 1 1 1))
-  (setf (gethash "wall-idle-02" *visual-hash*) (make-cube 2 2 2 2 2 2))
-  (setf (gethash "wall-idle-03" *visual-hash*) (make-cube 3 3 3 3 3 3))
+  (setf (gethash "wall-idle-00" *visual-hash*) (make-cube 0 nil 0 0 0 0))
+  (setf (gethash "wall-idle-01" *visual-hash*) (make-cube 1 nil 1 1 1 1))
+  (setf (gethash "wall-idle-02" *visual-hash*) (make-cube 2 nil 2 2 2 2))
+  (setf (gethash "wall-idle-03" *visual-hash*) (make-cube 3 nil 3 3 3 3))
   ;; PUSHED
   (setf (gethash "pushed-idle" *visual-hash*) (make-cube 0 0 0 0 0 0))
   ;; BLOCK-TIMER
@@ -179,21 +183,21 @@
   (setf (gethash "special-jump-idle-13" *visual-hash*) (make-cube nil 972 nil nil nil nil))
   (setf (gethash "special-jump-active"  *visual-hash*) (make-cube nil 973 nil nil nil nil))
   ;; PLAYER
-  (setf (gethash "player-active-00" *visual-hash*) (make-cube 32 32 32 32 32 32 0.41))
-  (setf (gethash "player-active-01" *visual-hash*) (make-cube 33 33 33 33 33 33 0.41))
-  (setf (gethash "player-active-02" *visual-hash*) (make-cube 34 34 34 34 34 34 0.41))
-  (setf (gethash "player-active-03" *visual-hash*) (make-cube 35 35 35 35 35 35 0.41))
-  (setf (gethash "player-active-04" *visual-hash*) (make-cube 36 36 36 36 36 36 0.41))
-  (setf (gethash "player-active-05" *visual-hash*) (make-cube 37 37 37 37 37 37 0.41))
-  (setf (gethash "player-active-06" *visual-hash*) (make-cube 38 38 38 38 38 38 0.41))
+  (setf (gethash "player-active-00" *visual-hash*) (make-cube 1017 nil 1017 1017 1017 1017 0.39))
+  (setf (gethash "player-active-01" *visual-hash*) (make-cube 1018 nil 1018 1018 1018 1018 0.39))
+  (setf (gethash "player-active-02" *visual-hash*) (make-cube 1019 nil 1019 1019 1019 1019 0.39))
+  (setf (gethash "player-active-03" *visual-hash*) (make-cube 1020 nil 1020 1020 1020 1020 0.39))
+  (setf (gethash "player-active-04" *visual-hash*) (make-cube 1021 nil 1021 1021 1021 1021 0.39))
+  (setf (gethash "player-active-05" *visual-hash*) (make-cube 1022 nil 1022 1022 1022 1022 0.39))
+  (setf (gethash "player-active-06" *visual-hash*) (make-cube 1023 nil 1023 1023 1023 1023 0.39))
 
   (setf (gethash "player-airborne"  *visual-hash*) (let* ((w 1.0)
                                                           (hw (/ 1.0 2))
                                                           (-hw (- hw))
-                                                          (tx1 0.0)
-                                                          (tx2 (+ tx1 (/ cw iw)))
-                                                          (ty1 (/ (* 1.0 ch) ih))
-                                                          (ty2 (+ ty1 (/ ch ih))))
+                                                          (tx1 0.0d0)
+                                                          (tx2 (coerce (+ tx1 (/ cw iw)) 'double-float))
+                                                          (ty1 (coerce (/ (* 1.0 ch) ih) 'double-float))
+                                                          (ty2 (coerce (+ ty1 (/ ch ih)) 'double-float)))
                                                      (list
 
                                                       ;; top
@@ -219,7 +223,7 @@
                                                             tx1 ty2       tx2 ty2       tx2 ty1     tx1 ty1
                                                             hw -hw (+ -hw 1.0)    hw  hw (+ -hw 1.0)    hw  hw (+ hw 1.0)   hw -hw (+ hw 1.0)))))
 
-  (setf (gethash "player-hidden"    *visual-hash*) (make-cube 15 15 15 15 15 15))
+  (setf (gethash "player-hidden"    *visual-hash*) (make-cube nil nil nil nil nil nil))
   ;; SLOPES
   (setf (gethash "slope-en"        *visual-hash*) (make-cube 384 nil 0 nil nil 0))
   (setf (gethash "slope-en-active" *visual-hash*) (make-cube 385 nil 0 nil nil 0))
@@ -455,7 +459,7 @@
   ;; PASS-TIMER
   (setf (gethash "pass-timer"       *visual-hash*) (make-cube nil 4 nil nil nil nil))
   ;; PULLED
-  (setf (gethash "pulled-idle"               *visual-hash*) (make-cube 6 6 6 6 6 6))
+  (setf (gethash "pulled-idle"               *visual-hash*) (make-cube 1016 nil 1016 1016 1016 1016))
   ;; east
   (setf (gethash "pulled-east-handle-active" *visual-hash*) (make-transparent-top 11))
   (setf (gethash "pulled-east-handle-idle"   *visual-hash*) (make-transparent-top 7))
@@ -476,7 +480,7 @@
   (setf (gethash "stepper-idle"               *visual-hash*) (make-transparent-top 74))
   (setf (gethash "stepper-active"             *visual-hash*) (make-transparent-top 75))
   ;; TOGGLE
-  (setf (gethash "toggle-idle"                *visual-hash*) (make-cube 39 39 39 39 39 39))
+  (setf (gethash "toggle-idle"                *visual-hash*) (make-cube 39 nil 1015 1015 1015 1015))
   ;; east
   (setf (gethash "toggle-east-on"             *visual-hash*) (make-transparent-top 40))
   (setf (gethash "toggle-east-off"            *visual-hash*) (make-transparent-top 50))
@@ -496,10 +500,10 @@
   (setf (gethash "bomb-ring-1"   *visual-hash*) (list
                                                  (let* ((hw 0.5)
                                                         (-hw (- hw))
-                                                        (tx1 0.0)
-                                                        (tx2 (+ tx1 (/ cw iw)))
-                                                        (ty1 (/ (* 16.0 ch) ih))
-                                                        (ty2 (+ ty1 (/ ch ih))))
+                                                        (tx1 0.0d0)
+                                                        (tx2 (coerce (+ tx1 (/ cw iw)) 'double-float))
+                                                        (ty1 (coerce (/ (* 16.0 ch) ih) 'double-float))
+                                                        (ty2 (coerce (+ ty1 (/ ch ih)) 'double-float)))
                                                    (list 0.0 0.0 1.0 ; normal
                                                          tx1 ty2 tx2 ty2 tx2 ty1 tx1 ty1 ; texture coordinates
                                                          -hw -hw 0.0 hw -hw 0.0 hw hw 0.0 -hw hw 0.0))
@@ -512,10 +516,10 @@
   (setf (gethash "bomb-ring-2"   *visual-hash*) (list
                                                  (let* ((hw 1.5)
                                                         (-hw (- hw))
-                                                        (tx1 0.0)
-                                                        (tx2 (+ tx1 (/ (* 3 cw) iw)))
-                                                        (ty1 (/ (* 17.0 ch) ih))
-                                                        (ty2 (+ ty1 (/ (* 3 ch) ih))))
+                                                        (tx1 0.0d0)
+                                                        (tx2 (coerce (+ tx1 (/ (* 3 cw) iw)) 'double-float))
+                                                        (ty1 (coerce (/ (* 17.0 ch) ih) 'double-float))
+                                                        (ty2 (coerce (+ ty1 (/ (* 3 ch) ih)) 'double-float)))
                                                    (list 0.0 0.0 1.0 ; normal
                                                          tx1 ty2 tx2 ty2 tx2 ty1 tx1 ty1 ; texture coordinates
                                                          -hw -hw 0.0 hw -hw 0.0 hw hw 0.0 -hw hw 0.0))
@@ -528,10 +532,10 @@
   (setf (gethash "bomb-ring-3"   *visual-hash*) (list
                                                  (let* ((hw 2.5)
                                                         (-hw (- hw))
-                                                        (tx1 0.0)
-                                                        (tx2 (+ tx1 (/ (* 5 cw) iw)))
-                                                        (ty1 (/ (* 20.0 ch) ih))
-                                                        (ty2 (+ ty1 (/ (* 5 ch) ih))))
+                                                        (tx1 0.0d0)
+                                                        (tx2 (coerce (+ tx1 (/ (* 5 cw) iw)) 'double-float))
+                                                        (ty1 (coerce (/ (* 20.0 ch) ih) 'double-float))
+                                                        (ty2 (coerce (+ ty1 (/ (* 5 ch) ih)) 'double-float)))
                                                    (list 0.0 0.0 1.0 ; normal
                                                          tx1 ty2 tx2 ty2 tx2 ty1 tx1 ty1 ; texture coordinates
                                                          -hw -hw 0.0 hw -hw 0.0 hw hw 0.0 -hw hw 0.0))
@@ -544,10 +548,10 @@
   (setf (gethash "bomb-ring-4"   *visual-hash*) (list
                                                  (let* ((hw 2.5)
                                                         (-hw (- hw))
-                                                        (tx1 0.0)
-                                                        (tx2 (+ tx1 (/ (* 5 cw) iw)))
-                                                        (ty1 (/ (* 25.0 ch) ih))
-                                                        (ty2 (+ ty1 (/ (* 5 ch) ih))))
+                                                        (tx1 0.0d0)
+                                                        (tx2 (coerce (+ tx1 (/ (* 5 cw) iw)) 'double-float))
+                                                        (ty1 (coerce (/ (* 25.0 ch) ih) 'double-float))
+                                                        (ty2 (coerce (+ ty1 (/ (* 5 ch) ih)) 'double-float)))
                                                    (list 0.0 0.0 1.0 ; normal
                                                          tx1 ty2 tx2 ty2 tx2 ty1 tx1 ty1 ; texture coordinates
                                                          -hw -hw 0.0 hw -hw 0.0 hw hw 0.0 -hw hw 0.0))
@@ -593,10 +597,10 @@
          (v11 (nth 21  face))
          (v12 (nth 22  face)))
     (glnormal3f nx  ny  nz)
-    (gltexcoord2f t1 t2) (glvertex3f v1  v2  v3)
-    (gltexcoord2f t3 t4) (glvertex3f v4  v5  v6)
-    (gltexcoord2f t5 t6) (glvertex3f v7  v8  v9)
-    (gltexcoord2f t7 t8) (glvertex3f v10 v11 v12)))
+    (gltexcoord2d t1 t2) (glvertex3f v1  v2  v3)
+    (gltexcoord2d t3 t4) (glvertex3f v4  v5  v6)
+    (gltexcoord2d t5 t6) (glvertex3f v7  v8  v9)
+    (gltexcoord2d t7 t8) (glvertex3f v10 v11 v12)))
 
 (defun ui-render-cube (faces)
   ;; top bottom front back east west

@@ -1212,6 +1212,10 @@
   (cs :float)
   (ct :float))
 
+(defcfun "glTexCoord2d" :void
+  (cs :double)
+  (ct :double))
+
 (defcfun "gluLookAt" :void
   (eyeX    :double)
   (eyeY    :double)
