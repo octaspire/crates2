@@ -29,6 +29,7 @@
 (defparameter *level-number* 7)
 (defparameter *running* t)
 (defparameter *level* nil)
+(defparameter *infos* nil)
 (defparameter *created* nil)
 (defparameter *next-level* 8)
 (defparameter *level-width* 20)
@@ -238,8 +239,9 @@ This is similar to 'test' but runs much slower."
         (setf *level-number* level-number)
         (setf *level* nil)
         (let ((loaded (load-level *level-number*)))
-          (setf *level* (sort-level (cadr loaded)))
-          (setf *fake-input* (car loaded)))
+          (setf *infos* (car loaded))
+          (setf *level* (sort-level (caddr loaded)))
+          (setf *fake-input* (cadr loaded)))
         (store-level-extent *level*)
         (crates2-ui:ui-look-at *level-center-x*
                                *level-center-y*

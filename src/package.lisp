@@ -32,6 +32,7 @@
            #:*level-width*
            #:*level-height*
            #:*level-number*
+           #:*infos*
            #:*update-counter*
            #:replace-substr-at-transparent-whitespace))
 

@@ -38,7 +38,7 @@
 (defun ui-render (level step)
   (multiple-value-bind (lines x-axis bar) (ui-generate level step)
     (format t "~%  ~A~%" x-axis)
-    (format t "  +~A+ Level ~A~%" bar *level-number*)
+    (format t "  +~A+ Level ~A ~A [~A]~%" bar *level-number* (car *infos*) (cadr *infos*))
     (loop for line across lines
           for y from 0
           do (if (= (mod y ch) 0)

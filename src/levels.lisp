@@ -18,7 +18,10 @@
 
 (defun load-level (index)
   (ecase index
-    (0 (list (list nil nil nil nil
+    (0 (list (list
+              "Level Name"
+              "Level Hint")
+             (list nil nil nil nil
                    :east  nil nil nil nil nil nil nil nil
                    :west  nil nil nil nil nil
                    :north nil nil nil nil nil
@@ -39,7 +42,10 @@
                    (make-instance 'pulled       :x 9 :y 8 :z 0 :west t)
                    (make-instance 'pulled       :x 8 :y 9 :z 0 :north t)
                    (make-instance 'exit         :x 8 :y 2 :z 0))))
-    (1 (list (list nil nil
+    (1 (list (list
+              "Level Name"
+              "Level Hint")
+             (list nil nil
                    :east nil nil nil nil nil nil
                    :north nil nil nil nil nil nil nil nil
                    :east nil nil nil
@@ -128,7 +134,10 @@
                    (make-instance 'wall        :x 3  :y 13 :z 0)
                    (make-instance 'wall        :x 7  :y 14 :z 0)
                    (make-instance 'player      :x 0  :y 14 :z 0))))
-    (2 (list (list nil nil
+    (2 (list (list
+              "Level Name"
+              "Level Hint")
+             (list nil nil
                    :west nil nil nil nil nil nil
                    :south nil nil nil nil
                    :east nil nil nil nil
@@ -185,7 +194,10 @@
                    (make-instance 'exit          :x 1  :y 10)
                    (make-instance 'block-counter :x 3  :y 10 :count 1)
                    (make-instance 'wall          :x 5  :y 10))))
-    (3 (list (list nil nil
+    (3 (list (list
+              "Level Name"
+              "Level Hint")
+             (list nil nil
                    :north nil nil nil nil nil nil nil nil nil nil
                    nil nil nil nil nil nil nil nil nil nil
                    nil nil nil nil nil nil nil nil nil nil
@@ -220,7 +232,10 @@
                    (make-instance 'slope-en      :x 6  :y 8 :z 0)
                    (make-instance 'slope-wn      :x 11 :y 8 :z 0)
                    (make-instance 'wall          :x 5  :y 9 :z 0))))
-    (4 (list (list nil nil
+    (4 (list (list
+              "Level Name"
+              "Level Hint")
+             (list nil nil
                    :east nil nil nil nil nil
                    :west nil nil
                    :north nil nil
@@ -383,7 +398,10 @@
                    (make-instance 'wall          :x 16 :y 7 :z 0)
                    (make-instance 'wall          :x 17 :y 7 :z 0)
                    (make-instance 'wall          :x 18 :y 7 :z 0))))
-    (5 (list (list nil nil
+    (5 (list (list
+              "Level Name"
+              "Level Hint")
+             (list nil nil
                    :north nil nil nil
                    :west :west :west
                    :north nil nil
@@ -740,7 +758,10 @@
                    (make-instance 'stepper :x 13  :y 10 :z -1)
                    (make-instance 'stepper :x 13  :y 11 :z -1)
                    (make-instance 'stepper :x 13  :y 12 :z -1))))
-    (6 (list (list nil nil
+    (6 (list (list
+              "Level Name"
+              "Level Hint")
+             (list nil nil
                    :west nil nil nil nil
                    :east nil nil nil nil nil nil nil
                    :south nil nil
@@ -971,7 +992,10 @@
                    (make-instance 'exit   :x 18 :y 9 :z 0)
                    (make-instance 'exit   :x 9  :y 18 :z 0)
                    (make-instance 'player :x 9  :y 9 :z 0))))
-    (7 (list (list nil nil
+    (7 (list (list
+              "Level Name"
+              "Level Hint")
+             (list nil nil
                    :east nil nil nil nil nil nil nil
                    :south nil nil nil
                    :east nil nil nil nil nil nil nil
@@ -1168,7 +1192,10 @@
                    (make-instance 'wall   :x 13   :y 11 :z 0)
                    (make-instance 'wall   :x 14   :y 11 :z 0)
                    (make-instance 'wall   :x 15   :y 11 :z 0))))
-    (8 (list (list nil nil nil nil
+    (8 (list (list
+              "Level Name"
+              "Level Hint")
+             (list nil nil nil nil
                    :west  nil nil nil nil
                    :east nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil
                    nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil

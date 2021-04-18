@@ -56,6 +56,8 @@
     (cl-charms/low-level:clear)
     (cl-charms/low-level:mvaddstr 0 0 x-axis)
     (cl-charms/low-level:mvaddstr 1 0 (format nil "  +~A+ Level ~A~%" bar *level-number*))
+    (cl-charms/low-level:mvaddstr 2 0 (format nil "  +~A+ ~A~%"       bar (car  *infos*)))
+    (cl-charms/low-level:mvaddstr 3 0 (format nil "  +~A+ ~A~%"       bar (cadr *infos*)))
     (loop for line across lines
           for y from 0
           do (if (= (mod y ch) 0)

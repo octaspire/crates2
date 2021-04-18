@@ -1474,6 +1474,9 @@
   (file (:string :encoding :utf-8))
   (ptsize :int))
 
+(defcfun "TTF_CloseFont" :void
+  (font :pointer))
+
 (defcfun "TTF_RenderUTF8_Solid" :pointer
   (font :pointer)
   (text (:string :encoding :utf-8))
