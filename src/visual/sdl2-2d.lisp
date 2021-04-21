@@ -26,6 +26,7 @@
 (defparameter *crates2-renderer* :pointer)
 (defparameter *image* :pointer)
 (defparameter *texture* :pointer)
+(defparameter *texture-dimensions* (list 0 0))
 (defparameter *font* :pointer)
 (defparameter *text-texture* :pointer)
 (defparameter *visual-hash* (make-hash-table :test 'equal))
@@ -321,8 +322,9 @@
                                   (set-rect rect2 (+ deltax *look-at-x*) (+ finy *look-at-y*) vivw vivh)
                                   (sdl-rendercopy *crates2-renderer* *texture* rect1pointer rect2pointer))))))))
       (set-rect rect1 0 0 100 20)
-      (set-rect rect2 200 200 400 400)
-      (sdl-setrenderdrawcolor *crates2-renderer* #xFF #xFF #xFF #xFF)
+      (let ((tw (first *texture-dimensions*))
+            (th (second *texture-dimensions*)))
+        (set-rect rect2 4 (- screen-height th 2) tw th))
       (sdl-rendercopy *crates2-renderer* *text-texture* nullpointer rect2pointer)
       (sdl-renderpresent *crates2-renderer*))))
 
@@ -344,21 +346,20 @@
     (setf *texture* (sdl-createtexturefromsurface
                      *crates2-renderer*
                      *image*))
-    (setf *font* (ttf-openfont "etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf" 100))
+    (setf *font* (ttf-openfont "etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf" 26))
     (format t "FONT IS ~A~%" *font*)
     (with-surface (text-surface)
-      (with-foreign-objects ((textcolor '(:struct sdl-color))
-                             (nullpointer :pointer))
+      (with-foreign-objects ((nullpointer :pointer))
         (setf nullpointer (null-pointer))
-        (sdl-ext-color #xFF #x00 #xAA #xFF textcolor)
         (with-foreign-string (text "Some text here")
-          (setf text-surface (ttf-renderutf8-solid *font* text textcolor))
-          ;; (sdl-fillrect text-surface nullpointer #xFFFFFF)
+          (setf text-surface (sdl-convertsurfaceformat
+                              (ttf-renderutf8-blended *font* text (list 255 255 0 255))
+                              ;; (ttf-ext-render-text *font* text (list 255 255 0 255))
+                              +SDL-PIXELFORMAT-RGBA+ 0))
           (setf *text-texture* (sdl-createtexturefromsurface
                                 *crates2-renderer*
                                 text-surface))
-          (format t "TEXT SURFACE IS ~A~%" text-surface)
-          (format t "TEXT TEXTURE IS ~A~%" *text-texture*))))))
+          (setf *texture-dimensions* (sdl-ext-get-texture-dimensions *text-texture*)))))))
 
 (defun ui-delete ()
   (sb-int:with-float-traps-masked (:invalid :inexact :overflow)
