@@ -1219,6 +1219,22 @@
   (cs :double)
   (ct :double))
 
+(defcfun "glOrtho" :void
+  (left   :double)
+  (right  :double)
+  (bottom :double)
+  (top    :double)
+  (znear  :double)
+  (zfar   :double))
+
+;; See
+;; https://www.khronos.org/opengl/wiki/OpenGL_Type
+;; for size of GLbitfield
+(defcfun "glPushAttrib" :void
+  (mask   :uint32))
+
+(defcfun "glPopAttrib" :void)
+
 (defcfun "gluLookAt" :void
   (eyeX    :double)
   (eyeY    :double)
