@@ -14,8 +14,6 @@
 ;; limitations under the License.
 (in-package :crates2)
 
-(defparameter *num-levels* 9)
-
 (defun load-level (index)
   (ecase index
     (0 (list (list

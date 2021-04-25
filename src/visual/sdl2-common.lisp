@@ -14,10 +14,34 @@
 ;; limitations under the License.
 (in-package :crates2-ui)
 
+(defconstant +UI-HINT-DELAY+ -5)
+(defparameter *ui-hint-time* +UI-HINT-DELAY+)
+
+(defun ui-on-level-changed ()
+  (setf *ui-hint-time* +UI-HINT-DELAY+))
+
 (defun ui-sdl2-format-info-message (level-number num-levels level-name level-hint)
   (if (> (length level-hint) 0)
       (format nil "Level ~A/~A \"~A\"~C~A" (1+ level-number) num-levels level-name #\return level-hint)
       (format nil "Level ~A/~A \"~A\"" (1+ level-number) num-levels level-name)))
+
+(defun ui-update-hint-time ()
+  (when (< *ui-hint-time* 1.0)
+    (setf *ui-hint-time* (+ *ui-hint-time* 0.05))
+    (when (> *ui-hint-time* 1.0)
+      (setf *ui-hint-time* 1.0))))
+
+(defun ui-ease (p)
+  (if (< p 0)
+      0
+      ;; Based on Robert Penner's BackEaseOut easing function
+      (let* ((f  (- 1 p))
+             (f3 (* f f f))
+             (s  (sin (* f PI))))
+        (- 1 (- f3 (* f s))))))
+
+(defun ui-sdl2-load-font ()
+  (ttf-openfont "etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf" 16))
 
 (defun ui-read-input ()
   (sb-int:with-float-traps-masked (:invalid :inexact :overflow)

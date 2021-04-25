@@ -32,6 +32,7 @@
            #:*level-width*
            #:*level-height*
            #:*level-number*
+           #:*num-levels*
            #:*infos*
            #:*update-counter*
            #:replace-substr-at-transparent-whitespace))
@@ -45,4 +46,5 @@
            #:init-visual-hash
            #:ui-render
            #:ui-look-at
+           #:ui-on-level-changed
            #:ui-delete))

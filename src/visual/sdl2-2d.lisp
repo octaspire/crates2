@@ -291,7 +291,7 @@
 (defparameter *fake-input* nil)
 
 (defun ensure-text-texture (level-number num-levels level-name level-hint)
-  (when (/= *ui-level-number* level-number)
+  (when (and num-levels (/= *ui-level-number* level-number))
     (when *text-texture-initialized*
       (sdl-destroytexture *text-texture*)
       (setf *text-texture-initialized* nil))
@@ -310,7 +310,7 @@
 
 (defun ui-render (level step)
   (sb-int:with-float-traps-masked (:invalid :inexact :overflow)
-    (ensure-text-texture *level-number* 10 (car *infos*) (cadr *infos*))
+    (ensure-text-texture *level-number* *num-levels* (car *infos*) (cadr *infos*))
     (sdl-setrenderdrawcolor *crates2-renderer* #x00 #x00 #x00 #xFF)
     (sdl-renderclear *crates2-renderer*)
     (sdl-setrenderdrawcolor *crates2-renderer* #xBA #x16 #x0C #xFF)
@@ -344,9 +344,11 @@
                                   (set-rect rect2 (+ deltax *look-at-x*) (+ finy *look-at-y*) vivw vivh)
                                   (sdl-rendercopy *crates2-renderer* *texture* rect1pointer rect2pointer))))))))
       (set-rect rect1 0 0 100 20)
-      (let ((tw (first *texture-dimensions*))
-            (th (second *texture-dimensions*)))
-        (set-rect rect2 4 (- screen-height th 2) tw th))
+      (let* ((tw  (first *texture-dimensions*))
+             (th  (second *texture-dimensions*))
+             (thh (* 0.5 th)))
+        (ui-update-hint-time)
+        (set-rect rect2 4 (+ (- screen-height th 2) (ceiling (* (ui-ease *ui-hint-time*) thh))) tw th))
       (sdl-rendercopy *crates2-renderer* *text-texture* nullpointer rect2pointer)
       (sdl-renderpresent *crates2-renderer*))))
 
@@ -368,8 +370,7 @@
     (setf *texture* (sdl-createtexturefromsurface
                      *crates2-renderer*
                      *image*))
-    (setf *font* (ttf-openfont "etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf" 26))
-    (format t "FONT IS ~A~%" *font*)))
+    (setf *font* (ui-sdl2-load-font))))
 
 (defun ui-delete ()
   (sb-int:with-float-traps-masked (:invalid :inexact :overflow)

@@ -27,6 +27,7 @@
 (defparameter *update-counter* 0)
 (defparameter *input* nil)
 (defparameter *level-number* 7)
+(defparameter *num-levels* 9)
 (defparameter *running* t)
 (defparameter *level* nil)
 (defparameter *infos* nil)
@@ -249,7 +250,8 @@ This is similar to 'test' but runs much slower."
                                *level-min-x*
                                *level-min-y*
                                *level-max-x*
-                               *level-max-y*))))
+                               *level-max-y*)))
+  (crates2-ui:ui-on-level-changed))
 
 (defun request-next-level ()
   ;; Don't override previous request, if present.
