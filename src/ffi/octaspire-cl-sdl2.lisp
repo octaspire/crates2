@@ -1516,9 +1516,11 @@
   (text (:string :encoding :utf-8))
   (fg (:struct sdl-color)))             ; fg is passed by value
 
-;; This function is here just as a note. Can be removed a bit later.
-(defun ttf-ext-render-text (font text fg)
-  (cffi:foreign-funcall "TTF_RenderUTF8_Blended" :pointer font (:string :encoding :utf-8) text (:struct sdl-color) fg :pointer))
+(defcfun "TTF_RenderUTF8_Blended_Wrapped" :pointer
+  (font       :pointer)
+  (text       (:string :encoding :utf-8))
+  (fg         (:struct sdl-color))      ; fg is passed by value
+  (wrapLength :uint32))
 
 (defun sdl-ext-get-texture-dimensions (texture)
   (cffi:with-foreign-objects ((w  :int)

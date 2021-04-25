@@ -14,6 +14,11 @@
 ;; limitations under the License.
 (in-package :crates2-ui)
 
+(defun ui-sdl2-format-info-message (level-number num-levels level-name level-hint)
+  (if (> (length level-hint) 0)
+      (format nil "Level ~A/~A \"~A\"~C~A" (1+ level-number) num-levels level-name #\return level-hint)
+      (format nil "Level ~A/~A \"~A\"" (1+ level-number) num-levels level-name)))
+
 (defun ui-read-input ()
   (sb-int:with-float-traps-masked (:invalid :inexact :overflow)
     (let ((result nil))

@@ -23,6 +23,8 @@
 (defconstant screen-width 800)
 (defconstant screen-height 600)
 
+(defparameter *ui-level-number* -123)
+
 (defparameter *crates2-window* :pointer)
 (defparameter *crates2-gl-context* :pointer)
 (defparameter *texture-dimensions* (list 0 0))
@@ -657,6 +659,7 @@
 
 (defun ui-render (level step)
   (sb-int:with-float-traps-masked (:invalid :inexact :overflow)
+    (ensure-text-texture *level-number* 10 (car *infos*) (cadr *infos*))
     (glclearcolor 0.0 0.0 0.0 1.0)
     (glclear (logior +GL-COLOR-BUFFER-BIT+ +GL-DEPTH-BUFFER-BIT+))
     (glenable +GL-TEXTURE-2D+)
@@ -723,6 +726,22 @@
                0.0d0       0.0d0       1.0d0))
   (glmatrixmode +GL-MODELVIEW+))
 
+(defun ensure-text-texture (level-number num-levels level-name level-hint)
+  (when (/= *ui-level-number* level-number)
+    (with-surface (text-surface)
+      (with-foreign-objects ((nullpointer :pointer))
+        (setf nullpointer (null-pointer))
+        (with-foreign-string (text (ui-sdl2-format-info-message level-number num-levels level-name level-hint))
+          (setf text-surface (sdl-convertsurfaceformat
+                              (ttf-renderutf8-blended-wrapped *font* text (list 255 255 0 255) screen-width)
+                              +SDL-PIXELFORMAT-RGBA+ 0))
+          (glbindtexture +GL-TEXTURE-2D+ (mem-aref *txids* :uint32 1))
+          (with-foreign-slots ((pixels w h) text-surface (:struct sdl-surface))
+            (setf *texture-dimensions* (list w h))
+            (glteximage2d +GL-TEXTURE-2D+ 0 +GL-RGBA+ w h 0 +GL-RGBA+ +GL-UNSIGNED-BYTE+ pixels))
+          (glgeneratemipmap +GL-TEXTURE-2D+))))
+    (setf *ui-level-number* level-number)))
+
 (defun ui-init (options)
   (sb-int:with-float-traps-masked (:invalid :inexact :overflow)
     (sdl-init +SDL-INIT-VIDEO+)
@@ -755,18 +774,7 @@
       (glteximage2d +GL-TEXTURE-2D+ 0 +GL-RGBA+ iw ih 0 +GL-RGBA+ +GL-UNSIGNED-BYTE+ pixels))
     (glgeneratemipmap +GL-TEXTURE-2D+)
     ;; Text
-    (with-surface (text-surface)
-      (with-foreign-objects ((nullpointer :pointer))
-        (setf nullpointer (null-pointer))
-        (with-foreign-string (text "Some text here")
-          (setf text-surface (sdl-convertsurfaceformat
-                              (ttf-renderutf8-blended *font* text (list 255 255 0 255))
-                              +SDL-PIXELFORMAT-RGBA+ 0))
-          (glbindtexture +GL-TEXTURE-2D+ (mem-aref *txids* :uint32 1))
-          (with-foreign-slots ((pixels w h) text-surface (:struct sdl-surface))
-            (setf *texture-dimensions* (list w h))
-            (glteximage2d +GL-TEXTURE-2D+ 0 +GL-RGBA+ w h 0 +GL-RGBA+ +GL-UNSIGNED-BYTE+ pixels))
-          (glgeneratemipmap +GL-TEXTURE-2D+))))
+    (ensure-text-texture 1 10 "Test" "")
     (check-error)))
 
 (defun ui-delete ()
