@@ -21,6 +21,8 @@
 (defparameter *look-at-x* 0)
 (defparameter *look-at-y* 0)
 
+(defun ui-on-level-changed ())
+
 (defun ui-look-at (x y m minx miny maxx maxy)
   (setf *look-at-x* (floor (- (- *level-width* maxx) minx) 2))
   (setf *look-at-y* (* (1- (floor (- (- *level-height* maxy) miny) 2)) ch)))
