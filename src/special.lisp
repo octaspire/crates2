@@ -43,7 +43,8 @@
      (setf (velocity target) (on-which-side-i-am self target))
      (setf (crate-state self) :active)
      (setf (special-jump-active-step self) 1)
-     (setf (special-jump-target self) target))
+     (setf (special-jump-target self) target)
+     (crates2-ui:ui-play-sound :special))
     (:active
      (setf (velocity target) (on-which-side-i-am self target)))
     (:lamented nil)))

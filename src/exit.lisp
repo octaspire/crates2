@@ -39,5 +39,9 @@
   (setf (exit-activated self) t)
   (if (or (contains-keys-p)
           (contains-off-toggles-p))
-      (setf (crate-state self) :activated-fail)
-      (setf (crate-state self) :activated-pass)))
+      (progn
+        (setf (crate-state self) :activated-fail)
+        (crates2-ui:ui-play-sound :exit-error))
+      (progn
+        (setf (crate-state self) :activated-pass)
+        (crates2-ui:ui-play-sound :exit-ok))))

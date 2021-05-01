@@ -17,6 +17,7 @@
 ;; Methods
 
 (defmethod activate ((self slope))
+  (crates2-ui:ui-play-sound :slope)
   (setf (slope-active-step self) 3))
 
 (defmethod update ((self slope))

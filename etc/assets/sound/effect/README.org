@@ -1,0 +1,7 @@
+These sound effects are by Juhani Junkala who has released
+them under CC0 creative commons license in "The Essential Retro
+Video Game Sound Effects Collection [512 sounds]".
+
+These files have been renamed, and might contain other modifications too.
+See [[https://opengameart.org/content/512-sound-effects-8-bit-style][https://opengameart.org/content/512-sound-effects-8-bit-style]]
+for the original files.

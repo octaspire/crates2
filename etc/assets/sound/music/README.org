@@ -1,0 +1,8 @@
+This music is by Juhani Junkala who has released
+it under CC0 creative commons license in collection
+"5 Action Chiptunes By Juhani Junkala".
+
+This file is not the original file, but has been converted
+into Ogg Vorbis format from the original WAV file.
+See [[https://opengameart.org/content/5-chiptunes-action][https://opengameart.org/content/5-chiptunes-action]]
+for the original file.

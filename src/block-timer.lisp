@@ -41,8 +41,14 @@
 
 (defmethod collide ((self block-timer) (target moving))
   (ecase (crate-state self)
-    (:idle (setf (crate-state self) :active))
-    (:active (unless (block-timer-durable self)
-               (lament self)))
+    (:idle
+     (setf (crate-state self) :active)
+     (crates2-ui:ui-play-sound :hit-wall)
+     (crates2-ui:ui-play-sound :hit-counter))
+    (:active
+     (crates2-ui:ui-play-sound :hit-wall)
+     (crates2-ui:ui-play-sound :hit-counter)
+     (unless (block-timer-durable self)
+       (lament self)))
     (:lamented nil)))
 

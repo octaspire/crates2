@@ -47,6 +47,7 @@
            #:ui-read-input
            #:init-visual-hash
            #:*ui-program*
+           #:ui-play-sound
            #:ui-render
            #:ui-look-at
            #:ui-on-level-changed

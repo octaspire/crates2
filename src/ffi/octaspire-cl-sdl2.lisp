@@ -1452,6 +1452,10 @@
   (rect  :pointer)                         ; const *
   (color :uint32))
 
+;; Declared in SDL_rwops.h
+(defcfun "SDL_RWFromFile" :pointer
+  (file (:string :encoding :utf-8))
+  (mode (:string :encoding :utf-8)))
 
 
 
@@ -1546,6 +1550,13 @@
 (defconstant +MIX-INIT-OGG+  #x10)
 (defconstant +MIX-INIT-MID+  #x20)
 (defconstant +MIX-INIT-OPUS+ #x40)
+(defconstant +MIX-DEFAULT-FREQUENCY+ 22050)
+
+#+little-endian
+(defconstant +MIX-DEFAULT-FORMAT+ +AUDIO-S16LSB+)
+
+#+big-endian
+(defconstant +MIX-DEFAULT-FORMAT+ +AUDIO-S16SB+)
 
 (defcfun "Mix_Init" :int
   (flags :int))
@@ -1560,8 +1571,28 @@
 
 (defcfun "Mix_CloseAudio" :void)
 
-(defcfun "Mix_LoadWAV" :pointer
+(defcfun "Mix_LoadWAV_RW" :pointer
+  (src     :pointer)
+  (freesrc :int))
+
+(defcfun "Mix_LoadMUS" :pointer
   (file (:string :encoding :utf-8)))
+
+(defcfun "Mix_PlayMusic" :int
+  (music :pointer)
+  (loops :int))
+
+(defcfun "Mix_PlayChannelTimed" :int
+  (channel :int)
+  (chunk   :pointer)
+  (loops   :int)
+  (ticks   :int))
+
+(defcfun "Mix_FreeChunk" :void
+  (chunk :pointer))
+
+(defcfun "Mix_FreeMusic" :void
+  (music :pointer))
 
 (defmacro with-mix ((&rest flags) &body body)
   `(progn

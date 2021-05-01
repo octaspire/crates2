@@ -93,6 +93,7 @@
     (unless airborne
       (when specials
         (setf (moving-specials self) (cdr (moving-specials self)))
+        (crates2-ui:ui-play-sound :special)
         (if crate
             (handle-collision self crate)
             (setf (moving-airborne self) 1))))))

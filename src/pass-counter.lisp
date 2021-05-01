@@ -33,7 +33,8 @@
          (setf (crate-state self) :triggered)
          (let ((crate (find-at-of-type (crate-x self) (crate-y self) 0 'moving)))
            (when crate
-             (incf (pass-counter-passes self))))))
+             (incf (pass-counter-passes self))
+             (crates2-ui:ui-play-sound :hit-counter)))))
     (:triggered
      (let* ((x (crate-x self))
             (y (crate-y self))

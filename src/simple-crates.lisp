@@ -25,7 +25,7 @@
   (list (format nil "wall-idle-~2,'0d" (crate-frame self))))
 
 (defmethod collide ((self wall) (target moving))
-  )
+  (crates2-ui:ui-play-sound :hit-wall))
 
 (defmethod collide ((self pushed) (target moving))
   (setf (velocity self) (on-which-side-i-am self target)))

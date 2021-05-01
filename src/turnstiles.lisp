@@ -17,6 +17,7 @@
 ;; Methods
 
 (defmethod activate ((self turnstile))
+  (crates2-ui:ui-play-sound :redirect)
   (setf (turnstile-active-step self) 3))
 
 (defmethod update ((self turnstile))

@@ -29,6 +29,8 @@
 (defmethod collide ((self block-counter) (target moving))
   (ecase (crate-state self)
     (:idle (incf (block-counter-touches self))
+     (crates2-ui:ui-play-sound :hit-wall)
+     (crates2-ui:ui-play-sound :hit-counter)
      (when (<= (touches-left self) 0)
        (lament self)))
     (:lamented nil)))

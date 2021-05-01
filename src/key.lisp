@@ -40,7 +40,8 @@
     (:idle
      (setf (velocity target) (on-which-side-i-am self target))
      (setf (crate-state self) :active)
-     (setf (key-active-step self) 1))
+     (setf (key-active-step self) 1)
+     (crates2-ui:ui-play-sound :key-collect))
     (:active
      (setf (velocity target) (on-which-side-i-am self target)))
     (:lamented nil)))

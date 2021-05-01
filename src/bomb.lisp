@@ -45,7 +45,8 @@
      (when (<= (time-left self) 0)
        (setf (crate-state self) :explosion1)))
     (:explosion1
-     (setf (crate-state self) :explosion2))
+     (setf (crate-state self) :explosion2)
+     (crates2-ui:ui-play-sound :explosion))
     (:explosion2
      (purge-ring self 1)
      (setf (crate-state self) :explosion3))
@@ -83,6 +84,8 @@
     result))
 
 (defmethod collide ((self bomb) (target moving))
+  (crates2-ui:ui-play-sound :hit-wall)
+  (crates2-ui:ui-play-sound :bomb-on)
   (case (crate-state self)
     (:idle (setf (crate-state self) :active))
     (:active (unless (bomb-durable self)
