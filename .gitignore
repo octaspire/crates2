@@ -6,3 +6,4 @@ crates2-sdl2-opengl
 expected.txt.bz2
 expected.txt
 got.txt
+.DS_Store
