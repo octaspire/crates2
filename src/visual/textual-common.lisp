@@ -21,6 +21,8 @@
 (defparameter *look-at-x* 0)
 (defparameter *look-at-y* 0)
 
+(defun ui-play-sound (id))
+
 (defun ui-on-level-changed ())
 
 (defun ui-look-at (x y m minx miny maxx maxy)
