@@ -40,14 +40,17 @@
   (call-next-method))
 
 (defmethod handle-input ((self player) input)
-  (when (and input (active self))
-    (ecase input
-      (:east    (setf (velocity self) input))
-      (:west    (setf (velocity self) input))
-      (:north   (setf (velocity self) input))
-      (:south   (setf (velocity self) input))
-      (:action1 (jump self)))
-    (setf (player-pending-input self) nil)))
+  (let ((controlled (player-controlled self)))
+    (if controlled
+        (handle-input controlled input)
+        (when (and input (active self))
+          (ecase input
+            (:east    (setf (velocity self) input))
+            (:west    (setf (velocity self) input))
+            (:north   (setf (velocity self) input))
+            (:south   (setf (velocity self) input))
+            (:action1 (jump self)))
+          (setf (player-pending-input self) nil)))))
 
 (defmethod collide ((self player) (target pushed))
   (let ((vplayer (velocity self))

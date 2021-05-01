@@ -207,7 +207,15 @@
   ((delay :initform 0
           :accessor player-delay)
    (pending-input :initform nil
-                  :accessor player-pending-input)))
+                  :accessor player-pending-input)
+   (controlled :initform nil
+               :accessor player-controlled)))
+
+(defclass automaton (moving)
+  ((program :initform (string "")
+            :accessor automaton-program)
+   (programmer :initform nil
+               :accessor automaton-programmer)))
 
 (defclass vacuum (crate)
   ((full :initarg :full

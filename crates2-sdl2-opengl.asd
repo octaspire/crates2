@@ -14,6 +14,7 @@
 ;; limitations under the License.
 (asdf:defsystem "crates2-sdl2-opengl"
   :depends-on (:alexandria
+               :str
                :unix-opts
                :parse-float
                :trivial-garbage
@@ -36,6 +37,7 @@
                          (:file "pulled")
                          (:file "toggle")
                          (:file "player")
+                         (:file "automaton")
                          (:file "slopes")
                          (:file "turnstiles")
                          (:file "bomb")

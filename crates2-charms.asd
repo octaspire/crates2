@@ -13,7 +13,7 @@
 ;; See the License for the specific language governing permissions and
 ;; limitations under the License.
 (asdf:defsystem "crates2-charms"
-  :depends-on (:alexandria :unix-opts :parse-float :trivial-garbage :cl-charms :log4cl)
+  :depends-on (:alexandria :str :unix-opts :parse-float :trivial-garbage :cl-charms :log4cl)
   :serial t
   :components ((:module src
                 :components
@@ -29,6 +29,7 @@
                  (:file "pulled")
                  (:file "toggle")
                  (:file "player")
+                 (:file "automaton")
                  (:file "slopes")
                  (:file "turnstiles")
                  (:file "bomb")

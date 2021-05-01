@@ -24,6 +24,7 @@
 (defconstant screen-height 600)
 
 (defparameter *ui-level-number* -123)
+(defparameter *ui-program*      "")
 
 (defparameter *crates2-window* :pointer)
 (defparameter *crates2-gl-context* :pointer)
@@ -192,7 +193,6 @@
   (setf (gethash "player-active-04" *visual-hash*) (make-cube 1021 nil 1021 1021 1021 1021 0.39))
   (setf (gethash "player-active-05" *visual-hash*) (make-cube 1022 nil 1022 1022 1022 1022 0.39))
   (setf (gethash "player-active-06" *visual-hash*) (make-cube 1023 nil 1023 1023 1023 1023 0.39))
-
   (setf (gethash "player-airborne"  *visual-hash*) (let* ((w 1.0)
                                                           (hw (/ 1.0 2))
                                                           (-hw (- hw))
@@ -226,6 +226,11 @@
                                                             hw -hw (+ -hw 1.0)    hw  hw (+ -hw 1.0)    hw  hw (+ hw 1.0)   hw -hw (+ hw 1.0)))))
 
   (setf (gethash "player-hidden"    *visual-hash*) (make-cube nil nil nil nil nil nil))
+  ;; AUTOMATON
+  (setf (gethash "automaton-idle"            *visual-hash*) (make-cube 991 nil 991 991 991 991))
+  (setf (gethash "automaton-programming"     *visual-hash*) (make-cube 989 nil 989 989 989 989))
+  (setf (gethash "automaton-executing"       *visual-hash*) (make-cube 990 nil 990 990 990 990))
+  (setf (gethash "automaton-executing-hover" *visual-hash*) (make-cube 990 nil 990 990 990 990))
   ;; SLOPES
   (setf (gethash "slope-en"        *visual-hash*) (make-cube 384 nil 0 nil nil 0))
   (setf (gethash "slope-en-active" *visual-hash*) (make-cube 385 nil 0 nil nil 0))
@@ -730,11 +735,11 @@
   (glmatrixmode +GL-MODELVIEW+))
 
 (defun ensure-text-texture (level-number num-levels level-name level-hint)
-  (when (and num-levels (/= *ui-level-number* level-number))
+  (when (and num-levels (or (/= *ui-level-number* level-number) (string/= *program* *ui-program*)))
     (with-surface (text-surface)
       (with-foreign-objects ((nullpointer :pointer))
         (setf nullpointer (null-pointer))
-        (with-foreign-string (text (ui-sdl2-format-info-message level-number num-levels level-name level-hint))
+        (with-foreign-string (text (ui-sdl2-format-info-message *program* level-number num-levels level-name level-hint))
           (setf text-surface (sdl-convertsurfaceformat
                               (ttf-renderutf8-blended-wrapped *font* text (list 255 255 0 255) screen-width)
                               +SDL-PIXELFORMAT-RGBA+ 0))
@@ -743,7 +748,8 @@
             (setf *texture-dimensions* (list w h))
             (glteximage2d +GL-TEXTURE-2D+ 0 +GL-RGBA+ w h 0 +GL-RGBA+ +GL-UNSIGNED-BYTE+ pixels))
           (glgeneratemipmap +GL-TEXTURE-2D+))))
-    (setf *ui-level-number* level-number)))
+    (setf *ui-level-number* level-number)
+    (setf *ui-program* *program*)))
 
 (defun ui-init (options)
   (sb-int:with-float-traps-masked (:invalid :inexact :overflow)

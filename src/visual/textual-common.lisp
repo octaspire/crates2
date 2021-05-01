@@ -115,6 +115,11 @@
   (setf (gethash "player-active-06" *visual-hash*) #(" .--. " " |xx| " " `--' "))
   (setf (gethash "player-airborne"  *visual-hash*) #(".----." "|xxxx|" "`----'"))
   (setf (gethash "player-hidden" *visual-hash*) #("      " "      " "      "))
+  ;; AUTOMATON
+  (setf (gethash "automaton-idle"            *visual-hash*) #(" .--. " "AUTOM." " `--' "))
+  (setf (gethash "automaton-programming"     *visual-hash*) #(" .--. " "AUTOM!" " `--' "))
+  (setf (gethash "automaton-executing"       *visual-hash*) #(" .--. " "!!!!!!" " `--' "))
+  (setf (gethash "automaton-executing-hover" *visual-hash*) #("      " "      " "      "))
   ;; SLOPES
   (setf (gethash "slope-en"        *visual-hash*) #("+--+  " "|   \\ " "+----+"))
   (setf (gethash "slope-en-active" *visual-hash*) #("o--o  " "|   \\ " "o----o"))
@@ -242,7 +247,7 @@
   (setf (gethash "number-98"        *visual-hash*) #("      " "    98" "      "))
   (setf (gethash "number-99"        *visual-hash*) #("      " "    99" "      "))
   (setf (gethash "number-100"       *visual-hash*) #("      " "    100" "      "))
-    ;; BOTTOM NUMBERS
+  ;; BOTTOM NUMBERS
   (loop for i from 1 to 100
         do (setf (gethash (format nil "number-bottom-~2,'0d" i) *visual-hash*) (vector "      " (format nil "   ~3,' d" i) "      ")))
   ;; BLOCK-COUNTER

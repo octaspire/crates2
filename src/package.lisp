@@ -16,6 +16,7 @@
   (:use
    :common-lisp)
   (:export #:main
+           #:automaton
            #:player
            #:moving
            #:movingp
@@ -34,6 +35,7 @@
            #:*level-number*
            #:*num-levels*
            #:*infos*
+           #:*program*
            #:*update-counter*
            #:replace-substr-at-transparent-whitespace))
 
@@ -44,6 +46,7 @@
   (:export #:ui-init
            #:ui-read-input
            #:init-visual-hash
+           #:*ui-program*
            #:ui-render
            #:ui-look-at
            #:ui-on-level-changed

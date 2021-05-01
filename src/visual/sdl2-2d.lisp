@@ -23,6 +23,7 @@
 (defconstant screen-height 600)
 
 (defparameter *ui-level-number* -123)
+(defparameter *ui-program*      "")
 
 (defparameter *crates2-window* :pointer)
 (defparameter *crates2-renderer* :pointer)
@@ -105,6 +106,11 @@
   (setf (gethash "player-active-06" *visual-hash*) (make-rect 38))
   (setf (gethash "player-airborne"  *visual-hash*) (list (floor (* 0.9619140625 iw)) 0 (floor (* 1.2 cw)) (floor (* 1.2 ch))))
   (setf (gethash "player-hidden"    *visual-hash*) (make-rect 15))
+  ;; AUTOMATON
+  (setf (gethash "automaton-idle"            *visual-hash*) (make-rect 991))
+  (setf (gethash "automaton-programming"     *visual-hash*) (make-rect 989))
+  (setf (gethash "automaton-executing"       *visual-hash*) (make-rect 990))
+  (setf (gethash "automaton-executing-hover" *visual-hash*) (make-rect 15))
   ;; SLOPES
   (setf (gethash "slope-en"        *visual-hash*) (make-rect 384))
   (setf (gethash "slope-en-active" *visual-hash*) (make-rect 385))
@@ -291,14 +297,14 @@
 (defparameter *fake-input* nil)
 
 (defun ensure-text-texture (level-number num-levels level-name level-hint)
-  (when (and num-levels (/= *ui-level-number* level-number))
+  (when (and num-levels (or (/= *ui-level-number* level-number) (string/= *program* *ui-program*)))
     (when *text-texture-initialized*
       (sdl-destroytexture *text-texture*)
       (setf *text-texture-initialized* nil))
     (with-surface (text-surface)
       (with-foreign-objects ((nullpointer :pointer))
         (setf nullpointer (null-pointer))
-        (with-foreign-string (text (ui-sdl2-format-info-message level-number num-levels level-name level-hint))
+        (with-foreign-string (text (ui-sdl2-format-info-message *program* level-number num-levels level-name level-hint))
           (setf text-surface (sdl-convertsurfaceformat
                               (ttf-renderutf8-blended-wrapped *font* text (list 255 255 0 255) screen-width)
                               +SDL-PIXELFORMAT-RGBA+ 0))
@@ -306,7 +312,8 @@
                                 *crates2-renderer*
                                 text-surface))
           (setf *texture-dimensions* (sdl-ext-get-texture-dimensions *text-texture*)))))
-    (setf *text-texture-initialized* t)))
+    (setf *text-texture-initialized* t)
+    (setf *ui-program* *program*)))
 
 (defun ui-render (level step)
   (sb-int:with-float-traps-masked (:invalid :inexact :overflow)
