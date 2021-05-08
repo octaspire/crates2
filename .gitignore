@@ -7,3 +7,4 @@ expected.txt.bz2
 expected.txt
 got.txt
 .DS_Store
+generated/*.lisp

@@ -1457,7 +1457,13 @@
   (file (:string :encoding :utf-8))
   (mode (:string :encoding :utf-8)))
 
+(defcfun "SDL_RWFromMem" :pointer
+  (mem  :pointer)
+  (size :int))
 
+(defcfun "SDL_RWFromConstMem" :pointer
+  (mem  :pointer)
+  (size :int))
 
 
 ;;; SDL_Image
@@ -1577,6 +1583,10 @@
 
 (defcfun "Mix_LoadMUS" :pointer
   (file (:string :encoding :utf-8)))
+
+(defcfun "Mix_LoadMUS_RW" :pointer
+  (src     :pointer)
+  (freesrc :int))
 
 (defcfun "Mix_PlayMusic" :int
   (music :pointer)

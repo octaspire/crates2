@@ -23,10 +23,18 @@
                :trivial-features
                :log4cl)
   :serial t
-  :components ((:module src
+  :components ((:module common
+                :components ((:file "package")))
+               (:module generated
+                :depends-on ("common")
+                :components ((:file "ending")
+                             (:file "special")
+                             (:file "hit-wall")
+                             (:file "explosion")))
+               (:module src
+                :depends-on ("common" "generated")
                 :components
-                        ((:file "package")
-                         (:file "classes")
+                        ((:file "classes")
                          (:file "utils")
                          (:file "crate")
                          (:file "moving")

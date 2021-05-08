@@ -18,10 +18,27 @@ FLAGS     ?= --noinform --noprint
 level     ?= 0
 FFIDIR    ?= src/ffi/
 VISUALDIR ?= src/visual/
+CLHEXDUMP ?= etc/script/cl-hexdump.sh
+GENERATED ?= generated/ending.lisp    \
+             generated/special.lisp   \
+             generated/hit-wall.lisp  \
+             generated/explosion.lisp
 
-all: crates2-text crates2-charms crates2-sdl2 crates2-sdl2-opengl
+all: $(GENERATED) crates2-text crates2-charms crates2-sdl2 crates2-sdl2-opengl
 
 .PHONY: slime clean help test
+
+generated/ending.lisp: etc/assets/sound/music/ending.ogg Makefile $(CLHEXDUMP)
+	@$(CLHEXDUMP) $< $@
+
+generated/special.lisp: etc/assets/sound/effect/special.wav Makefile $(CLHEXDUMP)
+	@$(CLHEXDUMP) $< $@
+
+generated/hit-wall.lisp: etc/assets/sound/effect/hit-wall.wav Makefile $(CLHEXDUMP)
+	@$(CLHEXDUMP) $< $@
+
+generated/explosion.lisp: etc/assets/sound/effect/explosion.wav Makefile $(CLHEXDUMP)
+	@$(CLHEXDUMP) $< $@
 
 crates2-text: Makefile crates2-text.asd src/*.lisp $(VISUALDIR)textual-common.lisp $(VISUALDIR)textual-plain.lisp etc/*.*
 	@$(LISP) $(FLAGS) $(EVAL) "(progn (declaim (optimize (speed 0) (space 0) (safety 3) (debug 3))) \
@@ -35,13 +52,13 @@ crates2-charms: Makefile crates2-charms.asd src/*.lisp $(VISUALDIR)textual-commo
                                           (asdf:make :crates2-charms)                                   \
                                           (quit))"
 
-crates2-sdl2: Makefile crates2-sdl2.asd src/*.lisp $(FFIDIR)octaspire-cl-sdl2.lisp $(VISUALDIR)sdl2-common.lisp $(VISUALDIR)sdl2-2d.lisp etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf etc/assets/texture/texture32.png
+crates2-sdl2: $(GENERATED) Makefile crates2-sdl2.asd src/*.lisp $(FFIDIR)octaspire-cl-sdl2.lisp $(VISUALDIR)sdl2-common.lisp $(VISUALDIR)sdl2-2d.lisp etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf etc/assets/texture/texture32.png
 	@$(LISP) $(FLAGS) $(EVAL) "(progn (declaim (optimize (speed 0) (space 0) (safety 3) (debug 3))) \
                                           (ql:quickload :crates2-sdl2 :silent t)                        \
                                           (asdf:make :crates2-sdl2)                                     \
                                           (quit))"
 
-crates2-sdl2-opengl: Makefile crates2-sdl2-opengl.asd src/*.lisp $(FFIDIR)octaspire-cl-sdl2.lisp $(VISUALDIR)sdl2-common.lisp $(VISUALDIR)sdl2-3d.lisp etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf etc/assets/texture/texture32.png
+crates2-sdl2-opengl: $(GENERATED) Makefile crates2-sdl2-opengl.asd src/*.lisp $(FFIDIR)octaspire-cl-sdl2.lisp $(VISUALDIR)sdl2-common.lisp $(VISUALDIR)sdl2-3d.lisp etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf etc/assets/texture/texture32.png
 	@$(LISP) $(FLAGS) $(EVAL) "(progn (declaim (optimize (speed 0) (space 0) (safety 3) (debug 3))) \
                                           (ql:quickload :crates2-sdl2-opengl :silent t)                 \
                                           (asdf:make :crates2-sdl2-opengl)                              \
@@ -60,7 +77,7 @@ install: crates2-text crates2-charms
 	@etc/install.sh
 
 clean:
-	@rm -f crates2-text crates2-charms crates2-sdl2 crates2-sdl2-opengl expected.txt.bz2 expected.txt got.txt
+	@rm -f generated/*.lisp crates2-text crates2-charms crates2-sdl2 crates2-sdl2-opengl expected.txt.bz2 expected.txt got.txt
 
 test: crates2-text
 	@etc/test.sh
