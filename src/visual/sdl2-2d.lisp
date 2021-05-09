@@ -27,10 +27,10 @@
 
 (defparameter *crates2-window* :pointer)
 (defparameter *crates2-renderer* :pointer)
-(defparameter *image* :pointer)
+(defparameter *image*       :pointer)
+(defparameter *image-array* :pointer)
 (defparameter *texture* :pointer)
 (defparameter *texture-dimensions* (list 0 0))
-(defparameter *font* :pointer)
 (defparameter *text-texture* :pointer)
 (defparameter *text-texture-initialized* nil)
 (defparameter *visual-hash* (make-hash-table :test 'equal))
@@ -306,7 +306,7 @@
         (setf nullpointer (null-pointer))
         (with-foreign-string (text (ui-sdl2-format-info-message *program* level-number num-levels level-name level-hint))
           (setf text-surface (sdl-convertsurfaceformat
-                              (ttf-renderutf8-blended-wrapped *font* text (list 255 255 0 255) screen-width)
+                              (ttf-renderutf8-blended-wrapped *IBMPlexMono-Bold* text (list 255 255 0 255) screen-width)
                               +SDL-PIXELFORMAT-RGBA+ 0))
           (setf *text-texture* (sdl-createtexturefromsurface
                                 *crates2-renderer*
@@ -374,23 +374,32 @@
     (when (getf options :fullscreen)
       (sdl-setwindowfullscreen *crates2-window* +SDL-TRUE+))
     (setf *crates2-renderer* (sdl-createrenderer *crates2-window* -1 +SDL_RENDERER_SOFTWARE+))
-    (setf *image* (img-load "etc/assets/texture/texture32.png"))
+    (setf *image-array* (foreign-alloc :uint8 :count (length *texture32.png*) :initial-contents *texture32.png*))
+    (setf *image* (img-load-rw (sdl-rwfromconstmem *image-array* (length *texture32.png*)) -1))
     (setf *texture* (sdl-createtexturefromsurface
                      *crates2-renderer*
                      *image*))
-    (setf *font* (ui-sdl2-load-font))))
+    (ui-sdl2-load-font)))
 
 (defun ui-delete ()
   (sb-int:with-float-traps-masked (:invalid :inexact :overflow)
     (when *text-texture-initialized*
       (sdl-destroytexture *text-texture*)
       (setf *text-texture-initialized* nil))
-    (ttf-closefont *font*)
+
+    (ttf-closefont *IBMPlexMono-Bold*)
+    (foreign-free *IBMPlexMono-Bold-array* )
+    (setf *IBMPlexMono-Bold-array* (null-pointer))
     (ttf-quit)
+
     (ui-close-audio)
     (img-quit)
     (sdl-destroytexture *texture*)
+
     (sdl-freesurface *image*)
+    (foreign-free *image-array*)
+    (setf *image-array* (null-pointer))
+
     (sdl-destroyrenderer *crates2-renderer*)
     (sdl-destroywindow *crates2-window*)
     (sdl-quit)))

@@ -1482,6 +1482,10 @@
 (defcfun "IMG_Load" :pointer
   (file (:string :encoding :utf-8)))
 
+(defcfun "IMG_Load_RW" :pointer
+  (src     :pointer)
+  (freesrc :int))
+
 (defmacro with-img ((&rest flags) &body body)
   `(progn
      (unless (img-init ,@flags)
@@ -1512,6 +1516,11 @@
 (defcfun "TTF_OpenFont" :pointer
   (file (:string :encoding :utf-8))
   (ptsize :int))
+
+(defcfun "TTF_OpenFontRW" :pointer
+  (src     :pointer)
+  (freesrc :int)
+  (ptsize  :int))
 
 (defcfun "TTF_CloseFont" :void
   (font :pointer))

@@ -30,7 +30,10 @@ GENERATED ?= generated/ending.lisp          \
              generated/hit-counter.lisp     \
              generated/pulled-activate.lisp \
              generated/redirect.lisp        \
-             generated/slope.lisp
+             generated/slope.lisp           \
+             generated/texture32.lisp       \
+             generated/texture64.lisp       \
+             generated/IBMPlexMono-Bold.lisp
 
 all: $(GENERATED) crates2-text crates2-charms crates2-sdl2 crates2-sdl2-opengl
 
@@ -70,6 +73,15 @@ generated/redirect.lisp: etc/assets/sound/effect/redirect.wav Makefile $(CLHEXDU
 	@$(CLHEXDUMP) $< $@
 
 generated/slope.lisp: etc/assets/sound/effect/slope.wav Makefile $(CLHEXDUMP)
+	@$(CLHEXDUMP) $< $@
+
+generated/texture32.lisp: etc/assets/texture/texture32.png Makefile $(CLHEXDUMP)
+	@$(CLHEXDUMP) $< $@
+
+generated/texture64.lisp: etc/assets/texture/texture64.png Makefile $(CLHEXDUMP)
+	@$(CLHEXDUMP) $< $@
+
+generated/IBMPlexMono-Bold.lisp: etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf Makefile $(CLHEXDUMP)
 	@$(CLHEXDUMP) $< $@
 
 crates2-text: Makefile crates2-text.asd src/*.lisp $(VISUALDIR)textual-common.lisp $(VISUALDIR)textual-plain.lisp etc/*.*

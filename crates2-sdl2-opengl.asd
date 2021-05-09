@@ -38,7 +38,9 @@
                              (:file "hit-counter")
                              (:file "pulled-activate")
                              (:file "redirect")
-                             (:file "slope")))
+                             (:file "slope")
+                             (:file "texture64")
+                             (:file "IBMPlexMono-Bold")))
                (:module src
                 :depends-on ("common" "generated")
                 :components

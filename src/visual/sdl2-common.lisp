@@ -40,6 +40,8 @@
 (defparameter *snd-redirect-array*        :pointer)
 (defparameter *snd-slope*                 :pointer)
 (defparameter *snd-slope-array*           :pointer)
+(defparameter *IBMPlexMono-Bold*          :pointer)
+(defparameter *IBMPlexMono-Bold-array*    :pointer)
 
 (defun ui-init-audio ()
   (mix-init +MIX-INIT-OGG+)
@@ -175,7 +177,8 @@
         (- 1 (- f3 (* f s))))))
 
 (defun ui-sdl2-load-font ()
-  (ttf-openfont "etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf" 16))
+  (setf *IBMPlexMono-Bold-array* (foreign-alloc :uint8 :count (length *IBMPlexMono-Bold.ttf*) :initial-contents *IBMPlexMono-Bold.ttf*))
+  (setf *IBMPlexMono-Bold* (ttf-openfontrw (sdl-rwfromconstmem *IBMPlexMono-Bold-array* (length *IBMPlexMono-Bold.ttf*)) -1 16)))
 
 (defun ui-read-input ()
   (sb-int:with-float-traps-masked (:invalid :inexact :overflow)
