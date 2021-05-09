@@ -30,7 +30,15 @@
                 :components ((:file "ending")
                              (:file "special")
                              (:file "hit-wall")
-                             (:file "explosion")))
+                             (:file "explosion")
+                             (:file "bomb-on")
+                             (:file "exit-error")
+                             (:file "exit-ok")
+                             (:file "key-collect")
+                             (:file "hit-counter")
+                             (:file "pulled-activate")
+                             (:file "redirect")
+                             (:file "slope")))
                (:module src
                 :depends-on ("common" "generated")
                 :components

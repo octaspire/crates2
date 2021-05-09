@@ -19,10 +19,18 @@ level     ?= 0
 FFIDIR    ?= src/ffi/
 VISUALDIR ?= src/visual/
 CLHEXDUMP ?= etc/script/cl-hexdump.sh
-GENERATED ?= generated/ending.lisp    \
-             generated/special.lisp   \
-             generated/hit-wall.lisp  \
-             generated/explosion.lisp
+GENERATED ?= generated/ending.lisp          \
+             generated/special.lisp         \
+             generated/hit-wall.lisp        \
+             generated/explosion.lisp       \
+             generated/bomb-on.lisp         \
+             generated/exit-error.lisp      \
+             generated/exit-ok.lisp         \
+             generated/key-collect.lisp     \
+             generated/hit-counter.lisp     \
+             generated/pulled-activate.lisp \
+             generated/redirect.lisp        \
+             generated/slope.lisp
 
 all: $(GENERATED) crates2-text crates2-charms crates2-sdl2 crates2-sdl2-opengl
 
@@ -38,6 +46,30 @@ generated/hit-wall.lisp: etc/assets/sound/effect/hit-wall.wav Makefile $(CLHEXDU
 	@$(CLHEXDUMP) $< $@
 
 generated/explosion.lisp: etc/assets/sound/effect/explosion.wav Makefile $(CLHEXDUMP)
+	@$(CLHEXDUMP) $< $@
+
+generated/bomb-on.lisp: etc/assets/sound/effect/bomb-on.wav Makefile $(CLHEXDUMP)
+	@$(CLHEXDUMP) $< $@
+
+generated/exit-error.lisp: etc/assets/sound/effect/exit-error.wav Makefile $(CLHEXDUMP)
+	@$(CLHEXDUMP) $< $@
+
+generated/exit-ok.lisp: etc/assets/sound/effect/exit-ok.wav Makefile $(CLHEXDUMP)
+	@$(CLHEXDUMP) $< $@
+
+generated/key-collect.lisp: etc/assets/sound/effect/key-collect.wav Makefile $(CLHEXDUMP)
+	@$(CLHEXDUMP) $< $@
+
+generated/hit-counter.lisp: etc/assets/sound/effect/hit-counter.wav Makefile $(CLHEXDUMP)
+	@$(CLHEXDUMP) $< $@
+
+generated/pulled-activate.lisp: etc/assets/sound/effect/pulled-activate.wav Makefile $(CLHEXDUMP)
+	@$(CLHEXDUMP) $< $@
+
+generated/redirect.lisp: etc/assets/sound/effect/redirect.wav Makefile $(CLHEXDUMP)
+	@$(CLHEXDUMP) $< $@
+
+generated/slope.lisp: etc/assets/sound/effect/slope.wav Makefile $(CLHEXDUMP)
 	@$(CLHEXDUMP) $< $@
 
 crates2-text: Makefile crates2-text.asd src/*.lisp $(VISUALDIR)textual-common.lisp $(VISUALDIR)textual-plain.lisp etc/*.*
