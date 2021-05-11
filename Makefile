@@ -31,6 +31,9 @@ GENERATED ?= generated/ending.lisp          \
              generated/pulled-activate.lisp \
              generated/redirect.lisp        \
              generated/slope.lisp           \
+             generated/hit-vacuum.lisp      \
+             generated/hit-automaton.lisp   \
+             generated/automaton-key.lisp   \
              generated/texture32.lisp       \
              generated/texture64.lisp       \
              generated/IBMPlexMono-Bold.lisp
@@ -73,6 +76,15 @@ generated/redirect.lisp: etc/assets/sound/effect/redirect.wav Makefile $(CLHEXDU
 	@$(CLHEXDUMP) $< $@
 
 generated/slope.lisp: etc/assets/sound/effect/slope.wav Makefile $(CLHEXDUMP)
+	@$(CLHEXDUMP) $< $@
+
+generated/hit-vacuum.lisp: etc/assets/sound/effect/hit-vacuum.wav Makefile $(CLHEXDUMP)
+	@$(CLHEXDUMP) $< $@
+
+generated/hit-automaton.lisp: etc/assets/sound/effect/hit-automaton.wav Makefile $(CLHEXDUMP)
+	@$(CLHEXDUMP) $< $@
+
+generated/automaton-key.lisp: etc/assets/sound/effect/automaton-key.wav Makefile $(CLHEXDUMP)
 	@$(CLHEXDUMP) $< $@
 
 generated/texture32.lisp: etc/assets/texture/texture32.png Makefile $(CLHEXDUMP)

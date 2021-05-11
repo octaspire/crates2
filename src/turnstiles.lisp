@@ -14,6 +14,11 @@
 ;; limitations under the License.
 (in-package :crates2)
 
+;; Functions
+
+(defun turnstile-play-collision-sound ()
+  (crates2-ui:ui-play-sound :hit-wall))
+
 ;; Methods
 
 (defmethod activate ((self turnstile))
@@ -46,7 +51,9 @@
     (case side
       (:west
        (move-other-to-my-side self target :east)
-       (activate self)))))
+       (activate self))
+      (otherwise
+       (turnstile-play-collision-sound)))))
 
 
 ;; W1
@@ -67,7 +74,9 @@
     (case side
       (:east
        (move-other-to-my-side self target :west)
-       (activate self)))))
+       (activate self))
+      (otherwise
+       (turnstile-play-collision-sound)))))
 
 ;; N1
 
@@ -87,7 +96,9 @@
     (case side
       (:south
        (move-other-to-my-side self target :north)
-       (activate self)))))
+       (activate self))
+      (otherwise
+       (turnstile-play-collision-sound)))))
 
 ;; S1
 
@@ -107,7 +118,9 @@
     (case side
       (:north
        (move-other-to-my-side self target :south)
-       (activate self)))))
+       (activate self))
+      (otherwise
+       (turnstile-play-collision-sound)))))
 
 ;; E
 
@@ -128,7 +141,9 @@
       (:west
        (call-next-method)
        (setf (velocity target) :east)
-       (activate self)))))
+       (activate self))
+      (otherwise
+       (turnstile-play-collision-sound)))))
 
 
 ;; W
@@ -150,7 +165,9 @@
       (:east
        (call-next-method)
        (setf (velocity target) :west)
-       (activate self)))))
+       (activate self))
+      (otherwise
+       (turnstile-play-collision-sound)))))
 
 ;; N
 
@@ -171,7 +188,9 @@
       (:south
        (call-next-method)
        (setf (velocity target) :north)
-       (activate self)))))
+       (activate self))
+      (otherwise
+       (turnstile-play-collision-sound)))))
 
 ;; S
 
@@ -192,5 +211,7 @@
       (:north
        (call-next-method)
        (setf (velocity target) :south)
-       (activate self)))))
+       (activate self))
+      (otherwise
+       (turnstile-play-collision-sound)))))
 

@@ -23,6 +23,7 @@
            (crate (find-at-of-type (crate-x self) (crate-y self) 0 'moving)))
        (setf (crate-frame self) (mod frame 8))
        (when (and crate (not (moving-airborne crate)))
+         (crates2-ui:ui-play-sound :hit-vacuum)
          (setf (crate-state self) :broken)
          (lament crate)
          (when (subtypep (type-of crate) 'moving)

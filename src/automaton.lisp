@@ -37,13 +37,16 @@
   (setf (automaton-programmer self) target)
   (setf (crate-state self) :programming)
   (setf (player-controlled target) self)
+  (crates2-ui:ui-play-sound :hit-automaton)
   (call-next-method))
 
 (defmethod append-instruction ((self automaton) instruction)
+  (crates2-ui:ui-play-sound :automaton-key)
   (setf (automaton-program self)
         (str:concat (automaton-program self) (string instruction))))
 
 (defmethod remove-instruction-back ((self automaton))
+  (crates2-ui:ui-play-sound :automaton-key)
   (setf (automaton-program self)
         (str:substring 0 -1 (automaton-program self))))
 
@@ -54,6 +57,7 @@
                        (automaton-program self))))
 
 (defmethod stop-programming ((self automaton))
+  (crates2-ui:ui-play-sound :automaton-key)
   (setf (crate-state self) :executing)
   (setf (active (automaton-programmer self)) t)
   (setf (player-controlled (automaton-programmer self)) nil)

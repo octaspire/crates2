@@ -39,6 +39,9 @@
                              (:file "pulled-activate")
                              (:file "redirect")
                              (:file "slope")
+                             (:file "hit-vacuum")
+                             (:file "hit-automaton")
+                             (:file "automaton-key")
                              (:file "texture64")
                              (:file "IBMPlexMono-Bold")))
                (:module src

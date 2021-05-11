@@ -14,6 +14,11 @@
 ;; limitations under the License.
 (in-package :crates2)
 
+;; Functions
+
+(defun slope-play-collision-sound ()
+  (crates2-ui:ui-play-sound :hit-wall))
+
 ;; Methods
 
 (defmethod activate ((self slope))
@@ -51,7 +56,9 @@
       (:north
        (move-other-to-my-side self target :east)
        (setf (velocity target) :east)
-       (activate self)))))
+       (activate self))
+      (otherwise
+       (turnstile-play-collision-sound)))))
 
 ;; ES
 
@@ -77,7 +84,9 @@
       (:south
        (move-other-to-my-side self target :east)
        (setf (velocity target) :east)
-       (activate self)))))
+       (activate self))
+      (otherwise
+       (turnstile-play-collision-sound)))))
 
 ;; WN
 
@@ -103,7 +112,9 @@
       (:north
        (move-other-to-my-side self target :west)
        (setf (velocity target) :west)
-       (activate self)))))
+       (activate self))
+      (otherwise
+       (turnstile-play-collision-sound)))))
 
 ;; WS
 
@@ -129,4 +140,6 @@
       (:south
        (move-other-to-my-side self target :west)
        (setf (velocity target) :west)
-       (activate self)))))
+       (activate self))
+      (otherwise
+       (turnstile-play-collision-sound)))))

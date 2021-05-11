@@ -40,6 +40,12 @@
 (defparameter *snd-redirect-array*        :pointer)
 (defparameter *snd-slope*                 :pointer)
 (defparameter *snd-slope-array*           :pointer)
+(defparameter *snd-hit-vacuum*            :pointer)
+(defparameter *snd-hit-vacuum-array*      :pointer)
+(defparameter *snd-hit-automaton*         :pointer)
+(defparameter *snd-hit-automaton-array*   :pointer)
+(defparameter *snd-automaton-key*         :pointer)
+(defparameter *snd-automaton-key-array*   :pointer)
 (defparameter *IBMPlexMono-Bold*          :pointer)
 (defparameter *IBMPlexMono-Bold-array*    :pointer)
 
@@ -82,6 +88,15 @@
   ;; Slope sound effect
   (setf *snd-slope-array* (foreign-alloc :uint8 :count (length *slope.wav*) :initial-contents *slope.wav*))
   (setf *snd-slope* (mix-loadwav-rw (sdl-rwfromconstmem *snd-slope-array* (length *slope.wav*)) -1))
+  ;; Hit vacuum sound effect
+  (setf *snd-hit-vacuum-array* (foreign-alloc :uint8 :count (length *hit-vacuum.wav*) :initial-contents *hit-vacuum.wav*))
+  (setf *snd-hit-vacuum* (mix-loadwav-rw (sdl-rwfromconstmem *snd-hit-vacuum-array* (length *hit-vacuum.wav*)) -1))
+  ;; Hit automaton sound effect
+  (setf *snd-hit-automaton-array* (foreign-alloc :uint8 :count (length *hit-automaton.wav*) :initial-contents *hit-automaton.wav*))
+  (setf *snd-hit-automaton* (mix-loadwav-rw (sdl-rwfromconstmem *snd-hit-automaton-array* (length *hit-automaton.wav*)) -1))
+  ;; Automaton key sound effect
+  (setf *snd-automaton-key-array* (foreign-alloc :uint8 :count (length *automaton-key.wav*) :initial-contents *automaton-key.wav*))
+  (setf *snd-automaton-key* (mix-loadwav-rw (sdl-rwfromconstmem *snd-automaton-key-array* (length *automaton-key.wav*)) -1))
   (mix-playmusic *music* -1))
 
 (defun ui-close-audio ()
@@ -133,6 +148,18 @@
   (foreign-free *snd-slope-array*)
   (setf *snd-slope-array* (null-pointer))
 
+  (mix-freechunk *snd-hit-vacuum*)
+  (foreign-free *snd-hit-vacuum-array*)
+  (setf *snd-hit-vacuum-array* (null-pointer))
+
+  (mix-freechunk *snd-hit-automaton*)
+  (foreign-free *snd-hit-automaton-array*)
+  (setf *snd-hit-automaton-array* (null-pointer))
+
+  (mix-freechunk *snd-automaton-key*)
+  (foreign-free *snd-automaton-key-array*)
+  (setf *snd-automaton-key-array* (null-pointer))
+
   (mix-quit))
 
 (defun ui-play-sound (id)
@@ -147,6 +174,9 @@
     (:pulled-activate (mix-playchanneltimed -1 *snd-pulled-activate* 0 -1))
     (:redirect        (mix-playchanneltimed -1 *snd-redirect*        0 -1))
     (:slope           (mix-playchanneltimed -1 *snd-slope*           0 -1))
+    (:hit-vacuum      (mix-playchanneltimed -1 *snd-hit-vacuum*      0 -1))
+    (:hit-automaton   (mix-playchanneltimed -1 *snd-hit-automaton*   0 -1))
+    (:automaton-key   (mix-playchanneltimed -1 *snd-automaton-key*   0 -1))
     (:special         (mix-playchanneltimed -1 *snd-special*         0 -1))))
 
 (defun ui-on-level-changed ()
