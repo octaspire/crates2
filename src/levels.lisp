@@ -42,8 +42,8 @@
                    (make-instance 'pulled       :x 8 :y 9 :z 0 :north t)
                    (make-instance 'exit         :x 8 :y 2 :z 0))))
     (1 (list (list
-              "Level Name"
-              "Level Hint")
+              "Busy Valentine's Day"
+              "")
              (list nil nil
                    :east nil nil nil nil nil nil
                    :north nil nil nil nil nil nil nil nil

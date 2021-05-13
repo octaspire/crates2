@@ -352,10 +352,9 @@
                                   (sdl-rendercopy *crates2-renderer* *texture* rect1pointer rect2pointer))))))))
       (set-rect rect1 0 0 100 20)
       (let* ((tw  (first *texture-dimensions*))
-             (th  (second *texture-dimensions*))
-             (thh (* 0.5 th)))
+             (th  (second *texture-dimensions*)))
         (ui-update-hint-time)
-        (set-rect rect2 4 (+ (- screen-height th 2) (ceiling (* (ui-ease *ui-hint-time*) thh))) tw th))
+        (set-rect rect2 4 (- screen-height (ceiling (* (ui-ease *ui-hint-time*) (+ th 2)))) tw th))
       (sdl-rendercopy *crates2-renderer* *text-texture* nullpointer rect2pointer)
       (sdl-renderpresent *crates2-renderer*))))
 

@@ -58,6 +58,7 @@
 
 (defmethod stop-programming ((self automaton))
   (crates2-ui:ui-play-sound :automaton-key)
+  (setf (automaton-delay self) (automaton-wait-duration self))
   (setf (crate-state self) :executing)
   (setf (active (automaton-programmer self)) t)
   (setf (player-controlled (automaton-programmer self)) nil)
@@ -92,6 +93,7 @@
 
 (defmethod automaton-reset ((self automaton))
   (setf (crate-state self) :idle)
+  (setf (automaton-delay self) (automaton-wait-duration self))
   (setf (automaton-program self) ""))
 
 ;; Functions
@@ -103,7 +105,8 @@
 (defun automaton-update-programming (self)
   (setf *program* (automaton-program self)))
 
-(defun automaton-update-executing (self)
+(defun automaton-update-executing-step (self)
+  (setf (automaton-delay self) (automaton-wait-duration self))
   (setf (velocity self) :zero)
   (setf (crate-z self) 0)
   (let* ((program (automaton-program self))
@@ -111,4 +114,13 @@
     (if (> proglen 0)
         (automaton-step self)
         (automaton-reset self))))
+
+(defun automaton-update-executing-wait (self)
+  (setf (velocity self) :zero)
+  (setf (automaton-delay self) (1- (automaton-delay self))))
+
+(defun automaton-update-executing (self)
+  (if (<= (automaton-delay self) 0)
+      (automaton-update-executing-step self)
+      (automaton-update-executing-wait self)))
 

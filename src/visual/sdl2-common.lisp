@@ -14,7 +14,7 @@
 ;; limitations under the License.
 (in-package :crates2-ui)
 
-(defconstant +UI-HINT-DELAY+ -5)
+(defconstant +UI-HINT-DELAY+ -0.5)
 (defparameter *ui-hint-time* +UI-HINT-DELAY+)
 (defparameter *music*                     :pointer)
 (defparameter *music-array*               :pointer)

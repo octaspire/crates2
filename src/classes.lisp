@@ -215,7 +215,12 @@
   ((program :initform (string "")
             :accessor automaton-program)
    (programmer :initform nil
-               :accessor automaton-programmer)))
+               :accessor automaton-programmer)
+   (wait-duration :initform 9
+                  :accessor automaton-wait-duration
+                  :allocation :class)
+   (delay :initform 0
+          :accessor automaton-delay)))
 
 (defclass vacuum (crate)
   ((full :initarg :full
