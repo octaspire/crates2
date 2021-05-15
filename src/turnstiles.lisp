@@ -14,6 +14,20 @@
 ;; limitations under the License.
 (in-package :crates2)
 
+;; Constructors
+
+(defun make-turnstile-e (x y)
+  (make-instance 'turnstile-e :x x :y y :z 0))
+
+(defun make-turnstile-s (x y)
+  (make-instance 'turnstile-s :x x :y y :z 0))
+
+(defun make-turnstile-w (x y)
+  (make-instance 'turnstile-w :x x :y y :z 0))
+
+(defun make-turnstile-n (x y)
+  (make-instance 'turnstile-n :x x :y y :z 0))
+
 ;; Functions
 
 (defun turnstile-play-collision-sound ()

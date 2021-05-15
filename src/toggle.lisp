@@ -14,6 +14,11 @@
 ;; limitations under the License.
 (in-package :crates2)
 
+;; Constructors
+
+(defun make-toggle (x y)
+  (make-instance 'toggle :x x :y y :z 0))
+
 ;; Methods
 
 (defmethod toggle-on-p ((self toggle))

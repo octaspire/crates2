@@ -14,6 +14,11 @@
 ;; limitations under the License.
 (in-package :crates2)
 
+;; Constructors
+
+(defun make-automaton (x y)
+  (make-instance 'automaton :x x :y y :z 0))
+
 ;; Methods
 
 (defmethod visual ((self automaton))

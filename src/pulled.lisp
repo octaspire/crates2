@@ -14,6 +14,26 @@
 ;; limitations under the License.
 (in-package :crates2)
 
+;; Constructors
+
+(defun make-pulled-ensw (x y)
+  (make-instance 'pulled :x x :y y :z 0 :north t :south t :east t :west t))
+
+(defun make-pulled-e (x y)
+  (make-instance 'pulled :x x :y y :z 0 :east t))
+
+(defun make-pulled-w (x y)
+  (make-instance 'pulled :x x :y y :z 0 :west t))
+
+(defun make-pulled-s (x y)
+  (make-instance 'pulled :x x :y y :z 0 :south t))
+
+(defun make-pulled-n (x y)
+  (make-instance 'pulled :x x :y y :z 0 :north t))
+
+(defun make-pulled-ns (x y)
+  (make-instance 'pulled :x x :y y :z 0 :north t :south t))
+
 ;; Methods
 
 (defmethod update ((self pulled))

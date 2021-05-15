@@ -19,6 +19,20 @@
 (defun slope-play-collision-sound ()
   (crates2-ui:ui-play-sound :hit-wall))
 
+;; Constructors
+
+(defun make-slope-es (x y)
+  (make-instance 'slope-es :x x  :y y :z 0))
+
+(defun make-slope-ws (x y)
+  (make-instance 'slope-ws :x x  :y y :z 0))
+
+(defun make-slope-en (x y)
+  (make-instance 'slope-en :x x  :y y :z 0))
+
+(defun make-slope-wn (x y)
+  (make-instance 'slope-wn :x x  :y y :z 0))
+
 ;; Methods
 
 (defmethod activate ((self slope))

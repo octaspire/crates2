@@ -14,6 +14,11 @@
 ;; limitations under the License.
 (in-package :crates2)
 
+;; Constructors
+
+(defun make-key (x y)
+  (make-instance 'key :x x  :y y :z 0))
+
 ;; Methods
 
 (defmethod visual ((self key))

@@ -14,6 +14,11 @@
 ;; limitations under the License.
 (in-package :crates2)
 
+;; Constructors
+
+(defun make-block-timer (x y time)
+  (make-instance 'block-timer :x x :y y :z 0 :time time))
+
 ;; Methods
 
 (defmethod update ((self block-timer))

@@ -14,6 +14,11 @@
 ;; limitations under the License.
 (in-package :crates2)
 
+;; Constructors
+
+(defun make-exit (x y)
+  (make-instance 'exit :x x :y y :z 0))
+
 ;; Methods
 
 (defmethod update ((self exit))

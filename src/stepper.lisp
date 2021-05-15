@@ -14,18 +14,23 @@
 ;; limitations under the License.
 (in-package :crates2)
 
+;; Constructors
+
+(defun make-stepper (x y)
+  (make-instance 'stepper :x x :y y :z -1))
+
 ;; Methods
 
 (defmethod update ((self stepper))
   (let ((crate (find-at-of-type (crate-x self) (crate-y self) 0 'moving)))
     (case (crate-state self)
-        (:idle
-         (when crate
-           (setf (crate-state self) :active)
-           (setf (velocity crate) :zero)))
-        (:active
-         (unless crate
-           (setf (crate-state self) :idle)))))
+      (:idle
+       (when crate
+         (setf (crate-state self) :active)
+         (setf (velocity crate) :zero)))
+      (:active
+       (unless crate
+         (setf (crate-state self) :idle)))))
   (call-next-method))
 
 (defmethod visual ((self stepper))

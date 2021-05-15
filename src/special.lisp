@@ -14,6 +14,11 @@
 ;; limitations under the License.
 (in-package :crates2)
 
+;; Constructors
+
+(defun make-special-jump (x y)
+  (make-instance 'special-jump :x x :y y :z 0))
+
 ;; Methods
 
 (defmethod visual ((self special-jump))

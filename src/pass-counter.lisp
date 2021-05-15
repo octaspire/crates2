@@ -14,6 +14,11 @@
 ;; limitations under the License.
 (in-package :crates2)
 
+;; Constructors
+
+(defun make-pass-counter (x y count)
+  (make-instance 'pass-counter  :x x :y y :z 1 :count count))
+
 ;; Methods
 
 (defmethod passes-left ((self pass-counter))

@@ -1,0 +1,21 @@
+* GNU Emacs Editing Snippets
+
+** Converting ~make-instance~ ~:x~ and ~:y~ keyword arguments to constructor arguments
+
+#+begin_example
+M-x replace-regexp
+make-wall[[:space:]]+:x[[:space:]]+\([0-9]+\)[[:space:]]+:y[[:space:]]+\([0-9]+\)[[:space:]]+:z[[:space:]]+\([0-9]+\)
+make-wall \1 \2
+#+end_example
+
+#+begin_example
+M-x replace-regexp
+make-key[[:space:]]+:x[[:space:]]+\([0-9]+\)[[:space:]]+:y[[:space:]]+\([0-9]+\)[[:space:]]+:z[[:space:]]+\([0-9]+\)
+make-key \1 \2
+#+end_example
+
+#+begin_example
+M-x replace-regexp
+make-instance 'stepper[[:space:]]+:x[[:space:]]+\([0-9]+\)[[:space:]]+:y[[:space:]]+\([0-9]+\)[[:space:]]+:z[[:space:]]+-1
+make-stepper \1 \2
+#+end_example

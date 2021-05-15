@@ -14,6 +14,14 @@
 ;; limitations under the License.
 (in-package :crates2)
 
+;; Constructors
+
+(defun make-wall (x y)
+  (make-instance 'wall :x x :y y :z 0))
+
+(defun make-pushed (x y)
+  (make-instance 'pushed :x x :y y :z 0))
+
 ;; Generic functions
 
 ;; Methods

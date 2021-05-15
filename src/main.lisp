@@ -27,7 +27,7 @@
 (defparameter *update-counter* 0)
 (defparameter *input* nil)
 (defparameter *level-number* 7)
-(defparameter *num-levels* 9)
+(defparameter *num-levels* 10)
 (defparameter *program* "")
 (defparameter *running* t)
 (defparameter *level* nil)

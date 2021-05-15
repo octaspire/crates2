@@ -14,6 +14,11 @@
 ;; limitations under the License.
 (in-package :crates2)
 
+;; Constructors
+
+(defun make-player (x y)
+  (make-instance 'player :x x :y y :z 0))
+
 ;; Methods
 
 (defmethod visual ((self player))

@@ -14,6 +14,11 @@
 ;; limitations under the License.
 (in-package :crates2)
 
+;; Constructors
+
+(defun make-vacuum (x y)
+  (make-instance 'vacuum :x x :y y :z -1))
+
 ;; Methods
 
 (defmethod update ((self vacuum))

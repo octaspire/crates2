@@ -14,6 +14,11 @@
 ;; limitations under the License.
 (in-package :crates2)
 
+;; Constructors
+
+(defun make-block-counter (x y count)
+  (make-instance 'block-counter :x x :y y :count count))
+
 ;; Methods
 
 (defmethod touches-left ((self block-counter))
