@@ -70,6 +70,16 @@
   ;; Log into the given file.
   (log:config :daily x))
 
+(defun music-volume-parser (x)
+  (let ((num (parse-integer x)))
+    (setf crates2-ui:*ui-music-volume* (max (min num crates2-ui:+UI-VOLUME-MAX+) crates2-ui:+UI-VOLUME-MIN+))
+    num))
+
+(defun effect-volume-parser (x)
+  (let ((num (parse-integer x)))
+    (setf crates2-ui:*ui-effect-volume* (max (min num crates2-ui:+UI-VOLUME-MAX+) crates2-ui:+UI-VOLUME-MIN+))
+    num))
+
 (defun get-current-level()
   (unless *level*
     (load-next-level))
@@ -109,6 +119,14 @@ This is similar to 'test' but runs much slower."
    :description "Log to given file."
    :long "log-file"
    :arg-parser #'log-file-parser)
+  (:name :music-volume
+   :description "Music volume between 0 - 128"
+   :long "music-volume"
+   :arg-parser #'music-volume-parser)
+  (:name :effect-volume
+   :description "Sound effect volume between 0 - 128"
+   :long "effect-volume"
+   :arg-parser #'effect-volume-parser)
   (:name :fullscreen
    :description "Run in fullscreen mode"
    :long "fullscreen"))

@@ -47,6 +47,10 @@
            #:ui-read-input
            #:init-visual-hash
            #:*ui-program*
+           #:*ui-music-volume*
+           #:*ui-effect-volume*
+           #:+UI-VOLUME-MAX+
+           #:+UI-VOLUME-MIN+
            #:ui-play-sound
            #:ui-render
            #:ui-look-at

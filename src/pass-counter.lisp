@@ -46,6 +46,6 @@
             (z 0)
             (crate (find-at x y z)))
        (unless crate
-         (request-attaching (make-instance 'wall :x x :y y :z z))
+         (request-attaching (make-wall x y))
          (lament self))))
     (:lamented nil)))

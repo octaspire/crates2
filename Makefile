@@ -13,8 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 LISP      ?= sbcl
-EVAL      ?= --eval
 FLAGS     ?= --noinform --noprint
+#LISP     ?= ccl64
+#FLAGS    ?= --quiet
+EVAL      ?= --eval
 level     ?= 0
 FFIDIR    ?= src/ffi/
 VISUALDIR ?= src/visual/

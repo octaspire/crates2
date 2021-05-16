@@ -102,8 +102,8 @@
   (defconstant +AUDIO-F32SYS+ +AUDIO-F32MSB+))
 
 ;; Declared in include/SDL_stdinc.h
-(defconstant +SDL-FALSE+ #0x0)
-(defconstant +SDL-TRUE+  #0x1)
+(defconstant +SDL-FALSE+ #x0)
+(defconstant +SDL-TRUE+  #x1)
 
 ;; Declared in include/SDL.h
 (defconstant +SDL-INIT-TIMER+                 #x001)
@@ -1612,6 +1612,13 @@
 
 (defcfun "Mix_FreeMusic" :void
   (music :pointer))
+
+(defcfun "Mix_Volume" :int
+  (channel :int)
+  (volume  :int))
+
+(defcfun "Mix_VolumeMusic" :int
+  (volume  :int))
 
 (defmacro with-mix ((&rest flags) &body body)
   `(progn

@@ -15,10 +15,12 @@
 (asdf:defsystem "crates2-text"
   :depends-on (:alexandria :str :unix-opts :parse-float :trivial-garbage :log4cl)
   :serial t
-  :components ((:module src
+  :components ((:module common
+                :components ((:file "package")))
+               (:module src
+                :depends-on ("common")
                 :components
-                ((:file "package")
-                 (:file "classes")
+                ((:file "classes")
                  (:file "utils")
                  (:file "crate")
                  (:file "moving")

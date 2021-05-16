@@ -15,10 +15,12 @@
 (asdf:defsystem "crates2-charms"
   :depends-on (:alexandria :str :unix-opts :parse-float :trivial-garbage :cl-charms :log4cl)
   :serial t
-  :components ((:module src
+  :components ((:module common
+                :components ((:file "package")))
+               (:module src
+                :depends-on ("common")
                 :components
-                ((:file "package")
-                 (:file "classes")
+                ((:file "classes")
                  (:file "utils")
                  (:file "crate")
                  (:file "moving")
