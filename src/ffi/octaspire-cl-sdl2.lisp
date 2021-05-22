@@ -23,41 +23,43 @@
 
 (in-package :crates2-ui)
 
-(define-foreign-library libsdl2
-  (:darwin (:or (:framework "SDL2") (:default "libSDL2")))
-  (:unix (:or "libSDL2-2.0.so")))
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (trivial-main-thread:with-body-in-main-thread (:blocking t)
+    (define-foreign-library libsdl2
+        (:darwin (:or (:framework "SDL2") (:default "libSDL2")))
+      (:unix (:or "libSDL2-2.0.so")))
 
-(define-foreign-library libsdl2-image
-  (:darwin (:or (:framework "SDL2_image") (:default "libSDL2_image")))
-  (:unix (:or "libSDL2_image-2.0.so")))
+    (define-foreign-library libsdl2-image
+        (:darwin (:or (:framework "SDL2_image") (:default "libSDL2_image")))
+      (:unix (:or "libSDL2_image-2.0.so")))
 
-(define-foreign-library libsdl2-ttf
-  (:darwin (:or (:framework "SDL2_ttf") (:default "libSDL2_ttf")))
-  (:unix (:or "libSDL2_ttf-2.0.so")))
+    (define-foreign-library libsdl2-ttf
+        (:darwin (:or (:framework "SDL2_ttf") (:default "libSDL2_ttf")))
+      (:unix (:or "libSDL2_ttf-2.0.so")))
 
-(define-foreign-library libsdl2-mixer
-  (:darwin (:or (:framework "SDL2_mixer") (:default "libSDL2_mixer")))
-  (:unix (:or "libSDL2_mixer-2.0.so")))
+    (define-foreign-library libsdl2-mixer
+        (:darwin (:or (:framework "SDL2_mixer") (:default "libSDL2_mixer")))
+      (:unix (:or "libSDL2_mixer-2.0.so")))
 
-(define-foreign-library libgl
-  (:darwin (:or (:framework "GL") (:default "libGL")))
-  (:unix (:or "libGL.so")))
+    (define-foreign-library libgl
+        (:darwin (:or (:framework "GL") (:default "libGL")))
+      (:unix (:or "libGL.so")))
 
-(define-foreign-library libglu
-    (:darwin (:or (:framework "GLU") (:default "libGLU")))
-  (:unix (:or "libGLU.so")))
+    (define-foreign-library libglu
+        (:darwin (:or (:framework "GLU") (:default "libGLU")))
+      (:unix (:or "libGLU.so")))
 
-(define-foreign-library libglew
-    (:darwin (:or (:framework "GLEW") (:default "libGLEW")))
-  (:unix (:or "libGLEW.so")))
+    (define-foreign-library libglew
+        (:darwin (:or (:framework "GLEW") (:default "libGLEW")))
+      (:unix (:or "libGLEW.so")))
 
-(use-foreign-library libsdl2)
-(use-foreign-library libsdl2-image)
-(use-foreign-library libsdl2-ttf)
-(use-foreign-library libsdl2-mixer)
-(use-foreign-library libgl)
-(use-foreign-library libglu)
-(use-foreign-library libglew)
+    (cffi:load-foreign-library 'libsdl2)
+    (cffi:load-foreign-library 'libsdl2-image)
+    (cffi:load-foreign-library 'libsdl2-ttf)
+    (cffi:load-foreign-library 'libsdl2-mixer)
+    (cffi:load-foreign-library 'libgl)
+    (cffi:load-foreign-library 'libglu)
+    (cffi:load-foreign-library 'libglew)))
 
 (defcfun "SDL_Init" :int
   (flags :long))
@@ -135,13 +137,14 @@
   (h :int))
 
 (defun set-rect (result rx ry rw rh)
-  (with-foreign-slots ((x y w h) result (:struct sdl-rect))
-    (setf x rx)
-    (setf y ry)
-    (setf w rw)
-    (setf h rh)
-    result)
-  result)
+  (trivial-main-thread:with-body-in-main-thread (:blocking t)
+    (with-foreign-slots ((x y w h) result (:struct sdl-rect))
+      (setf x rx)
+      (setf y ry)
+      (setf w rw)
+      (setf h rh)
+      result)
+    result))
 
 ;; Declared in include/SDL_pixels.h
 (defcstruct (sdl-color :class sdl-color-type)
@@ -1542,15 +1545,16 @@
   (wrapLength :uint32))
 
 (defun sdl-ext-get-texture-dimensions (texture)
-  (cffi:with-foreign-objects ((w  :int)
-                              (h  :int)
-                              (pw :pointer)
-                              (ph :pointer))
-    (setf pw (cffi:mem-aptr w :int 0))
-    (setf ph (cffi:mem-aptr h :int 0))
-    (cffi:foreign-funcall "SDL_QueryTexture" :pointer texture :pointer (null-pointer) :pointer (null-pointer) :pointer pw :pointer ph)
-    (list (cffi:convert-from-foreign (mem-aref w :int) :int)
-          (cffi:convert-from-foreign (mem-aref h :int) :int))))
+  (trivial-main-thread:with-body-in-main-thread (:blocking t)
+    (cffi:with-foreign-objects ((w  :int)
+                                (h  :int)
+                                (pw :pointer)
+                                (ph :pointer))
+      (setf pw (cffi:mem-aptr w :int 0))
+      (setf ph (cffi:mem-aptr h :int 0))
+      (cffi:foreign-funcall "SDL_QueryTexture" :pointer texture :pointer (null-pointer) :pointer (null-pointer) :pointer pw :pointer ph)
+      (list (cffi:convert-from-foreign (mem-aref w :int) :int)
+            (cffi:convert-from-foreign (mem-aref h :int) :int)))))
 
 
 
