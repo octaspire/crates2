@@ -297,65 +297,67 @@
 (defparameter *fake-input* nil)
 
 (defun ensure-text-texture (level-number num-levels level-name level-hint)
-  (when (and num-levels (or (/= *ui-level-number* level-number) (string/= crates2:*program* *ui-program*)))
-    (when *text-texture-initialized*
-      (sdl-destroytexture *text-texture*)
-      (setf *text-texture-initialized* nil))
-    (with-surface (text-surface)
-      (with-foreign-objects ((nullpointer :pointer))
-        (setf nullpointer (null-pointer))
-        (with-foreign-string (text (ui-sdl2-format-info-message crates2:*program* level-number num-levels level-name level-hint))
-          (setf text-surface (sdl-convertsurfaceformat
-                              (ttf-renderutf8-blended-wrapped *IBMPlexMono-Bold* text (list 255 255 0 255) screen-width)
-                              +SDL-PIXELFORMAT-RGBA+ 0))
-          (setf *text-texture* (sdl-createtexturefromsurface
-                                *crates2-renderer*
-                                text-surface))
-          (setf *texture-dimensions* (sdl-ext-get-texture-dimensions *text-texture*)))))
-    (setf *text-texture-initialized* t)
-    (setf *ui-program* crates2:*program*)))
+  (trivial-main-thread:with-body-in-main-thread (:blocking t)
+    (when (and num-levels (or (/= *ui-level-number* level-number) (string/= crates2:*program* *ui-program*)))
+      (when *text-texture-initialized*
+        (sdl-destroytexture *text-texture*)
+        (setf *text-texture-initialized* nil))
+      (with-surface (text-surface)
+        (with-foreign-objects ((nullpointer :pointer))
+          (setf nullpointer (null-pointer))
+          (with-foreign-string (text (ui-sdl2-format-info-message crates2:*program* level-number num-levels level-name level-hint))
+            (setf text-surface (sdl-convertsurfaceformat
+                                (ttf-renderutf8-blended-wrapped *IBMPlexMono-Bold* text (list 255 255 0 255) screen-width)
+                                +SDL-PIXELFORMAT-RGBA+ 0))
+            (setf *text-texture* (sdl-createtexturefromsurface
+                                  *crates2-renderer*
+                                  text-surface))
+            (setf *texture-dimensions* (sdl-ext-get-texture-dimensions *text-texture*)))))
+      (setf *text-texture-initialized* t)
+      (setf *ui-program* crates2:*program*))))
 
 (defun ui-render-impl (level step)
-  (ensure-text-texture crates2:*level-number* crates2:*num-levels* (car crates2:*infos*) (cadr crates2:*infos*))
-  (sdl-setrenderdrawcolor *crates2-renderer* #x00 #x00 #x00 #xFF)
-  (sdl-renderclear *crates2-renderer*)
-  (sdl-setrenderdrawcolor *crates2-renderer* #xBA #x16 #x0C #xFF)
-  (cffi:with-foreign-objects ((rect1 '(:struct sdl-rect))
-                              (rect2 '(:struct sdl-rect))
-                              (rect1pointer :pointer)
-                              (rect2pointer :pointer)
-                              (nullpointer :pointer))
-    (setf nullpointer (null-pointer))
-    (setf rect1pointer (mem-aptr rect1 '(:struct sdl-rect) 0))
-    (setf rect2pointer (mem-aptr rect2 '(:struct sdl-rect) 0))
-    (loop for crate in level
-          do (progn
-               (let* ((x (if (and (= step 0) (typep crate 'crates2:moving)) (crates2:tail-x crate) (crates2:crate-x crate)))
-                      (y (if (and (= step 0) (typep crate 'crates2:moving)) (crates2:tail-y crate) (crates2:crate-y crate)))
-                      (z (if (and (= step 0) (typep crate 'crates2:moving)) (crates2:tail-z crate) (crates2:crate-z crate)))
-                      (vids (crates2:visual crate)))
-                 (loop for vid in vids
-                       do
-                          (let ((viv (gethash vid *visual-hash*)))
-                            (when viv
-                              (let* ((rx (first viv))
-                                     (ry (second viv))
-                                     (vivw (third viv))
-                                     (vivh (fourth viv))
-                                     (dx (floor (- cw vivw) 2))
-                                     (dy (floor (- ch vivh) 2))
-                                     (finy (+ (* y ch) dy))
-                                     (deltax (+ (* x cw) dx)))
-                                (set-rect rect1 rx ry vivw vivh)
-                                (set-rect rect2 (+ deltax *look-at-x*) (+ finy *look-at-y*) vivw vivh)
-                                (sdl-rendercopy *crates2-renderer* *texture* rect1pointer rect2pointer))))))))
-    (set-rect rect1 0 0 100 20)
-    (let* ((tw  (first *texture-dimensions*))
-           (th  (second *texture-dimensions*)))
-      (ui-update-hint-time)
-      (set-rect rect2 4 (- screen-height (ceiling (* (ui-ease *ui-hint-time*) (+ th 2)))) tw th))
-    (sdl-rendercopy *crates2-renderer* *text-texture* nullpointer rect2pointer)
-    (sdl-renderpresent *crates2-renderer*)))
+  (trivial-main-thread:with-body-in-main-thread (:blocking t)
+    (ensure-text-texture crates2:*level-number* crates2:*num-levels* (car crates2:*infos*) (cadr crates2:*infos*))
+    (sdl-setrenderdrawcolor *crates2-renderer* #x00 #x00 #x00 #xFF)
+    (sdl-renderclear *crates2-renderer*)
+    (sdl-setrenderdrawcolor *crates2-renderer* #xBA #x16 #x0C #xFF)
+    (cffi:with-foreign-objects ((rect1 '(:struct sdl-rect))
+                                (rect2 '(:struct sdl-rect))
+                                (rect1pointer :pointer)
+                                (rect2pointer :pointer)
+                                (nullpointer :pointer))
+      (setf nullpointer (null-pointer))
+      (setf rect1pointer (mem-aptr rect1 '(:struct sdl-rect) 0))
+      (setf rect2pointer (mem-aptr rect2 '(:struct sdl-rect) 0))
+      (loop for crate in level
+            do (progn
+                 (let* ((x (if (and (= step 0) (typep crate 'crates2:moving)) (crates2:tail-x crate) (crates2:crate-x crate)))
+                        (y (if (and (= step 0) (typep crate 'crates2:moving)) (crates2:tail-y crate) (crates2:crate-y crate)))
+                        (z (if (and (= step 0) (typep crate 'crates2:moving)) (crates2:tail-z crate) (crates2:crate-z crate)))
+                        (vids (crates2:visual crate)))
+                   (loop for vid in vids
+                         do
+                            (let ((viv (gethash vid *visual-hash*)))
+                              (when viv
+                                (let* ((rx (first viv))
+                                       (ry (second viv))
+                                       (vivw (third viv))
+                                       (vivh (fourth viv))
+                                       (dx (floor (- cw vivw) 2))
+                                       (dy (floor (- ch vivh) 2))
+                                       (finy (+ (* y ch) dy))
+                                       (deltax (+ (* x cw) dx)))
+                                  (set-rect rect1 rx ry vivw vivh)
+                                  (set-rect rect2 (+ deltax *look-at-x*) (+ finy *look-at-y*) vivw vivh)
+                                  (sdl-rendercopy *crates2-renderer* *texture* rect1pointer rect2pointer))))))))
+      (set-rect rect1 0 0 100 20)
+      (let* ((tw  (first *texture-dimensions*))
+             (th  (second *texture-dimensions*)))
+        (ui-update-hint-time)
+        (set-rect rect2 4 (- screen-height (ceiling (* (ui-ease *ui-hint-time*) (+ th 2)))) tw th))
+      (sdl-rendercopy *crates2-renderer* *text-texture* nullpointer rect2pointer)
+      (sdl-renderpresent *crates2-renderer*))))
 
 (defun ui-render (level step)
   #+sbcl
@@ -369,21 +371,22 @@
   (setf *look-at-y* (* (1- (floor (- (- crates2:*level-height* maxy) miny) 2)) ch)))
 
 (defun ui-init-impl (options)
-  (sdl-init +SDL-INIT-VIDEO+)
-  (img-init +IMG-INIT-PNG+)
-  (ui-init-audio)
-  (unless (ttf-init)
-    (error "TTF Init failed"))
-  (setf *crates2-window* (sdl-createwindow "Crates 2" 0 0 screen-width screen-height 0))
-  (when (getf options :fullscreen)
-    (sdl-setwindowfullscreen *crates2-window* +SDL-TRUE+))
-  (setf *crates2-renderer* (sdl-createrenderer *crates2-window* -1 +SDL_RENDERER_SOFTWARE+))
-  (setf *image-array* (foreign-alloc :uint8 :count (length *texture32.png*) :initial-contents *texture32.png*))
-  (setf *image* (img-load-rw (sdl-rwfromconstmem *image-array* (length *texture32.png*)) -1))
-  (setf *texture* (sdl-createtexturefromsurface
-                   *crates2-renderer*
-                   *image*))
-  (ui-sdl2-load-font))
+  (trivial-main-thread:with-body-in-main-thread (:blocking t)
+    (sdl-init +SDL-INIT-VIDEO+)
+    (img-init +IMG-INIT-PNG+)
+    (ui-init-audio)
+    (unless (ttf-init)
+      (error "TTF Init failed"))
+    (setf *crates2-window* (sdl-createwindow "Crates 2" 0 0 screen-width screen-height 0))
+    (when (getf options :fullscreen)
+      (sdl-setwindowfullscreen *crates2-window* +SDL-TRUE+))
+    (setf *crates2-renderer* (sdl-createrenderer *crates2-window* -1 +SDL_RENDERER_SOFTWARE+))
+    (setf *image-array* (foreign-alloc :uint8 :count (length *texture32.png*) :initial-contents *texture32.png*))
+    (setf *image* (img-load-rw (sdl-rwfromconstmem *image-array* (length *texture32.png*)) -1))
+    (setf *texture* (sdl-createtexturefromsurface
+                     *crates2-renderer*
+                     *image*))
+    (ui-sdl2-load-font)))
 
 (defun ui-init (options)
   #+sbcl
@@ -393,26 +396,27 @@
   (ui-init-impl options))
 
 (defun ui-delete-impl ()
-  (when *text-texture-initialized*
-    (sdl-destroytexture *text-texture*)
-    (setf *text-texture-initialized* nil))
+  (trivial-main-thread:with-body-in-main-thread (:blocking t)
+    (when *text-texture-initialized*
+      (sdl-destroytexture *text-texture*)
+      (setf *text-texture-initialized* nil))
 
-  (ttf-closefont *IBMPlexMono-Bold*)
-  (foreign-free *IBMPlexMono-Bold-array* )
-  (setf *IBMPlexMono-Bold-array* (null-pointer))
-  (ttf-quit)
+    (ttf-closefont *IBMPlexMono-Bold*)
+    (foreign-free *IBMPlexMono-Bold-array* )
+    (setf *IBMPlexMono-Bold-array* (null-pointer))
+    (ttf-quit)
 
-  (ui-close-audio)
-  (img-quit)
-  (sdl-destroytexture *texture*)
+    (ui-close-audio)
+    (img-quit)
+    (sdl-destroytexture *texture*)
 
-  (sdl-freesurface *image*)
-  (foreign-free *image-array*)
-  (setf *image-array* (null-pointer))
+    (sdl-freesurface *image*)
+    (foreign-free *image-array*)
+    (setf *image-array* (null-pointer))
 
-  (sdl-destroyrenderer *crates2-renderer*)
-  (sdl-destroywindow *crates2-window*)
-  (sdl-quit))
+    (sdl-destroyrenderer *crates2-renderer*)
+    (sdl-destroywindow *crates2-window*)
+    (sdl-quit)))
 
 (defun ui-delete ()
   #+sbcl

@@ -21,7 +21,8 @@
                :cffi
                :cffi-libffi
                :trivial-features
-               :log4cl)
+               :log4cl
+               :trivial-main-thread)
   :serial t
   :components ((:module common
                 :components ((:file "package")))
