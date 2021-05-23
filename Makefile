@@ -21,6 +21,12 @@ FLAGS     ?= --noinform --noprint
 #LISP     ?= ccl64
 #FLAGS    ?= --quiet
 
+#### Enable this for debug build ####
+#DECLAIM  ?= (optimize (speed 0) (space 0) (safety 3) (debug 3))
+
+#### Enable this for release build ##
+DECLAIM   ?= (optimize (speed 3) (space 0) (safety 0) (debug 0))
+
 EVAL      ?= --eval
 level     ?= 0
 FFIDIR    ?= src/ffi/
@@ -104,27 +110,27 @@ generated/IBMPlexMono-Bold.lisp: etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf M
 	@$(CLHEXDUMP) $< $@
 
 crates2-text: Makefile crates2-text.asd src/*.lisp $(VISUALDIR)textual-common.lisp $(VISUALDIR)textual-plain.lisp etc/*.*
-	@$(LISP) $(FLAGS) $(EVAL) "(progn (declaim (optimize (speed 0) (space 0) (safety 3) (debug 3))) \
-                                          (ql:quickload :crates2-text :silent t)                        \
-                                          (asdf:make :crates2-text)                                     \
+	@$(LISP) $(FLAGS) $(EVAL) "(progn (declaim $(DECLAIM))                          \
+                                          (ql:quickload :crates2-text :silent t)        \
+                                          (asdf:make :crates2-text)                     \
                                           (quit))"
 
 crates2-charms: Makefile crates2-charms.asd src/*.lisp $(VISUALDIR)textual-common.lisp $(VISUALDIR)textual-charms.lisp etc/*.*
-	@$(LISP) $(FLAGS) $(EVAL) "(progn (declaim (optimize (speed 0) (space 0) (safety 3) (debug 3))) \
-                                          (ql:quickload :crates2-charms :silent t)                      \
-                                          (asdf:make :crates2-charms)                                   \
+	@$(LISP) $(FLAGS) $(EVAL) "(progn (declaim $(DECLAIM))                          \
+                                          (ql:quickload :crates2-charms :silent t)      \
+                                          (asdf:make :crates2-charms)                   \
                                           (quit))"
 
 crates2-sdl2: $(GENERATED) Makefile crates2-sdl2.asd src/*.lisp $(FFIDIR)octaspire-cl-sdl2.lisp $(VISUALDIR)sdl2-common.lisp $(VISUALDIR)sdl2-2d.lisp etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf etc/assets/texture/texture32.png
-	@$(LISP) $(FLAGS) $(EVAL) "(progn (declaim (optimize (speed 0) (space 0) (safety 3) (debug 3))) \
-                                          (ql:quickload :crates2-sdl2 :silent t)                        \
-                                          (asdf:make :crates2-sdl2)                                     \
+	@$(LISP) $(FLAGS) $(EVAL) "(progn (declaim $(DECLAIM))                          \
+                                          (ql:quickload :crates2-sdl2 :silent t)        \
+                                          (asdf:make :crates2-sdl2)                     \
                                           (quit))"
 
 crates2-sdl2-opengl: $(GENERATED) Makefile crates2-sdl2-opengl.asd src/*.lisp $(FFIDIR)octaspire-cl-sdl2.lisp $(VISUALDIR)sdl2-common.lisp $(VISUALDIR)sdl2-3d.lisp etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf etc/assets/texture/texture32.png
-	@$(LISP) $(FLAGS) $(EVAL) "(progn (declaim (optimize (speed 0) (space 0) (safety 3) (debug 3))) \
-                                          (ql:quickload :crates2-sdl2-opengl :silent t)                 \
-                                          (asdf:make :crates2-sdl2-opengl)                              \
+	@$(LISP) $(FLAGS) $(EVAL) "(progn (declaim $(DECLAIM))                          \
+                                          (ql:quickload :crates2-sdl2-opengl :silent t) \
+                                          (asdf:make :crates2-sdl2-opengl)              \
                                           (quit))"
 
 slime:

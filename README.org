@@ -22,8 +22,8 @@ Ncurses visuals:
 * Getting Started
 ** Prerequisites
 
-At this stage: =Common Lisp= implementation (tested with SBCL), =Quicklisp=, =make=,
-=libffi=, =SDL2=, =SDL2-image=, =SDL2-mixer=, =GL= and =GLU= libraries.
+At this stage: =Common Lisp= implementation (tested with SBCL and CCL64), =Quicklisp=, =make=,
+=libffi=, =SDL2=, =SDL2-image=, =SDL2-mixer=, =SDL2-ttf=, =GL=, and =GLU= libraries.
 
 *** Cloning and Building
 
