@@ -15,7 +15,14 @@
 # limitations under the License.
 EMACS=emacs
 EMACSCLIENT=emacsclient
-EMACS_SERVER_ON=$(fstat | grep emacs | grep server)
+OS=$(uname)
+SLEEPDUR=10
+
+if [ "$OS" = "Darwin" ]; then
+    EMACS_SERVER_ON=$(lsof | grep Emacs | grep server)
+else
+    EMACS_SERVER_ON=$(fstat | grep emacs | grep server)
+fi
 PROGRAM="(progn (slime)                                      \
          (while (not (slime-connected-p)) (sleep-for 0.5))   \
          (slime-repl-eval-string                             \
@@ -23,9 +30,11 @@ PROGRAM="(progn (slime)                                      \
                     (ql:quickload :crates2-text)             \
                     (in-package :crates2))\"))"
 
-if [ -z "${EMACS_SERVER_ON}" ]
-then
-    ${EMACS} --eval "$PROGRAM" &
-else
-    ${EMACSCLIENT} --eval "$PROGRAM" > /dev/null
+if [ -z "${EMACS_SERVER_ON}" ]; then
+    printf "\nStarting daemon...\n"
+    ${EMACS} --daemon > /dev/null
+    sleep ${SLEEPDUR}
 fi
+
+printf "\nStarting client...\n"
+${EMACSCLIENT} --eval "$PROGRAM" > /dev/null
