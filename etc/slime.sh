@@ -13,6 +13,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+if [[ ! $# -eq 1 ]]; then
+    echo "One system name expected"
+    exit 1
+fi
+
+SYSNAME=$1
 EMACS=emacs
 EMACSCLIENT=emacsclient
 OS=$(uname)
@@ -27,7 +33,7 @@ PROGRAM="(progn (slime)                                      \
          (while (not (slime-connected-p)) (sleep-for 0.5))   \
          (slime-repl-eval-string                             \
            \"(progn (declaim (optimize (speed 0) (debug 3))) \
-                    (ql:quickload :crates2-text)             \
+                    (ql:quickload :crates2-${SYSNAME})       \
                     (in-package :crates2))\"))"
 
 if [ -z "${EMACS_SERVER_ON}" ]; then

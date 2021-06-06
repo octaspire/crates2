@@ -114,10 +114,14 @@ in OpenBSD, then copying the executable to ~/usr/local/bin~ should fix the issue
 * Development
 
 GNU Emacs with slime, having crates2 loaded,
-can be launched by issuing the following command:
+can be launched by issuing one of the following
+commands:
 
 #+begin_src shell
-make slime
+make slime-text
+make slime-charms
+make slime-sdl2
+make slime-sdl2-opengl
 #+end_src
 
 * License

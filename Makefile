@@ -53,7 +53,7 @@ GENERATED ?= generated/ending.lisp          \
 
 all: $(GENERATED) crates2-text crates2-charms crates2-sdl2 crates2-sdl2-opengl
 
-.PHONY: slime clean help test
+.PHONY: slime-text slime-charms slime-sdl2 slime-sdl2-opengl clean help test
 
 generated/ending.lisp: etc/assets/sound/music/ending.ogg Makefile $(CLHEXDUMP)
 	@$(CLHEXDUMP) $< $@
@@ -133,8 +133,17 @@ crates2-sdl2-opengl: $(GENERATED) Makefile crates2-sdl2-opengl.asd src/*.lisp $(
                                           (asdf:make :crates2-sdl2-opengl)              \
                                           (quit))"
 
-slime:
-	@etc/slime.sh &
+slime-text:
+	@etc/slime.sh text &
+
+slime-charms:
+	@etc/slime.sh charms &
+
+slime-sdl2:
+	@etc/slime.sh sdl2 &
+
+slime-sdl2-opengl:
+	@etc/slime.sh sdl2-opengl &
 
 run: crates2-text crates2-charms
 	@etc/run.sh
@@ -164,7 +173,10 @@ help:
 	@echo '  run                 build standalone binary and run it'
 	@echo '  play                build standalone binary and autoplay it from given level'
 	@echo '  install             build standalone binary and install it'
-	@echo '  slime               start Emacs/slime (if needed) with crates2 loaded'
+	@echo '  slime-text          start Emacs/slime (if needed) with crates2-text loaded'
+	@echo '  slime-charms        start Emacs/slime (if needed) with crates2-charms loaded'
+	@echo '  slime-sdl2          start Emacs/slime (if needed) with crates2-sdl2 loaded'
+	@echo '  slime-sdl2-opengl   start Emacs/slime (if needed) with crates2-sdl2-opengl loaded'
 	@echo '  clean               remove build artifacts'
 	@echo '  test                build and do a play test'
 	@echo '  help                show this help'
