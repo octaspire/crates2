@@ -12,11 +12,6 @@
 ;; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ;; See the License for the specific language governing permissions and
 ;; limitations under the License.
-(defpackage :crates2-main
-  (:use :common-lisp
-   :crates2
-   :crates2-ui))
-
 (in-package :crates2)
 
 (defparameter *verbose* 0)

@@ -28,6 +28,7 @@ FLAGS     ?= --noinform --noprint
 DECLAIM   ?= (optimize (speed 3) (space 0) (safety 0) (debug 0))
 
 EVAL      ?= --eval
+LOAD      ?= --load
 level     ?= 0
 FFIDIR    ?= src/ffi/
 VISUALDIR ?= src/visual/
@@ -53,7 +54,7 @@ GENERATED ?= generated/ending.lisp          \
 
 all: $(GENERATED) crates2-text crates2-charms crates2-sdl2 crates2-sdl2-opengl
 
-.PHONY: slime-text slime-charms slime-sdl2 slime-sdl2-opengl clean help test
+.PHONY: slime-text slime-charms slime-sdl2 slime-sdl2-opengl clean help test profile-sdl2 profile-sdl2-opengl
 
 generated/ending.lisp: etc/assets/sound/music/ending.ogg Makefile $(CLHEXDUMP)
 	@$(CLHEXDUMP) $< $@
@@ -127,6 +128,12 @@ crates2-sdl2: $(GENERATED) Makefile crates2-sdl2.asd src/*.lisp $(FFIDIR)octaspi
                                           (asdf:make :crates2-sdl2)                     \
                                           (quit))"
 
+profile-sdl2: crates2-sdl2
+	@$(LISP) $(FLAGS) $(LOAD) etc/profile-sdl2.lisp > generated/profile.txt
+
+profile-sdl2-opengl: crates2-sdl2-opengl
+	@$(LISP) $(FLAGS) $(LOAD) etc/profile-sdl2-opengl.lisp > generated/profile.txt
+
 crates2-sdl2-opengl: $(GENERATED) Makefile crates2-sdl2-opengl.asd src/*.lisp $(FFIDIR)octaspire-cl-sdl2.lisp $(VISUALDIR)sdl2-common.lisp $(VISUALDIR)sdl2-3d.lisp etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf etc/assets/texture/texture32.png
 	@$(LISP) $(FLAGS) $(EVAL) "(progn (declaim $(DECLAIM))                          \
                                           (ql:quickload :crates2-sdl2-opengl :silent t) \
@@ -155,7 +162,7 @@ install: crates2-text crates2-charms
 	@etc/install.sh
 
 clean:
-	@rm -f generated/*.lisp crates2-text crates2-charms crates2-sdl2 crates2-sdl2-opengl expected.txt.bz2 expected.txt got.txt
+	@rm -f generated/profile.txt generated/*.lisp crates2-text crates2-charms crates2-sdl2 crates2-sdl2-opengl expected.txt.bz2 expected.txt got.txt
 
 test: crates2-text
 	@etc/test.sh
@@ -177,6 +184,8 @@ help:
 	@echo '  slime-charms        start Emacs/slime (if needed) with crates2-charms loaded'
 	@echo '  slime-sdl2          start Emacs/slime (if needed) with crates2-sdl2 loaded'
 	@echo '  slime-sdl2-opengl   start Emacs/slime (if needed) with crates2-sdl2-opengl loaded'
+	@echo '  profile-sdl2        profile SDL2 (2D) mode'
+	@echo '  profile-sdl2-opengl profile SDL2 OpenGL (3D) mode'
 	@echo '  clean               remove build artifacts'
 	@echo '  test                build and do a play test'
 	@echo '  help                show this help'
