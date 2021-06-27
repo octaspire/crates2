@@ -767,11 +767,7 @@
 
 (defun ui-init-impl (options)
   (trivial-main-thread:with-body-in-main-thread (:blocking t)
-    (sdl-init +SDL-INIT-VIDEO+)
-    (img-init +IMG-INIT-PNG+)
-    (ui-init-audio)
-    (unless (ttf-init)
-      (error "TTF Init failed"))
+    (ui-common-init)
     (setf *crates2-window* (sdl-createwindow "Crates 2" 0 0 screen-width screen-height (logior (foreign-enum-value 'sdl-windowflags :SDL-WINDOW-OPENGL) (foreign-enum-value 'sdl-windowflags :SDL-WINDOW-SHOWN))))
     (setf *crates2-gl-context* (sdl-gl-createcontext *crates2-window*))
     (ui-sdl2-load-font)
@@ -809,6 +805,7 @@
 
 (defun ui-delete-impl ()
   (trivial-main-thread:with-body-in-main-thread (:blocking t)
+    (ui-common-delete)
     ;; (sdl-destroytexture *texture*)
     (ttf-closefont *IBMPlexMono-Bold*)
     (foreign-free *IBMPlexMono-Bold-array* )

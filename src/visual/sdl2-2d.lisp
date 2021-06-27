@@ -372,15 +372,11 @@
 
 (defun ui-init-impl (options)
   (trivial-main-thread:with-body-in-main-thread (:blocking t)
-    (sdl-init +SDL-INIT-VIDEO+)
-    (img-init +IMG-INIT-PNG+)
-    (ui-init-audio)
-    (unless (ttf-init)
-      (error "TTF Init failed"))
+    (ui-common-init)
     (setf *crates2-window* (sdl-createwindow "Crates 2" 0 0 screen-width screen-height 0))
     (when (getf options :fullscreen)
       (sdl-setwindowfullscreen *crates2-window* +SDL-TRUE+))
-    (setf *crates2-renderer* (sdl-createrenderer *crates2-window* -1 +SDL_RENDERER_SOFTWARE+))
+    (setf *crates2-renderer* (sdl-createrenderer *crates2-window* -1 +SDL-RENDERER-SOFTWARE+))
     (setf *image-array* (foreign-alloc :uint8 :count (length *texture32.png*) :initial-contents *texture32.png*))
     (setf *image* (img-load-rw (sdl-rwfromconstmem *image-array* (length *texture32.png*)) -1))
     (setf *texture* (sdl-createtexturefromsurface
@@ -397,6 +393,8 @@
 
 (defun ui-delete-impl ()
   (trivial-main-thread:with-body-in-main-thread (:blocking t)
+    (ui-common-delete)
+
     (when *text-texture-initialized*
       (sdl-destroytexture *text-texture*)
       (setf *text-texture-initialized* nil))

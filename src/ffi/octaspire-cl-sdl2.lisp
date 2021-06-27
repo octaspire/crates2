@@ -65,10 +65,11 @@
   (flags :long))
 
 ;; Declared in include/SDL_render.h
-(defconstant +SDL_RENDERER_SOFTWARE+      #x0001)
-(defconstant +SDL_RENDERER_ACCELERATED+   #x0002)
-(defconstant +SDL_RENDERER_PRESENTVSYNC+  #x0004)
-(defconstant +SDL_RENDERER_TARGETTEXTURE+ #x0008)
+(defconstant +SDL-RENDERER-SOFTWARE+      #x0001)
+(defconstant +SDL-RENDERER-ACCELERATED+   #x0002)
+(defconstant +SDL-RENDERER-PRESENTVSYNC+  #x0004)
+(defconstant +SDL-RENDERER-TARGETTEXTURE+ #x0008)
+
 
 
 ;; Declared in include/SDL_audio.h
@@ -113,17 +114,17 @@
 (defconstant +SDL-INIT-VIDEO+                 #x020)
 (defconstant +SDL-INIT-JOYSTICK+              #x200)
 (defconstant +SDL-INIT-HAPTIC+                #x1000)
-(defconstant +SDL-INIT-GAMECONTROLLER+        #x1000)
+(defconstant +SDL-INIT-GAMECONTROLLER+        #x2000)
 (defconstant +SDL-INIT-EVENTS+                #x4000)
 (defconstant +SDL-INIT-SENSOR+                #x8000)
 (defconstant +SDL-INIT-NOPARACHUTE+           #x100000)
 (defconstant +SDL-INIT-EVERYTHING+            (logior +SDL-INIT-TIMER+
                                                       +SDL-INIT-AUDIO+
                                                       +SDL-INIT-VIDEO+
+                                                      +SDL-INIT-EVENTS+
                                                       +SDL-INIT-JOYSTICK+
                                                       +SDL-INIT-HAPTIC+
                                                       +SDL-INIT-GAMECONTROLLER+
-                                                      +SDL-INIT-EVENTS+
                                                       +SDL-INIT-SENSOR+))
 (defconstant +SDL-TEXTEDITINGEVENT-TEXT-SIZE+ 32)
 (defconstant +SDL-TEXTINPUTEVENT-TEXT-SIZE+   32)
@@ -654,6 +655,16 @@
   (padding1  :uint8)
   (padding2  :uint8))
 
+(defcstruct sdl-joybuttonevent
+  "Joystick button event."
+  (type      :uint32)
+  (timestamp :uint32)
+  (which     sdl-joystickid)
+  (button    :uint8)
+  (state     :uint8)
+  (padding1  :uint8)
+  (padding2  :uint8))
+
 (defcstruct sdl-joydeviceevent
   "Joystick device event."
   (type      :uint32)
@@ -826,6 +837,7 @@
   (jaxis     (:struct sdl-joyaxisevent))
   (jball     (:struct sdl-joyballevent))
   (jhat      (:struct sdl-joyhatevent))
+  (jbutton   (:struct sdl-joybuttonevent))
   (jdevice   (:struct sdl-joydeviceevent))
   (caxis     (:struct sdl-controlleraxisevent))
   (cbutton   (:struct sdl-controllerbuttonevent))
@@ -1342,6 +1354,70 @@
 
 (defcfun "SDL_UnlockSurface" :void
   (surface :pointer))
+
+
+
+
+
+;; Declared in include/SDL_joystick.h
+(defcfun "SDL_NumJoysticks" :int)
+
+(defcfun "SDL_JoystickOpen" :pointer
+  (device-index :int))
+
+(defcfun "SDL_JoystickClose" :void
+  (joystick :pointer))
+
+
+
+
+
+;; Declared in include/SDL_stdinc.h
+(defcenum sdl-bool
+  "Boolean type"
+  (:SDL-FALSE 0)
+  (:SDL-TRUE))
+
+;; Declared in include/SDL_gamecontroller.h
+(defcenum sdl-gamecontrollerbutton
+  "Available buttons from a controller"
+  (:SDL-CONTROLLER-BUTTON-INVALID -1)
+  (:SDL-CONTROLLER-BUTTON-A        0)
+  (:SDL-CONTROLLER-BUTTON-B)
+  (:SDL-CONTROLLER-BUTTON-X)
+  (:SDL-CONTROLLER-BUTTON-Y)
+  (:SDL-CONTROLLER-BUTTON-BACK)
+  (:SDL-CONTROLLER-BUTTON-GUIDE)
+  (:SDL-CONTROLLER-BUTTON-START)
+  (:SDL-CONTROLLER-BUTTON-LEFTSTICK)
+  (:SDL-CONTROLLER-BUTTON-RIGHTSTICK)
+  (:SDL-CONTROLLER-BUTTON-LEFTSHOULDER)
+  (:SDL-CONTROLLER-BUTTON-RIGHTHOULDER)
+  (:SDL-CONTROLLER-BUTTON-DPAD-UP)
+  (:SDL-CONTROLLER-BUTTON-DPAD-DOWN)
+  (:SDL-CONTROLLER-BUTTON-DPAD-LEFT)
+  (:SDL-CONTROLLER-BUTTON-DPAD-RIGHT)
+  (:SDL-CONTROLLER-BUTTON-MISC1)
+  (:SDL-CONTROLLER-BUTTON-PADDLE1)
+  (:SDL-CONTROLLER-BUTTON-PADDLE2)
+  (:SDL-CONTROLLER-BUTTON-PADDLE3)
+  (:SDL-CONTROLLER-BUTTON-PADDLE4)
+  (:SDL-CONTROLLER-BUTTON-TOUCHPAD)
+  (:SDL-CONTROLLER-BUTTON-MAX))
+
+(defcfun "SDL_IsGameController" sdl-bool
+  (joystick_index :int))
+
+(defcfun "SDL_GameControllerOpen" :pointer
+  (joystick_index :int))
+
+(defcfun "SDL_GameControllerClose" :void
+  (gamecontroller :pointer))
+
+(defcfun "SDL_GameControllerGetButton" :uint8
+  (gamecontroller :pointer)
+  (button         sdl-gamecontrollerbutton))
+
 
 
 

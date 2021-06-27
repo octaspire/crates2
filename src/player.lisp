@@ -54,7 +54,10 @@
             (:west    (setf (velocity self) input))
             (:north   (setf (velocity self) input))
             (:south   (setf (velocity self) input))
-            (:action1 (jump self)))
+            (:action1 (jump self))
+            (:action2  nil)
+            (:action3  nil)
+            (:backspace nil))
           (setf (player-pending-input self) nil)))))
 
 (defmethod collide ((self player) (target pushed))
