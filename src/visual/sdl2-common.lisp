@@ -20,7 +20,7 @@
 (defconstant +UI-VOLUME-MIDDLE+  (- +UI-VOLUME-MAX+ (floor +UI-VOLUME-MAX+ 2)))
 (defconstant +UI-VOLUME-LOW+     (- +UI-VOLUME-MIDDLE+ (floor +UI-VOLUME-MAX+ 4)))
 (defconstant +UI-VOLUME-MIN+     0)
-(defconstant +UI-JOYSTICK-AXIS-NOISE+ 31900)
+(defconstant +UI-JOYSTICK-AXIS-NOISE+ 30000)
 (defparameter *ui-hint-time*     +UI-HINT-DELAY+)
 (defparameter *ui-music-volume*  +UI-VOLUME-MIDDLE+)
 (defparameter *ui-effect-volume* +UI-VOLUME-LOW+)
@@ -258,43 +258,43 @@
             ((eq scancode :SDL-SCANCODE-ESCAPE)    :back)
             (t previous)))))
 
-(defun ui-read-input-impl-joyaxismotion (event previous)
-  (cffi:with-foreign-slots ((axis value) event sdl-joyaxisevent)
-    (if (> (abs value) +UI-JOYSTICK-AXIS-NOISE+)
-        (let ((x-axis (= (mod axis 2) 0)))
-          (if x-axis
-              (if (> value 0) :east  :west)
-              (if (> value 0) :south :north)))
-        previous)))
+(defparameter *controller-button-plist*
+  '((:SDL-CONTROLLER-BUTTON-A          . :action1)
+    (:SDL-CONTROLLER-BUTTON-B          . :action2)
+    (:SDL-CONTROLLER-BUTTON-X          . :action3)
+    (:SDL-CONTROLLER-BUTTON-Y          . :backspace)
+    (:SDL-CONTROLLER-BUTTON-MISC1      . :restart)
+    (:SDL-CONTROLLER-BUTTON-BACK       . :prev)
+    (:SDL-CONTROLLER-BUTTON-START      . :next)
+    (:SDL-CONTROLLER-BUTTON-DPAD-UP    . :north)
+    (:SDL-CONTROLLER-BUTTON-DPAD-DOWN  . :south)
+    (:SDL-CONTROLLER-BUTTON-DPAD-LEFT  . :west)
+    (:SDL-CONTROLLER-BUTTON-DPAD-RIGHT . :east)))
 
-(defun ui-read-input-impl-joyhatmotion (event previous)
-  (cffi:with-foreign-slots ((value) event sdl-joyhatevent)
-    (cond ((eq value +SDL-HAT-LEFT+)  :west)
-          ((eq value +SDL-HAT-RIGHT+) :east)
-          ((eq value +SDL-HAT-UP+)    :north)
-          ((eq value +SDL-HAT-DOWN+)  :south)
-          (t previous))))
-
-(defun ui-read-input-impl-controllerbuttondown (event previous)
-  (cffi:with-foreign-slots ((button state) event sdl-controllerbuttonevent)
-    (format t "~%button: ~A state: ~A~%" button state)
-    ;; TODO Make ready
-    (cond ((= button 70) :north)
-          (t previous))))
+(defun ui-helper-is-controller-axis-activated (axis)
+  (let ((value (sdl-gamecontrollergetaxis *controller* axis)))
+    (if (>= (abs value) +UI-JOYSTICK-AXIS-NOISE+)
+        value
+        nil)))
 
 (defun ui-read-input-poll-controller (result)
-  (format t "~% controller: ~A y: ~A~%" *controller* (sdl-gamecontrollergetbutton *controller* :SDL-CONTROLLER-BUTTON-Y))
-  (if *controller*
-      (if (/= (sdl-gamecontrollergetbutton *controller* :SDL-CONTROLLER-BUTTON-A) 0)
-          :action1
-          (if (/= (sdl-gamecontrollergetbutton *controller* :SDL-CONTROLLER-BUTTON-B) 0)
-              :action2
-              (if (/= (sdl-gamecontrollergetbutton *controller* :SDL-CONTROLLER-BUTTON-X) 0)
-                  :action3
-                  (if (/= (sdl-gamecontrollergetbutton *controller* :SDL-CONTROLLER-BUTTON-Y) 0)
-                      :backspace
-                      result))))
-      result))
+  (unless *controller*
+    (return-from ui-read-input-poll-controller result))
+  (when (or (ui-helper-is-controller-axis-activated :SDL-CONTROLLER-AXIS-TRIGGERLEFT)
+            (ui-helper-is-controller-axis-activated :SDL-CONTROLLER-AXIS-TRIGGERRIGHT))
+    (return-from ui-read-input-poll-controller :action1))
+  (let ((leftx  (ui-helper-is-controller-axis-activated :SDL-CONTROLLER-AXIS-LEFTX))
+        (rightx (ui-helper-is-controller-axis-activated :SDL-CONTROLLER-AXIS-RIGHTX))
+        (lefty  (ui-helper-is-controller-axis-activated :SDL-CONTROLLER-AXIS-LEFTY))
+        (righty (ui-helper-is-controller-axis-activated :SDL-CONTROLLER-AXIS-RIGHTY)))
+    (when leftx  (return-from ui-read-input-poll-controller (if (< leftx  0) :west  :east)))
+    (when rightx (return-from ui-read-input-poll-controller (if (< rightx 0) :west  :east)))
+    (when lefty  (return-from ui-read-input-poll-controller (if (< lefty 0)  :north :south)))
+    (when righty (return-from ui-read-input-poll-controller (if (< righty 0) :north :south))))
+  (loop for cell in *controller-button-plist*
+        do (when (/= (sdl-gamecontrollergetbutton *controller* (car cell)) 0)
+             (return-from ui-read-input-poll-controller (cdr cell))))
+  result)
 
 (defun ui-read-input-impl ()
   (trivial-main-thread:with-body-in-main-thread (:blocking t)
@@ -304,11 +304,8 @@
               do
                  (cffi:with-foreign-slots ((type jhat cbutton) event (:union sdl-event))
                    ;; (format t "~%TYPE IS ~A~%" type)
-                   (cond ((eq type :SDL-KEYDOWN)       (setf result (ui-read-input-impl-keydown       event   result)))
-                         ((eq type :SDL-JOYAXISMOTION) (setf result (ui-read-input-impl-joyaxismotion event   result)))
-                         ((eq type :SDL-JOYHATMOTION)  (setf result (ui-read-input-impl-joyhatmotion  jhat    result)))
-                         ((eq type :SDL-CONTROLLERBUTTONDOWN) (setf result (ui-read-input-impl-controllerbuttondown cbutton result)))
-                         ((eq type :SDL-QUIT) (setf result :back)))))
+                   (cond ((eq type :SDL-KEYDOWN) (setf result (ui-read-input-impl-keydown       event   result)))
+                         ((eq type :SDL-QUIT)    (setf result :back)))))
         (setf result (ui-read-input-poll-controller result)))
       result)))
 

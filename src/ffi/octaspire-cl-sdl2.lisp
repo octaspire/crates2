@@ -1405,6 +1405,17 @@
   (:SDL-CONTROLLER-BUTTON-TOUCHPAD)
   (:SDL-CONTROLLER-BUTTON-MAX))
 
+(defcenum sdl-gamecontrolleraxis
+  "Available axes from controller"
+  (:SDL-CONTROLLER-AXIS-INVALID -1)
+  (:SDL-CONTROLLER-AXIS-LEFTX    0)
+  (:SDL-CONTROLLER-AXIS-LEFTY)
+  (:SDL-CONTROLLER-AXIS-RIGHTX)
+  (:SDL-CONTROLLER-AXIS-RIGHTY)
+  (:SDL-CONTROLLER-AXIS-TRIGGERLEFT)
+  (:SDL-CONTROLLER-AXIS-TRIGGERRIGHT)
+  (:SDL-CONTROLLER-AXIS-MAX))
+
 (defcfun "SDL_IsGameController" sdl-bool
   (joystick_index :int))
 
@@ -1417,6 +1428,10 @@
 (defcfun "SDL_GameControllerGetButton" :uint8
   (gamecontroller :pointer)
   (button         sdl-gamecontrollerbutton))
+
+(defcfun "SDL_GameControllerGetAxis" :int16
+  (gamecontroller :pointer)
+  (axis           sdl-gamecontrolleraxis))
 
 
 
