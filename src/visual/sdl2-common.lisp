@@ -25,6 +25,7 @@
 (defparameter *ui-music-volume*  +UI-VOLUME-MIDDLE+)
 (defparameter *ui-effect-volume* +UI-VOLUME-LOW+)
 (defparameter *controller*       nil)
+(defparameter *haptic*           nil)
 (defparameter *music*                     :pointer)
 (defparameter *music-array*               :pointer)
 (defparameter *snd-special*               :pointer)
@@ -59,11 +60,18 @@
 (defparameter *IBMPlexMono-Bold-array*    :pointer)
 
 (defun ui-common-init ()
-  (when (< (sdl-init (logior +SDL-INIT-VIDEO+ +SDL-INIT-GAMECONTROLLER+)) 0)
+  (when (< (sdl-init (logior +SDL-INIT-VIDEO+ +SDL-INIT-GAMECONTROLLER+ +SDL-INIT-HAPTIC+)) 0)
     (error "SDL Init failed"))
   (when (and (> (sdl-numjoysticks) 0) (sdl-isgamecontroller 0))
     (format t "~%~%Opening controller~%~%")
-    (setf *controller* (sdl-gamecontrolleropen 0)))
+    (setf *controller* (sdl-gamecontrolleropen 0))
+    (let ((joystick (sdl-gamecontrollergetjoystick *controller*)))
+      (when (sdl-joystickishaptic joystick)
+        (setf *haptic* (sdl-hapticopenfromjoystick joystick))
+        (when *haptic*
+          (when (sdl-hapticrumblesupported *haptic*)
+            (sdl-hapticrumbleinit *haptic*)
+            (format t "~%~% -- HAPTIC INITIALIZED --~%~%"))))))
   (img-init +IMG-INIT-PNG+)
   (ui-init-audio)
   (unless (ttf-init)
@@ -71,6 +79,9 @@
 
 (defun ui-common-delete ()
   (when *controller*
+    (when *haptic*
+      (sdl-hapticclose *haptic*)
+      (setf *haptic* nil))
     (sdl-gamecontrollerclose *controller*)
     (setf *controller* nil)))
 
@@ -191,14 +202,18 @@
 
     (mix-quit)))
 
+(defun ui-play-haptic (duration)
+  (format t "~%% -- PLAYING RUMBLE --~%~%")
+  (sdl-hapticrumbleplay *haptic* 1 duration))
+
 (defun ui-play-sound (id)
   (trivial-main-thread:with-body-in-main-thread (:blocking t)
     (ecase id
       (:explosion       (mix-playchanneltimed -1 *snd-explosion*       0 -1))
       (:hit-wall        (mix-playchanneltimed -1 *snd-hit-wall*        0 -1))
       (:bomb-on         (mix-playchanneltimed -1 *snd-bomb-on*         0 -1))
-      (:exit-error      (mix-playchanneltimed -1 *snd-exit-error*      0 -1))
-      (:exit-ok         (mix-playchanneltimed -1 *snd-exit-ok*         0 -1))
+      (:exit-error      (mix-playchanneltimed -1 *snd-exit-error*      0 -1) (ui-play-haptic 500))
+      (:exit-ok         (mix-playchanneltimed -1 *snd-exit-ok*         0 -1) (ui-play-haptic 1000))
       (:key-collect     (mix-playchanneltimed -1 *snd-key-collect*     0 -1))
       (:hit-counter     (mix-playchanneltimed -1 *snd-hit-counter*     0 -1))
       (:pulled-activate (mix-playchanneltimed -1 *snd-pulled-activate* 0 -1))

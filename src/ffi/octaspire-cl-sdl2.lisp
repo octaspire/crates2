@@ -1372,11 +1372,47 @@
 
 
 
+;; Declared in include/SDL_haptic.h
+(defcfun "SDL_JoystickIsHaptic" :int
+  (joystick :pointer))
+
+(defcfun "SDL_HapticOpen" :pointer
+  (device_index :int))
+
+(defcfun "SDL_HapticOpenFromJoystick" :pointer
+  (joystick :pointer))
+
+(defcfun "SDL_HapticClose" :void
+  (haptic :pointer))
+
+(defcfun "SDL_HapticRumbleSupported" :int
+  (haptic :pointer))
+
+(defcfun "SDL_HapticRumbleInit" :int
+  (haptic :pointer))
+
+(defcfun "SDL_HapticRumblePlay" :int
+  (haptic   :pointer)
+  (strength :float)
+  (length   :uint32))
+
+(defcfun "SDL_HapticClose" :void
+  (haptic :pointer))
+
+
+
+
+
 ;; Declared in include/SDL_stdinc.h
 (defcenum sdl-bool
   "Boolean type"
   (:SDL-FALSE 0)
   (:SDL-TRUE))
+
+;; Declared in include/SDL_hints.h
+(defcfun "SDL_SetHint" sdl-bool
+  (name :pointer)
+  (value :pointer))
 
 ;; Declared in include/SDL_gamecontroller.h
 (defcenum sdl-gamecontrollerbutton
@@ -1421,6 +1457,9 @@
 
 (defcfun "SDL_GameControllerOpen" :pointer
   (joystick_index :int))
+
+(defcfun "SDL_GameControllerGetJoystick" :pointer
+  (gamecontroller :pointer))
 
 (defcfun "SDL_GameControllerClose" :void
   (gamecontroller :pointer))
