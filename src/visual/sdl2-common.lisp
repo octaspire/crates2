@@ -204,7 +204,7 @@
 
 (defun ui-play-haptic (duration)
   (format t "~%% -- PLAYING RUMBLE --~%~%")
-  (sdl-hapticrumbleplay *haptic* 1 duration))
+  (sdl-hapticrumbleplay *haptic* 0.5 duration))
 
 (defun ui-play-sound (id)
   (trivial-main-thread:with-body-in-main-thread (:blocking t)
@@ -213,7 +213,7 @@
       (:hit-wall        (mix-playchanneltimed -1 *snd-hit-wall*        0 -1))
       (:bomb-on         (mix-playchanneltimed -1 *snd-bomb-on*         0 -1))
       (:exit-error      (mix-playchanneltimed -1 *snd-exit-error*      0 -1) (ui-play-haptic 500))
-      (:exit-ok         (mix-playchanneltimed -1 *snd-exit-ok*         0 -1) (ui-play-haptic 1000))
+      (:exit-ok         (mix-playchanneltimed -1 *snd-exit-ok*         0 -1) (ui-play-haptic 200))
       (:key-collect     (mix-playchanneltimed -1 *snd-key-collect*     0 -1))
       (:hit-counter     (mix-playchanneltimed -1 *snd-hit-counter*     0 -1))
       (:pulled-activate (mix-playchanneltimed -1 *snd-pulled-activate* 0 -1))
