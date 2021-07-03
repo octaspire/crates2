@@ -33,7 +33,7 @@
            #:*level-width*
            #:*level-height*
            #:*level-number*
-           #:*num-levels*
+           #:num-levels
            #:*infos*
            #:*program*
            #:*update-counter*

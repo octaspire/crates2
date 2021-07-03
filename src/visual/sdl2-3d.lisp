@@ -669,7 +669,7 @@
 
 (defun ui-render-impl (level step)
   (trivial-main-thread:with-body-in-main-thread (:blocking t)
-    (ensure-text-texture crates2:*level-number* crates2:*num-levels* (car crates2:*infos*) (cadr crates2:*infos*))
+    (ensure-text-texture crates2:*level-number* (crates2:num-levels) (car crates2:*infos*) (cadr crates2:*infos*))
     (glclearcolor 0.0 0.0 0.0 1.0)
     (glclear (logior +GL-COLOR-BUFFER-BIT+ +GL-DEPTH-BUFFER-BIT+))
     (glenable +GL-TEXTURE-2D+)

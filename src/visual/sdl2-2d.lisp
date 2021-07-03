@@ -318,7 +318,7 @@
 
 (defun ui-render-impl (level step)
   (trivial-main-thread:with-body-in-main-thread (:blocking t)
-    (ensure-text-texture crates2:*level-number* crates2:*num-levels* (car crates2:*infos*) (cadr crates2:*infos*))
+    (ensure-text-texture crates2:*level-number* (crates2:num-levels) (car crates2:*infos*) (cadr crates2:*infos*))
     (sdl-setrenderdrawcolor *crates2-renderer* #x00 #x00 #x00 #xFF)
     (sdl-renderclear *crates2-renderer*)
     (sdl-setrenderdrawcolor *crates2-renderer* #xBA #x16 #x0C #xFF)

@@ -63,15 +63,13 @@
   (when (< (sdl-init (logior +SDL-INIT-VIDEO+ +SDL-INIT-GAMECONTROLLER+ +SDL-INIT-HAPTIC+)) 0)
     (error "SDL Init failed"))
   (when (and (> (sdl-numjoysticks) 0) (sdl-isgamecontroller 0))
-    (format t "~%~%Opening controller~%~%")
     (setf *controller* (sdl-gamecontrolleropen 0))
     (let ((joystick (sdl-gamecontrollergetjoystick *controller*)))
       (when (sdl-joystickishaptic joystick)
         (setf *haptic* (sdl-hapticopenfromjoystick joystick))
         (when *haptic*
           (when (sdl-hapticrumblesupported *haptic*)
-            (sdl-hapticrumbleinit *haptic*)
-            (format t "~%~% -- HAPTIC INITIALIZED --~%~%"))))))
+            (sdl-hapticrumbleinit *haptic*))))))
   (img-init +IMG-INIT-PNG+)
   (ui-init-audio)
   (unless (ttf-init)
@@ -203,7 +201,6 @@
     (mix-quit)))
 
 (defun ui-play-haptic (duration)
-  (format t "~%% -- PLAYING RUMBLE --~%~%")
   (sdl-hapticrumbleplay *haptic* 0.5 duration))
 
 (defun ui-play-sound (id)
@@ -318,7 +315,6 @@
         (loop while (/= (sdl-pollevent event) 0)
               do
                  (cffi:with-foreign-slots ((type jhat cbutton) event (:union sdl-event))
-                   ;; (format t "~%TYPE IS ~A~%" type)
                    (cond ((eq type :SDL-KEYDOWN) (setf result (ui-read-input-impl-keydown       event   result)))
                          ((eq type :SDL-QUIT)    (setf result :back)))))
         (setf result (ui-read-input-poll-controller result)))

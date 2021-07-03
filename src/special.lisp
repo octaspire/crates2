@@ -39,7 +39,8 @@
            (setf (special-jump-active-step self) (1- step))
            (progn
              (attach-to self (special-jump-target self))
-             (lament self))))))
+             (lament self)))))
+    (:lamented nil))
   (call-next-method))
 
 (defmethod collide ((self special-jump) (target player))
