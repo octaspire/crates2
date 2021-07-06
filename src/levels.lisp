@@ -14,6 +14,9 @@
 ;; limitations under the License.
 (in-package :crates2)
 
+(defun level-get-nth (index)
+  (elt *levels* index))
+
 (defparameter *levels* (make-array 0 :adjustable t :fill-pointer t))
 
 (vector-push-extend
@@ -779,6 +782,7 @@
     (make-stepper      13 11)
     (make-stepper      13 12)))
  *levels*)
+
 (vector-push-extend
  '(list (list
          "Oh, All Those Boxes To Pull"
@@ -1243,12 +1247,307 @@
     nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil
     :west)
    (list
-    (make-player       4 3)
-    (make-exit         0 3)
-    (make-wall         8  3)
-    (make-instance 'bomb         :x 2 :y 3 :z 0 :time 5)
-    (make-instance 'bomb         :x 4 :y 5 :z 0 :time 2)
-    (make-instance 'bomb         :x 6 :y 6 :z 0 :time 2)))
+    (make-wall        0  0)             ; 0
+    (make-wall        1  0)
+    (make-wall        2  0)
+    (make-wall        3  0)
+    (make-wall        4  0)
+    (make-wall        5  0)
+    (make-wall        6  0)
+    (make-wall        7  0)
+    (make-wall        8  0)
+    (make-wall        9  0)
+    (make-wall        10 0)
+    (make-wall        11 0)
+    (make-wall        12 0)
+    (make-wall        0  1)             ; 1
+    (make-stepper     1  1)
+    (make-stepper     2  1)
+    (make-stepper     3  1)
+    (make-stepper     4  1)
+    (make-stepper     5  1)
+    (make-stepper     6  1)
+    (make-stepper     7  1)
+    (make-stepper     8  1)
+    (make-stepper     9  1)
+    (make-stepper     10 1)
+    (make-stepper     11 1)
+    (make-wall        12 1)
+    (make-wall        0  2)             ; 2
+    (make-stepper     1  2)
+    (make-stepper     11 2)
+    (make-wall        12 2)
+    (make-wall        0  3)             ; 3
+    (make-stepper     1  3)
+    (make-stepper     11 3)
+    (make-wall        12 3)
+    (make-wall        0  4)             ; 4
+    (make-stepper     1  4)
+    (make-pulled-ensw 3  4)
+    (make-pulled-ensw 4  4)
+    (make-pulled-ensw 5  4)
+    (make-pulled-ensw 6  4)
+    (make-pulled-ensw 7  4)
+    (make-pulled-ensw 8  4)
+    (make-pulled-ensw 9  4)
+    (make-stepper     11 4)
+    (make-wall        12 4)
+    (make-wall        0  5)             ; 5
+    (make-stepper     1  5)
+    (make-pulled-ensw 3  5)
+    (make-toggle      4  5)
+    (make-pulled-ensw 5  5)
+    (make-toggle      6  5)
+    (make-pulled-ensw 7  5)
+    (make-toggle      8  5)
+    (make-pulled-ensw 9  5)
+    (make-stepper     11 5)
+    (make-wall        12 5)
+    (make-wall        0  6)             ; 6
+    (make-stepper     1  6)
+    (make-pulled-ensw 3  6)
+    (make-pulled-ensw 4  6)
+    (make-pulled-ensw 5  6)
+    (make-pulled-ensw 6  6)
+    (make-pulled-ensw 7  6)
+    (make-pulled-ensw 8  6)
+    (make-pulled-ensw 9  6)
+    (make-stepper     11 6)
+    (make-wall        12 6)
+    (make-wall        0  7)             ; 7
+    (make-stepper     1  7)
+    (make-stepper     11 7)
+    (make-wall        12 7)
+    (make-wall        0  8)             ; 8
+    (make-stepper     1  8)
+    (make-player      10 8)
+    (make-stepper     11 8)
+    (make-wall        12 8)
+    (make-wall        0  9)             ; 9
+    (make-stepper     1  9)
+    (make-stepper     2  9)
+    (make-stepper     3  9)
+    (make-stepper     4  9)
+    (make-stepper     5  9)
+    (make-stepper     6  9)
+    (make-stepper     7  9)
+    (make-stepper     8  9)
+    (make-stepper     9  9)
+    (make-stepper     10 9)
+    (make-stepper     11 9)
+    (make-wall        12 9)
+    (make-wall        0  10)            ; Last row
+    (make-wall        1  10)
+    (make-wall        2  10)
+    (make-wall        3  10)
+    (make-wall        4  10)
+    (make-wall        5  10)
+    (make-exit        6  10)
+    (make-wall        7  10)
+    (make-wall        8  10)
+    (make-wall        9  10)
+    (make-wall        10 10)
+    (make-wall        11 10)
+    (make-wall        12 10)))
+ *levels*)
+
+(vector-push-extend
+ '(list (list
+         "Level Name"
+         "Level Hint")
+   (list
+    :west  nil nil nil nil nil
+    :north nil nil nil
+    :south nil nil nil nil
+    :east  nil nil nil nil nil nil nil nil
+    :north nil nil
+    :west  nil nil nil nil nil nil nil nil nil
+    :north nil nil nil
+    :south nil nil nil nil
+    :east  nil nil nil nil nil nil nil nil
+    :north nil nil
+    :west  nil nil nil nil nil nil nil
+    :north nil nil
+    :south nil nil nil
+    :east  nil nil nil nil nil nil
+    :north nil nil
+    :west  nil nil nil nil nil nil nil nil nil nil nil nil
+    :north nil nil
+    :west  nil nil
+    :north nil nil
+    :south nil nil nil
+    :east  nil nil nil nil nil nil nil nil nil nil nil nil nil nil
+    :south nil nil nil nil
+    :east  nil
+    :north nil nil
+    :west  nil nil nil nil nil nil nil
+    :north nil nil
+    :west  nil
+    :east  nil nil nil nil nil nil nil
+    :north nil nil nil nil nil nil
+    :west  nil nil
+    :south nil nil nil nil nil nil nil nil nil nil nil
+    :east  nil
+    :north nil nil
+    :west  nil nil nil nil nil nil
+    :north nil
+    :west  nil nil
+    :north nil nil nil nil
+    :south nil nil nil nil
+    :east  nil nil nil nil nil nil nil
+    :south nil nil nil nil
+    :east  nil
+    :north nil nil
+    :west  nil nil nil nil nil nil nil
+    :north nil
+    :west  nil nil
+    :east  nil nil nil nil nil
+    :south nil nil nil
+    :east  nil nil
+    :north nil
+    :west  nil nil nil nil nil nil
+    :north nil nil
+    :west  nil nil
+    :north nil nil nil nil
+    :south nil nil nil nil nil
+    :east  nil nil nil nil nil nil nil
+    :south nil nil nil nil
+    :east  nil
+    :north nil nil nil
+    :west  nil nil nil nil nil nil
+    :north nil nil nil
+    :west
+    :east  nil nil nil nil
+    :south nil nil nil
+    :east  nil nil nil nil
+    :north nil
+    :west  nil nil nil nil nil nil nil nil
+    :north nil nil
+    :west  nil
+    :north nil nil nil nil nil nil
+    :south nil nil nil nil nil nil
+    :east  nil nil nil nil nil nil nil
+    :south nil nil nil nil
+    :east  nil
+    :north nil nil
+    :west  nil nil nil nil nil nil nil
+    :north nil nil
+    :west  nil
+    :north nil nil
+    :west
+    :north nil nil nil nil nil nil nil nil nil)
+   (list
+    (make-wall          0  0)           ; 0
+    (make-wall          1  0)
+    (make-wall          2  0)
+    (make-wall          3  0)
+    (make-wall          4  0)
+    (make-wall          5  0)
+    (make-wall          6  0)
+    (make-wall          7  0)
+    (make-wall          8  0)
+    (make-wall          9  0)
+    (make-wall          10 0)
+    (make-wall          0  1)           ; 1
+    (make-wall          10 1)
+    (make-wall          0  2)           ; 2
+    (make-wall          10 2)
+    (make-wall          0  3)           ; 3
+    (make-wall          1  3)
+    (make-wall          2  3)
+    (make-wall          3  3)
+    (make-wall          4  3)
+    (make-wall          5  3)
+    (make-wall          6  3)
+    (make-wall          9  3)
+    (make-wall          10 3)
+    (make-wall          0  4)           ; 4
+    (make-exit          1  4)
+    (make-pulled-ensw   2  4)
+    (make-pulled-ensw   3  4)
+    (make-pulled-ensw   4  4)
+    (make-pulled-ensw   5  4)
+    (make-wall          6  4)
+    (make-wall          10 4)
+    (make-wall          0  5)           ; 5
+    (make-pulled-ensw   1  5)
+    (make-pulled-ensw   2  5)
+    (make-pulled-ensw   3  5)
+    (make-pulled-ensw   4  5)
+    (make-pulled-ensw   5  5)
+    (make-wall          6  5)
+    (make-wall          10 5)
+    (make-wall          0  6)           ; 6
+    (make-pulled-ensw   1  6)
+    (make-pulled-ensw   2  6)
+    (make-pulled-ensw   3  6)
+    (make-pulled-ensw   4  6)
+    (make-pulled-ensw   5  6)
+    (make-wall          6  6)
+    (make-wall          10 6)
+    (make-wall          0  7)           ; 7
+    (make-pulled-ensw   1  7)
+    (make-pulled-ensw   2  7)
+    (make-pulled-ensw   3  7)
+    (make-pulled-ensw   4  7)
+    (make-pulled-ensw   5  7)
+    (make-wall          6  7)
+    (make-wall          10 7)
+    (make-wall          0  8)           ; 8
+    (make-pulled-ensw   1  8)
+    (make-pulled-ensw   2  8)
+    (make-pulled-ensw   3  8)
+    (make-pulled-ensw   4  8)
+    (make-pulled-ensw   5  8)
+    (make-wall          6  8)
+    (make-wall          10 8)
+    (make-wall          0  9)           ; 9
+    (make-pulled-ensw   1  9)
+    (make-pulled-ensw   2  9)
+    (make-pulled-ensw   3  9)
+    (make-pulled-ensw   4  9)
+    (make-pulled-ensw   5  9)
+    (make-wall          6  9)
+    (make-wall          10 9)
+    (make-wall          0  10)          ; 10
+    (make-pulled-ensw   1  10)
+    (make-pulled-ensw   2  10)
+    (make-pulled-ensw   3  10)
+    (make-pulled-ensw   4  10)
+    (make-pulled-ensw   5  10)
+    (make-pulled-ensw   6  10)
+    (make-wall          10 10)
+    (make-wall          0  11)          ; 11
+    (make-wall          10 11)
+    (make-wall          0  12)          ; 12
+    (make-wall          9  12)
+    (make-wall          10 12)
+    (make-wall          0  13)          ; 13
+    (make-wall          10 13)
+    (make-wall          0  14)          ; 14
+    (make-player        6  14)
+    (make-wall          10 14)
+    (make-wall          0  15)          ; 15
+    (make-wall          2  15)
+    (make-wall          3  15)
+    (make-wall          4  15)
+    (make-wall          5  15)
+    (make-wall          6  15)
+    (make-wall          7  15)
+    (make-wall          10 15)
+    (make-wall          0  16)          ; 16
+    (make-wall          10 16)
+    (make-wall          0  17)          ; 17
+    (make-wall          1  17)
+    (make-wall          2  17)
+    (make-wall          3  17)
+    (make-wall          4  17)
+    (make-wall          5  17)
+    (make-wall          6  17)
+    (make-wall          7  17)
+    (make-wall          8  17)
+    (make-wall          9  17)
+    (make-wall          10 17)))
  *levels*)
 
 (vector-push-extend
@@ -1289,7 +1588,6 @@
          "Try Not To Get Stuck, Real Hard This Time")
    (list nil nil nil nil)
    (list
-    (make-pulled-ensw 1 1)
     (make-pulled-ensw 2 1)
     (make-pulled-ensw 3 1)
     (make-pulled-ensw 4 1)
@@ -1306,7 +1604,7 @@
     (make-pulled-ensw 15 1)
     (make-pulled-ensw 16 1)
     (make-pulled-ensw 17 1)
-    (make-pulled-ensw 1 2)
+    (make-pulled-ensw 18 1)
     (make-pulled-ensw 2 2)
     (make-pulled-ensw 3 2)
     (make-pulled-ensw 4 2)
@@ -1323,7 +1621,7 @@
     (make-pulled-ensw 15 2)
     (make-pulled-ensw 16 2)
     (make-pulled-ensw 17 2)
-    (make-pulled-ensw 1 3)
+    (make-pulled-ensw 18 2)
     (make-pulled-ensw 2 3)
     (make-pulled-ensw 3 3)
     (make-pulled-ensw 4 3)
@@ -1340,7 +1638,7 @@
     (make-pulled-ensw 15 3)
     (make-pulled-ensw 16 3)
     (make-pulled-ensw 17 3)
-    (make-pulled-ensw 1 4)
+    (make-pulled-ensw 18 3)
     (make-pulled-ensw 2 4)
     (make-pulled-ensw 3 4)
     (make-pulled-ensw 4 4)
@@ -1357,7 +1655,7 @@
     (make-pulled-ensw 15 4)
     (make-pulled-ensw 16 4)
     (make-pulled-ensw 17 4)
-    (make-pulled-ensw 1 5)
+    (make-pulled-ensw 18 4)
     (make-pulled-ensw 2 5)
     (make-pulled-ensw 3 5)
     (make-pulled-ensw 4 5)
@@ -1374,89 +1672,89 @@
     (make-pulled-ensw 15 5)
     (make-pulled-ensw 16 5)
     (make-pulled-ensw 17 5)
-    (make-pulled-ensw 1 6)
+    (make-pulled-ensw 18 5)
     (make-pulled-ensw 2 6)
     (make-pulled-ensw 3 6)
     (make-pulled-ensw 4 6)
     (make-pulled-ensw 5 6)
     (make-pulled-ensw 6 6)
     (make-pulled-ensw 7 6)
-    (make-pulled-ensw 11 6)
+    (make-pulled-ensw 8 6)
     (make-pulled-ensw 12 6)
     (make-pulled-ensw 13 6)
     (make-pulled-ensw 14 6)
     (make-pulled-ensw 15 6)
     (make-pulled-ensw 16 6)
     (make-pulled-ensw 17 6)
-    (make-pulled-ensw 1 7)
+    (make-pulled-ensw 18 6)
     (make-pulled-ensw 2 7)
     (make-pulled-ensw 3 7)
     (make-pulled-ensw 4 7)
     (make-pulled-ensw 5 7)
     (make-pulled-ensw 6 7)
-    (make-pulled-ensw 12 7)
+    (make-pulled-ensw 7 7)
     (make-pulled-ensw 13 7)
     (make-pulled-ensw 14 7)
     (make-pulled-ensw 15 7)
     (make-pulled-ensw 16 7)
     (make-pulled-ensw 17 7)
-    (make-pulled-ensw 1 8)
+    (make-pulled-ensw 18 7)
     (make-pulled-ensw 2 8)
     (make-pulled-ensw 3 8)
     (make-pulled-ensw 4 8)
     (make-pulled-ensw 5 8)
-    (make-pulled-ensw 13 8)
+    (make-pulled-ensw 6 8)
     (make-pulled-ensw 14 8)
     (make-pulled-ensw 15 8)
     (make-pulled-ensw 16 8)
     (make-pulled-ensw 17 8)
-    (make-pulled-ensw 1 9)
+    (make-pulled-ensw 18 8)
     (make-pulled-ensw 2 9)
     (make-pulled-ensw 3 9)
     (make-pulled-ensw 4 9)
     (make-pulled-ensw 5 9)
-    (make-pulled-ensw 13 9)
+    (make-pulled-ensw 6 9)
     (make-pulled-ensw 14 9)
     (make-pulled-ensw 15 9)
     (make-pulled-ensw 16 9)
     (make-pulled-ensw 17 9)
-    (make-pulled-ensw 1 10)
+    (make-pulled-ensw 18 9)
     (make-pulled-ensw 2 10)
     (make-pulled-ensw 3 10)
     (make-pulled-ensw 4 10)
     (make-pulled-ensw 5 10)
-    (make-pulled-ensw 13 10)
+    (make-pulled-ensw 6 10)
     (make-pulled-ensw 14 10)
     (make-pulled-ensw 15 10)
     (make-pulled-ensw 16 10)
     (make-pulled-ensw 17 10)
-    (make-pulled-ensw 1 11)
+    (make-pulled-ensw 18 10)
     (make-pulled-ensw 2 11)
     (make-pulled-ensw 3 11)
     (make-pulled-ensw 4 11)
     (make-pulled-ensw 5 11)
     (make-pulled-ensw 6 11)
-    (make-pulled-ensw 12 11)
+    (make-pulled-ensw 7 11)
     (make-pulled-ensw 13 11)
     (make-pulled-ensw 14 11)
     (make-pulled-ensw 15 11)
     (make-pulled-ensw 16 11)
     (make-pulled-ensw 17 11)
-    (make-pulled-ensw 1 12)
+    (make-pulled-ensw 18 11)
     (make-pulled-ensw 2 12)
     (make-pulled-ensw 3 12)
     (make-pulled-ensw 4 12)
     (make-pulled-ensw 5 12)
     (make-pulled-ensw 6 12)
     (make-pulled-ensw 7 12)
-    (make-pulled-ensw 11 12)
+    (make-pulled-ensw 8 12)
     (make-pulled-ensw 12 12)
     (make-pulled-ensw 13 12)
     (make-pulled-ensw 14 12)
     (make-pulled-ensw 15 12)
     (make-pulled-ensw 16 12)
     (make-pulled-ensw 17 12)
-    (make-pulled-ensw 1 13)
+    (make-pulled-ensw 18 12)
     (make-pulled-ensw 2 13)
     (make-pulled-ensw 3 13)
     (make-pulled-ensw 4 13)
@@ -1473,7 +1771,7 @@
     (make-pulled-ensw 15 13)
     (make-pulled-ensw 16 13)
     (make-pulled-ensw 17 13)
-    (make-pulled-ensw 1 14)
+    (make-pulled-ensw 18 13)
     (make-pulled-ensw 2 14)
     (make-pulled-ensw 3 14)
     (make-pulled-ensw 4 14)
@@ -1490,7 +1788,7 @@
     (make-pulled-ensw 15 14)
     (make-pulled-ensw 16 14)
     (make-pulled-ensw 17 14)
-    (make-pulled-ensw 1 15)
+    (make-pulled-ensw 18 14)
     (make-pulled-ensw 2 15)
     (make-pulled-ensw 3 15)
     (make-pulled-ensw 4 15)
@@ -1507,7 +1805,7 @@
     (make-pulled-ensw 15 15)
     (make-pulled-ensw 16 15)
     (make-pulled-ensw 17 15)
-    (make-pulled-ensw 1 16)
+    (make-pulled-ensw 18 15)
     (make-pulled-ensw 2 16)
     (make-pulled-ensw 3 16)
     (make-pulled-ensw 4 16)
@@ -1524,7 +1822,7 @@
     (make-pulled-ensw 15 16)
     (make-pulled-ensw 16 16)
     (make-pulled-ensw 17 16)
-    (make-pulled-ensw 1 17)
+    (make-pulled-ensw 18 16)
     (make-pulled-ensw 2 17)
     (make-pulled-ensw 3 17)
     (make-pulled-ensw 4 17)
@@ -1541,14 +1839,17 @@
     (make-pulled-ensw 15 17)
     (make-pulled-ensw 16 17)
     (make-pulled-ensw 17 17)
+    (make-pulled-ensw 18 17)
     (make-exit   0  9)
-    (make-exit   18 9)
-    (make-player 9 9)))
+    (make-exit   20 9)
+    (make-player 10 9)))
  *levels*)
 
 (defun num-levels ()
   (length *levels*))
 
 (defun load-level (index)
-  (eval (elt *levels* index)))
+  (let ((level (level-get-nth index)))
+    (log:debug "Loading level at index ~A" index)
+    (eval level)))
 

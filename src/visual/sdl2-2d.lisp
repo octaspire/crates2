@@ -307,7 +307,7 @@
           (setf nullpointer (null-pointer))
           (with-foreign-string (text (ui-sdl2-format-info-message crates2:*program* level-number num-levels level-name level-hint))
             (setf text-surface (sdl-convertsurfaceformat
-                                (ttf-renderutf8-blended-wrapped *IBMPlexMono-Bold* text (list 255 255 0 255) screen-width)
+                                (ttf-renderutf8-blended-wrapped *IBMPlexMono-Bold* text (list 143 125 94 255) screen-width)
                                 +SDL-PIXELFORMAT-RGBA+ 0))
             (setf *text-texture* (sdl-createtexturefromsurface
                                   *crates2-renderer*

@@ -34,6 +34,7 @@
            #:*level-height*
            #:*level-number*
            #:num-levels
+           #:level-get-nth
            #:*infos*
            #:*program*
            #:*update-counter*

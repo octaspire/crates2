@@ -153,6 +153,7 @@ This is similar to 'test' but runs much slower."
 
 (defun main-handle-input ()
   (let ((input (ui-input)))
+    (log:debug "~A" (if input (format nil ":~A" input) "NIL"))
     (when input
       (setf *input* (cons input *input*))
       (case input
