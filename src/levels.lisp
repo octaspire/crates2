@@ -1239,13 +1239,327 @@
 
 (vector-push-extend
  '(list (list
-         "Level Name"
-         "Level Hint")
-   (list nil nil nil nil
+         "Three Toggles In Walled Garden"
+         "Toggle all the Toggles")
+   (list
+    :south nil
+    :west  nil
+    :west
+    :north nil nil
+    :south nil
+    :east  nil
+    :north nil
+    :south nil nil
+    :east  nil
+    :east
+    :east  nil
+    :north
+    :north nil
+    :north nil nil
+    :west  nil nil nil
+    :north nil nil nil
+    :east  nil nil nil nil nil
+    :south nil
+    :south nil nil
+    :south nil nil nil nil nil nil nil nil
+    :north nil nil
+    :west  nil
+    :east  nil
+    :south
+    :west  nil
+    :west  nil
+    :north nil nil
+    :south nil nil nil
+    :east  nil
+    :east  nil
+    :north
+    :north
+    :north nil
+    :north nil
+    :west  nil nil nil nil nil nil nil nil nil nil nil nil nil
+    :north nil
+    :south nil nil
+    :east  nil
+    :north nil
+    :north nil nil
+    :north nil nil
+    :west  nil nil
+    :east  nil nil nil nil nil
+    :north nil
+    :north nil
+    :north nil
+    :west
+    :west  nil
+    :west  nil
+    :south nil nil nil
+    :north nil nil nil nil nil nil nil nil nil nil nil nil nil nil
+    :west  nil
+    :south nil nil
+    :north nil nil
+    :east  nil nil
+    :south nil nil
+    :west  nil nil nil
+    :south nil
+    :north nil nil
+    :east  nil nil nil nil
+    :south
+    :south nil
+    :south
+    :south
+    :south
+    :south nil nil
+    :west
+    :west
+    :west  nil
+    :west  nil nil
+    :north nil nil nil nil
+    :east  nil nil
+    :south nil nil nil nil nil nil
+    :west  nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil
+    :north nil nil nil
+    :south nil nil nil nil
+    :west
+    :west
+    :west
+    :west  nil
+    :west
+    :west
+    :north nil nil
+    :east  nil nil nil
+    :west  nil nil nil nil nil
+    :south
+    :east  nil
+    :east
+    :east
+    :east
+    :east  nil nil nil
+    :north nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil
+    :east  nil nil
+    :west  nil nil nil
+    :south nil nil
+    :east  nil nil
+    :east
+    :east
+    :east
+    :east  nil
+    :east
+    :north nil nil nil
+    :north
+    :north
+    :north nil
+    :north
+    :north nil nil nil nil
+    :west  nil nil nil nil nil nil nil nil nil
+    :north nil nil nil
+    :east  nil nil nil nil nil
+    :west  nil nil nil nil nil
+    :north
+    :east  nil
+    :east
+    :east
+    :east
+    :east
+    :east
+    :east  nil nil
+    :west  nil
+    :south nil nil nil nil
+    :west  nil
+    :east  nil nil nil nil nil nil nil nil nil nil nil
+    :north nil nil nil nil nil
+    :east  nil nil
+    :south nil nil
+    :west  nil nil nil
+    :east  nil nil nil
+    :north nil nil nil nil nil
+    :west
+    :west  nil
+    :west  nil nil
+    :south nil nil nil nil nil nil
+    :west  nil
+    :east  nil nil nil
+    :north nil nil nil
+    :east  nil nil nil nil
+    :north
+    :north nil
+    :north
     :west  nil nil nil nil
-    :east nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil
-    nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil
-    :west)
+    :west
+    :west
+    :west  nil
+    :west
+    :west  nil
+    :west  nil nil
+    :east  nil
+    :south nil nil
+    :north nil nil nil nil nil nil nil
+    :east  nil
+    :east
+    :east  nil nil
+    :east  nil
+    :east
+    :east
+    :east  nil
+    :south nil
+    :west  nil nil
+    :east  nil nil nil nil nil nil nil
+    :north nil nil
+    :west
+    :west  nil
+    :west
+    :west
+    :west  nil nil
+    :west
+    :west
+    :west
+    :west
+    :west
+    :west
+    :south
+    :south nil
+    :south
+    :east  nil nil
+    :north nil
+    :south nil nil nil nil
+    :west  nil
+    :north
+    :north
+    :north nil
+    :north nil nil
+    :north nil nil nil
+    :east  nil nil nil nil nil nil nil
+    :west  nil nil nil
+    :north nil nil
+    :east
+    :east  nil nil nil
+    :east
+    :east  nil nil nil
+    :south nil nil nil nil nil
+    :west  nil nil
+    :east  nil nil nil nil nil nil nil
+    :north nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil
+    :west  nil nil
+    :south nil nil nil nil nil nil nil nil
+    :north nil nil nil
+    :east  nil
+    :east  nil nil nil nil nil nil nil
+    :east
+    :east  nil nil nil nil
+    :west  nil nil nil nil nil nil nil nil nil nil nil nil nil
+    :west  nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil
+    :south nil nil
+    :north nil nil
+    :east  nil nil
+    :south nil nil nil nil nil nil nil nil nil
+    :east  nil nil nil nil
+    :north
+    :north
+    :north
+    :north nil
+    :north
+    :north nil nil
+    :west
+    :west  nil
+    :west  nil nil
+    :south nil nil
+    :north nil nil nil nil nil nil nil nil nil
+    :east  nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil
+    :east  nil
+    :east  nil nil nil nil nil nil nil
+    :south nil
+    :south nil nil nil nil nil nil nil nil
+    :south
+    :south nil
+    :south
+    :south nil
+    :south
+    :south nil
+    :west  nil
+    :west
+    :west
+    :west  nil
+    :west
+    :west  nil nil
+    :north nil nil nil nil nil nil
+    :south nil nil nil nil nil nil nil nil
+    :east  nil
+    :north nil nil nil
+    :west  nil nil nil nil
+    :north nil nil nil nil nil nil nil
+    :west  nil nil nil
+    :west
+    :west
+    :west  nil
+    :west  nil
+    :south
+    :south
+    :south nil
+    :east  nil
+    :north nil nil
+    :south nil
+    :west  nil nil
+    :north
+    :north
+    :north nil
+    :east  nil nil nil
+    :west  nil nil nil
+    :north nil
+    :east
+    :east  nil
+    :east  nil nil
+    :south nil nil nil nil nil nil nil
+    :west  nil
+    :east  nil nil nil nil nil
+    :north nil nil nil
+    :west  nil
+    :west
+    :west
+    :west
+    :west
+    :west  nil nil nil
+    :south nil nil nil
+    :north nil nil nil nil nil
+    :east  nil nil nil nil
+    :south nil nil nil nil nil
+    :west  nil nil
+    :south nil nil
+    :east  nil nil nil nil nil nil nil
+    :north nil nil
+    :west
+    :west  nil nil
+    :south
+    :south
+    :south nil nil nil
+    :south
+    :south nil
+    :south nil
+    :east
+    :east
+    :east  nil nil nil nil nil nil nil nil nil nil nil nil nil nil
+    :east  nil
+    :east
+    :east
+    :east  nil
+    :east  nil nil nil nil nil
+    :west  nil
+    :west  nil
+    :west  nil
+    :north nil nil nil
+    :west  nil
+    :east  nil nil nil nil
+    :south
+    :west  nil nil nil nil nil nil nil nil nil
+    :south nil
+    :east  nil
+    :east  nil
+    :south nil
+    :east
+    :east
+    :east  nil nil
+    :north nil nil nil
+    :south nil nil
+    :east  nil nil
+    :east  nil nil
+    :south nil nil nil)
    (list
     (make-wall        0  0)             ; 0
     (make-wall        1  0)
@@ -1554,7 +1868,14 @@
  '(list (list
          "Rubber Band Twist"
          "Just Keep Jumping")
-   (list nil nil nil nil)
+   (list
+    :north   nil nil nil nil nil
+    :action1 nil nil nil nil nil nil nil nil nil
+    :action1 nil nil nil nil nil nil nil nil nil
+    :action1 nil nil nil nil nil nil nil nil nil
+    :action1 nil nil nil nil nil nil nil nil nil
+    :action1 nil nil nil nil nil nil nil nil nil
+    :action1 nil nil nil nil nil nil)
    (list
     (make-player       0  8)
     (make-special-jump 0  6)
@@ -1586,7 +1907,77 @@
  '(list (list
          "Oh, Even More Boxes To Pull"
          "Try Not To Get Stuck, Real Hard This Time")
-   (list nil nil nil nil)
+   (list
+    :west  nil nil nil
+    :east  nil nil nil nil nil nil
+    :south
+    :west  nil nil nil nil nil nil nil
+    :north nil
+    :west  nil
+    :east  nil nil nil nil nil nil
+    :south nil
+    :west  nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil
+    :north nil nil nil nil
+    :west
+    :east  nil nil nil nil nil nil
+    :south nil nil nil
+    :west  nil nil nil
+    :north nil nil nil nil nil nil
+    :west
+    :east  nil nil nil
+    :south nil nil nil nil nil
+    :west  nil nil nil
+    :north nil nil nil nil nil nil
+    :west  nil
+    :south nil nil nil nil nil
+    :north nil nil nil nil nil
+    :east  nil nil
+    :south nil nil nil nil nil nil nil nil nil nil nil nil nil nil
+    :east  nil nil
+    :west  nil nil nil
+    :north nil nil nil nil
+    :east  nil
+    :south nil nil
+    :east  nil nil nil nil
+    :north nil nil
+    :south nil nil nil
+    :west  nil nil nil
+    :north nil nil nil
+    :west  nil nil nil nil
+    :east  nil nil nil nil nil nil nil nil nil nil nil nil
+    :south nil nil nil nil nil nil
+    :west  nil nil nil nil nil nil nil nil nil nil nil nil nil nil
+    :north nil nil
+    :east  nil nil nil nil nil nil nil nil nil nil nil nil nil nil
+    :south nil nil nil nil nil nil nil nil nil nil nil nil nil nil
+    :west  nil
+    :north nil nil nil nil nil
+    :west  nil nil nil
+    :south nil
+    :west  nil nil
+    :east  nil nil nil nil nil nil nil nil nil
+    :south nil nil nil
+    :west  nil nil
+    :north nil nil nil
+    :west  nil nil nil nil nil nil
+    :north nil nil nil
+    :west  nil nil nil nil nil nil nil
+    :south nil nil
+    :west  nil
+    :east  nil nil nil nil nil nil nil nil nil nil nil nil nil nil
+    :south nil nil nil
+    :west  nil nil nil nil nil nil nil nil nil nil nil nil nil
+    :north nil nil nil nil
+    :west  nil
+    :north nil nil
+    :west  nil nil
+    :south nil
+    :west  nil nil
+    :east  nil nil nil nil nil nil nil nil
+    :north nil
+    :west  nil nil
+    :south nil
+    :west nil nil nil nil nil nil nil)
    (list
     (make-pulled-ensw 2 1)
     (make-pulled-ensw 3 1)

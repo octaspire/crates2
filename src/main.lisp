@@ -41,7 +41,7 @@
 (defparameter *frame-duration-default* 0.125) ; Not zeroed in test mode.
 (defparameter *frame-duration* *frame-duration-default*) ; Zeroed in test mode.
 (defparameter *test-run* nil)
-(defparameter *test-run-max-updates* 3000)
+(defparameter *test-run-max-updates* 5000)
 (defparameter *last-input* nil)
 
 (defun verbose-parser (x)
