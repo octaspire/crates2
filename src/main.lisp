@@ -22,6 +22,8 @@
 (defparameter *update-counter* 0)
 (defparameter *input* nil)
 (defparameter *level-number* -1)
+(defparameter *level-steps* 0)
+(defparameter *level-par* 0)
 (defparameter *program* "")
 (defparameter *running* t)
 (defparameter *level* nil)
@@ -155,6 +157,7 @@ This is similar to 'test' but runs much slower."
   (let ((input (ui-input)))
     (log:debug "~A" (if input (format nil ":~A" input) "NIL"))
     (when input
+      (incf *level-steps*)
       (setf *input* (cons input *input*))
       (case input
         (:back    (running nil))
@@ -250,6 +253,7 @@ This is similar to 'test' but runs much slower."
       (running nil)
       (let ((level-number (mod *next-level* (num-levels))))
         (setf *next-level* nil)
+        (setf *level-steps* 0)
         (setf *fake-input* nil)
         (setf *program* "")
         (setf crates2-ui:*ui-program* "")

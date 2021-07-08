@@ -17,6 +17,12 @@
 (defun level-get-nth (index)
   (elt *levels* index))
 
+(defun level-get-par (level)
+  (1- (count-if-not #'null (caddr level))))
+
+(defun current-par ()
+  (- *level-par* *level-steps*))
+
 (defparameter *levels* (make-array 0 :adjustable t :fill-pointer t))
 
 (vector-push-extend
@@ -2241,6 +2247,7 @@
 
 (defun load-level (index)
   (let ((level (level-get-nth index)))
+    (setf *level-par* (level-get-par level))
     (log:debug "Loading level at index ~A" index)
     (eval level)))
 

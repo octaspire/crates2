@@ -63,15 +63,13 @@
         (cl-charms/low-level:mvaddstr 1 0 (format nil "  +~A+ Level ~A~%"   bar *level-number*)))
     (cl-charms/low-level:mvaddstr 2 0 (format nil "  +~A+ ~A~%"         bar (car  *infos*)))
     (cl-charms/low-level:mvaddstr 3 0 (format nil "  +~A+ ~A~%"         bar (cadr *infos*)))
+    (cl-charms/low-level:mvaddstr 4 0 (format nil "  +~A+ Par: ~A~%"    bar (crates2:current-par)
+                                              (crates2:current-par)))
     (loop for line across lines
           for y from 0
           do (if (= (mod y ch) 0)
                  (cl-charms/low-level:mvaddstr (+ 2 y) 0 (format nil "~2d|~A|" (floor y ch) line))
                  (cl-charms/low-level:mvaddstr (+ 2 y) 0 (format nil "  |~A|" line)))
-             (if (= y 0)
-                 (cl-charms/low-level:mvaddstr (+ 3 y) 0 (format nil " Input: ~@[~A~]" *last-input*))
-                 (when (= y 1)
-                   (cl-charms/low-level:mvaddstr (+ 3 y) 0 (format nil " #updates: ~A~%" *update-counter*))))
           finally (cl-charms/low-level:mvaddstr (+ 3 y) 0 (format nil "  +~A+" bar)))
     (cl-charms/low-level:refresh))
   (setf *last-input* nil))

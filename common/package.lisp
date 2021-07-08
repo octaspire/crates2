@@ -33,6 +33,9 @@
            #:*level-width*
            #:*level-height*
            #:*level-number*
+           #:*level-steps*
+           #:*level-par*
+           #:current-par
            #:num-levels
            #:level-get-nth
            #:*infos*
