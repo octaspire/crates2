@@ -24,6 +24,7 @@
 
 (defparameter *ui-level-number* -123)
 (defparameter *ui-program*      "")
+(defparameter *ui-par*          -123)
 
 (defparameter *crates2-window* :pointer)
 (defparameter *crates2-renderer* :pointer)
@@ -296,16 +297,18 @@
 
 (defparameter *fake-input* nil)
 
-(defun ensure-text-texture (level-number num-levels level-name level-hint)
+(defun ensure-text-texture (level-number num-levels level-name level-hint par)
   (trivial-main-thread:with-body-in-main-thread (:blocking t)
-    (when (and num-levels (or (/= *ui-level-number* level-number) (string/= crates2:*program* *ui-program*)))
+    (when (and num-levels (or (/= *ui-par* par)
+                              (/= *ui-level-number* level-number)
+                              (string/= crates2:*program* *ui-program*)))
       (when *text-texture-initialized*
         (sdl-destroytexture *text-texture*)
         (setf *text-texture-initialized* nil))
       (with-surface (text-surface)
         (with-foreign-objects ((nullpointer :pointer))
           (setf nullpointer (null-pointer))
-          (with-foreign-string (text (ui-sdl2-format-info-message crates2:*program* level-number num-levels level-name level-hint))
+          (with-foreign-string (text (ui-sdl2-format-info-message crates2:*program* level-number num-levels level-name level-hint par))
             (setf text-surface (sdl-convertsurfaceformat
                                 (ttf-renderutf8-blended-wrapped *IBMPlexMono-Bold* text (list 143 125 94 255) screen-width)
                                 +SDL-PIXELFORMAT-RGBA+ 0))
@@ -313,12 +316,14 @@
                                   *crates2-renderer*
                                   text-surface))
             (setf *texture-dimensions* (sdl-ext-get-texture-dimensions *text-texture*)))))
-      (setf *text-texture-initialized* t)
-      (setf *ui-program* crates2:*program*))))
+      (setf *text-texture-initialized* t
+            *ui-program* crates2:*program*
+            *ui-level-number* level-number
+            *ui-par* par))))
 
 (defun ui-render-impl (level step)
   (trivial-main-thread:with-body-in-main-thread (:blocking t)
-    (ensure-text-texture crates2:*level-number* (crates2:num-levels) (car crates2:*infos*) (cadr crates2:*infos*))
+    (ensure-text-texture crates2:*level-number* (crates2:num-levels) (car crates2:*infos*) (cadr crates2:*infos*) (crates2:current-par))
     (sdl-setrenderdrawcolor *crates2-renderer* #x00 #x00 #x00 #xFF)
     (sdl-renderclear *crates2-renderer*)
     (sdl-setrenderdrawcolor *crates2-renderer* #xBA #x16 #x0C #xFF)

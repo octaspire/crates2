@@ -224,14 +224,14 @@
 (defun ui-on-level-changed ()
   (setf *ui-hint-time* +UI-HINT-DELAY+))
 
-(defun ui-sdl2-format-info-message (program level-number num-levels level-name level-hint)
+(defun ui-sdl2-format-info-message (program level-number num-levels level-name level-hint par)
   (if (> (length level-hint) 0)
       (if (> (length program) 0)
           (format nil "Program \"~A\"~C~A" program #\return level-hint)
-          (format nil "Level ~A/~A \"~A\"~C~A" (1+ level-number) num-levels level-name #\return level-hint))
+          (format nil "Level ~A/~A [par ~A] \"~A\"~C~A" (1+ level-number) num-levels par level-name #\return level-hint))
       (if (> (length program) 0)
           (format nil "Program \"~A\"" program)
-          (format nil "Level ~A/~A \"~A\"" (1+ level-number) num-levels level-name))))
+          (format nil "Level ~A/~A [par ~A] \"~A\"" (1+ level-number) num-levels par level-name))))
 
 (defun ui-update-hint-time ()
   (when (< *ui-hint-time* 1.0)

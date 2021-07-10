@@ -25,6 +25,7 @@
 
 (defparameter *ui-level-number* -123)
 (defparameter *ui-program*      "")
+(defparameter *ui-par*          -123)
 
 (defparameter *crates2-window* :pointer)
 (defparameter *crates2-gl-context* :pointer)
@@ -669,7 +670,7 @@
 
 (defun ui-render-impl (level step)
   (trivial-main-thread:with-body-in-main-thread (:blocking t)
-    (ensure-text-texture crates2:*level-number* (crates2:num-levels) (car crates2:*infos*) (cadr crates2:*infos*))
+    (ensure-text-texture crates2:*level-number* (crates2:num-levels) (car crates2:*infos*) (cadr crates2:*infos*) (crates2:current-par))
     (glclearcolor 0.0 0.0 0.0 1.0)
     (glclear (logior +GL-COLOR-BUFFER-BIT+ +GL-DEPTH-BUFFER-BIT+))
     (glenable +GL-TEXTURE-2D+)
@@ -747,13 +748,15 @@
                  0.0d0       0.0d0       1.0d0))
     (glmatrixmode +GL-MODELVIEW+)))
 
-(defun ensure-text-texture (level-number num-levels level-name level-hint)
+(defun ensure-text-texture (level-number num-levels level-name level-hint par)
   (trivial-main-thread:with-body-in-main-thread (:blocking t)
-    (when (and num-levels (or (/= *ui-level-number* level-number) (string/= crates2:*program* *ui-program*)))
+    (when (and num-levels (or (/= *ui-par* par)
+                              (/= *ui-level-number* level-number)
+                              (string/= crates2:*program* *ui-program*)))
       (with-surface (text-surface)
         (with-foreign-objects ((nullpointer :pointer))
           (setf nullpointer (null-pointer))
-          (with-foreign-string (text (ui-sdl2-format-info-message crates2:*program* level-number num-levels level-name level-hint))
+          (with-foreign-string (text (ui-sdl2-format-info-message crates2:*program* level-number num-levels level-name level-hint par))
             (setf text-surface (sdl-convertsurfaceformat
                                 (ttf-renderutf8-blended-wrapped *IBMPlexMono-Bold* text (list 143 125 94 255) screen-width)
                                 +SDL-PIXELFORMAT-RGBA+ 0))
@@ -762,8 +765,9 @@
               (setf *texture-dimensions* (list w h))
               (glteximage2d +GL-TEXTURE-2D+ 0 +GL-RGBA+ w h 0 +GL-RGBA+ +GL-UNSIGNED-BYTE+ pixels))
             (glgeneratemipmap +GL-TEXTURE-2D+))))
-      (setf *ui-level-number* level-number)
-      (setf *ui-program* crates2:*program*))))
+      (setf *ui-program* crates2:*program*
+            *ui-level-number* level-number
+            *ui-par* par))))
 
 (defun ui-init-impl (options)
   (trivial-main-thread:with-body-in-main-thread (:blocking t)
