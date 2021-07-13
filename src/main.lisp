@@ -27,6 +27,7 @@
 (defparameter *program* "")
 (defparameter *running* t)
 (defparameter *level* nil)
+(defparameter *level-updatables* nil)
 (defparameter *infos* nil)
 (defparameter *created* nil)
 (defparameter *next-level* nil)
@@ -45,6 +46,13 @@
 (defparameter *test-run* nil)
 (defparameter *test-run-max-updates* 5000)
 (defparameter *last-input* nil)
+
+(defun add-updatable (updatable)
+  (unless (find updatable *level-updatables*)
+    (setf *level-updatables* (cons updatable *level-updatables*))))
+
+(defun remove-updatable (updatable)
+  (setf *level-updatables* (delete updatable *level-updatables*)))
 
 (defun verbose-parser (x)
   (setf *verbose* (parse-integer x)))
@@ -180,7 +188,7 @@ This is similar to 'test' but runs much slower."
                (crates2-ui:ui-render *level* 1)
                (main-handle-input)
                (unless *next-level*
-                 (update *level*))
+                 (update *level-updatables*))
                (when *next-level*
                  (load-next-level)
                  (trivial-garbage:gc :full t))
@@ -259,11 +267,15 @@ This is similar to 'test' but runs much slower."
         (setf crates2-ui:*ui-program* "")
         (setf *level-number* level-number)
         (setf *level* nil)
+        (setf *level-updatables* nil)
         (let ((loaded (load-level *level-number*)))
           (setf *infos* (car loaded))
           (setf *level* (sort-level (caddr loaded)))
           (setf *fake-input* (cadr loaded)))
         (store-level-extent *level*)
+        (loop for crate in *level*
+              do (when (typep crate 'crates2:updatable)
+                   (add-updatable crate)))
         (crates2-ui:ui-look-at *level-center-x*
                                *level-center-y*
                                (max *level-count-x* *level-count-y*)

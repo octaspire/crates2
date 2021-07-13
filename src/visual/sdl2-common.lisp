@@ -201,7 +201,8 @@
     (mix-quit)))
 
 (defun ui-play-haptic (duration)
-  (sdl-hapticrumbleplay *haptic* 0.5 duration))
+  (when *haptic*
+    (sdl-hapticrumbleplay *haptic* 0.5 duration)))
 
 (defun ui-play-sound (id)
   (trivial-main-thread:with-body-in-main-thread (:blocking t)

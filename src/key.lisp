@@ -28,6 +28,12 @@
     (:active (list "key-active"))
     (:lamented (list "key-active"))))
 
+(defmethod lament ((self key))
+  (let ((collector (key-collector self)))
+    (when collector
+      (setf (velocity collector) (on-which-side-i-am self collector))))
+  (call-next-method self))
+
 (defmethod update ((self key))
   (ecase (crate-state self)
     (:idle
@@ -37,7 +43,8 @@
      (let ((step (key-active-step self)))
        (if (> step 0)
            (setf (key-active-step self) (1- step))
-           (lament self)))))
+           (lament self))))
+    (:lamented nil))
   (call-next-method))
 
 (defmethod collide ((self key) (target player))
@@ -46,7 +53,9 @@
      (setf (velocity target) (on-which-side-i-am self target))
      (setf (crate-state self) :active)
      (setf (key-active-step self) 1)
+     (setf (key-collector self) target)
      (crates2-ui:ui-play-sound :key-collect))
     (:active
      (setf (velocity target) (on-which-side-i-am self target)))
-    (:lamented nil)))
+    (:lamented
+     (setf (velocity target) (on-which-side-i-am self target)))))

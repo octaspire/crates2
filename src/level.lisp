@@ -17,12 +17,11 @@
 ;; Methods
 
 (defmethod update ((self list))
-  (let ((level (get-current-level)))
-    (when (runningp)
+  (when (runningp)
       (attach-created)
-      (loop for crate in level
+      (loop for crate in self
             do (update crate))
-      (purge-lamented))))
+      (purge-lamented)))
 
 (defmethod render ((self list))
   (when (runningp)
@@ -55,7 +54,9 @@
   (let ((l (last *level*)))
     (loop for crate in *created*
           do (push crate (cdr l))
-          (setf l crate)))
+             (setf l crate)
+             (when (typep crate 'crates2:updatable)
+               (crates2:add-updatable crate))))
   (setf *created* nil))
 
 (defun request-attaching (crate)

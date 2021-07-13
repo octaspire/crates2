@@ -19,7 +19,10 @@
            #:automaton
            #:player
            #:moving
+           #:updatable
            #:movingp
+           #:add-updatable
+           #:remove-updatable
            #:crate-x
            #:crate-y
            #:crate-z

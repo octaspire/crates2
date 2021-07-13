@@ -53,7 +53,8 @@
      (crates2-ui:ui-play-sound :special))
     (:active
      (setf (velocity target) (on-which-side-i-am self target)))
-    (:lamented nil)))
+    (:lamented
+     (setf (velocity target) (on-which-side-i-am self target)))))
 
 (defmethod attach-to ((self special-jump) (target moving))
   (setf (moving-specials target) (cons self (moving-specials target))))

@@ -16,6 +16,9 @@
 
 ;; Classes
 
+(defclass updatable ()
+  ())
+
 (defclass crate ()
   ((x :initarg :x
       :initform 0
@@ -53,10 +56,10 @@
 (defclass wall (crate)
   ())
 
-(defclass stepper (crate)
+(defclass stepper (crate updatable)
   ())
 
-(defclass slope (crate)
+(defclass slope (crate updatable)
   ((active-step :initarg :active-step
                 :initform 0
                 :accessor slope-active-step)))
@@ -76,7 +79,7 @@
 (defclass pushed (moving)
   ())
 
-(defclass turnstile (crate)
+(defclass turnstile (crate updatable)
   ((active-step :initarg :active-step
                 :initform 0
                 :accessor turnstile-active-step)))
@@ -105,7 +108,7 @@
 (defclass turnstile-s (turnstile-s1)
   ())
 
-(defclass bomb (crate)
+(defclass bomb (crate updatable)
   ((time :initarg :time
          :accessor bomb-time
          :initform 10)
@@ -116,7 +119,7 @@
             :accessor bomb-durable
             :initform nil)))
 
-(defclass block-timer (crate)
+(defclass block-timer (crate updatable)
   ((time :initarg :time
          :accessor block-timer-time
          :initform 10)
@@ -135,7 +138,7 @@
             :accessor block-counter-touches
             :initform 0)))
 
-(defclass pass-timer (crate)
+(defclass pass-timer (crate updatable)
   ((time :initarg :time
          :accessor pass-timer-time
          :initform 10)
@@ -143,7 +146,7 @@
            :accessor pass-timer-uptime
            :initform 0)))
 
-(defclass pass-counter (crate)
+(defclass pass-counter (crate updatable)
   ((count :initarg :count
           :accessor pass-counter-count
           :initform 10)
@@ -151,7 +154,7 @@
            :accessor pass-counter-passes
            :initform 0)))
 
-(defclass exit (crate)
+(defclass exit (crate updatable)
   ((activated :initarg :activated
               :accessor exit-activated
               :initform nil)
@@ -159,12 +162,14 @@
           :accessor exit-delay
           :initform 0)))
 
-(defclass key (crate)
+(defclass key (crate updatable)
   ((active-step :initarg :active-step
                 :initform 0
-                :accessor key-active-step)))
+                :accessor key-active-step)
+   (key-collector :initform nil
+                  :accessor key-collector)))
 
-(defclass special-jump (crate)
+(defclass special-jump (crate updatable)
   ((active-step :initarg :active-step
                 :initform 0
                 :accessor special-jump-active-step)
@@ -203,7 +208,7 @@
           :accessor toggle-south
           :initform nil)))
 
-(defclass player (moving)
+(defclass player (moving updatable)
   ((delay :initform 0
           :accessor player-delay)
    (pending-input :initform nil
@@ -222,7 +227,7 @@
    (delay :initform 0
           :accessor automaton-delay)))
 
-(defclass vacuum (crate)
+(defclass vacuum (crate updatable)
   ((full :initarg :full
          :accessor full
          :initform nil)))

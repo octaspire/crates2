@@ -114,13 +114,16 @@
 
 (defmethod pulled-set-pull-on ((self pulled) (puller moving) on)
   (when (and on (eq (crate-state self) :idle))
-    (crates2-ui:ui-play-sound :pulled-activate))
+    (crates2-ui:ui-play-sound :pulled-activate)
+    (crates2:add-updatable self))
   (setf (crate-state self)
         (if on
             (if (eq (crate-state self) :pulled)
                 :pulled
                 :attached)
             :idle))
+  (when (and (not (eq (crate-state self) :idle)) (not on))
+    (crates2:remove-updatable self))
   (setf (pulled-puller self) (if on puller nil))
   (let ((side (on-which-side-is-other self puller 1)))
     (setf (velocity self) side)))
