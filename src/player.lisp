@@ -61,11 +61,11 @@
           (setf (player-pending-input self) nil)))))
 
 (defmethod collide ((self player) (target pushed))
-  (let ((vplayer (velocity self))
-        (vpulled (velocity target)))
-    (if (eq vpulled :zero)
-        (setf (velocity target) vplayer)
-        (setf (velocity target) (if (head-on-collision-p vplayer vpulled) :zero vplayer))))
+  (let ((vself (velocity self))
+        (vtarget (velocity target)))
+    (if (eq vtarget :zero)
+        (setf (velocity target) vself)
+        (setf (velocity target) (if (head-on-collision-p vself vtarget) :zero vself))))
   (call-next-method))
 
 ;; Functions
