@@ -76,7 +76,7 @@
 (defclass slope-ws (slope)
   ())
 
-(defclass pushed (moving)
+(defclass pushed (moving updatable)
   ())
 
 (defclass turnstile (crate updatable)

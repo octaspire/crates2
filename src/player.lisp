@@ -65,8 +65,7 @@
         (vtarget (velocity target)))
     (if (eq vtarget :zero)
         (setf (velocity target) vself)
-        (setf (velocity target) (if (head-on-collision-p vself vtarget) :zero vself))))
-  (call-next-method))
+        (setf (velocity target) (if (head-on-collision-p vself vtarget) :zero vself)))))
 
 ;; Functions
 

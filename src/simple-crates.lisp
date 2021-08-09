@@ -19,8 +19,8 @@
 (defun make-wall (x y)
   (make-instance 'wall :x x :y y :z 0))
 
-(defun make-pushed (x y)
-  (make-instance 'pushed :x x :y y :z 0))
+(defun make-pushed (x y &optional (velocity :zero))
+  (make-instance 'pushed :x x :y y :z 0 :velocity velocity))
 
 ;; Generic functions
 
@@ -36,7 +36,8 @@
   (crates2-ui:ui-play-sound :hit-wall))
 
 (defmethod collide ((self pushed) (target moving))
-  (setf (velocity self) (on-which-side-i-am self target)))
+  (setf (velocity self) (on-which-side-i-am self target))
+  (setf (velocity target) :zero))
 
 (defmethod visual ((self pushed))
   (list "pushed-idle"))
