@@ -119,6 +119,24 @@
 
 (vector-push-extend
  '(list (list
+         "Introducing Pushed Crates"
+         "Push them around")
+   (list
+    nil nil
+    :east nil nil nil nil nil nil nil)
+   (list
+    (make-player       6  8)
+    (make-wall         2  2)
+    (make-slope-es     6  0)
+    (make-slope-ws     14 0)
+    (make-slope-wn     14 10)
+    (make-slope-en     6  10)
+    (make-pushed       6  4)
+    (make-exit         5  10)))
+ *levels*)
+
+(vector-push-extend
+ '(list (list
          "Oh, it\'s just a merry-go-round"
          "Remember To Take a Spin")
    (list nil nil

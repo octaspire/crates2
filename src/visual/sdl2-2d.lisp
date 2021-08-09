@@ -62,7 +62,7 @@
   (setf (gethash "wall-idle-02" *visual-hash*) (make-rect 2))
   (setf (gethash "wall-idle-03" *visual-hash*) (make-rect 3))
   ;; PUSHED
-  (setf (gethash "pushed-idle" *visual-hash*) (make-rect 0))
+  (setf (gethash "pushed-idle" *visual-hash*) (make-rect 6))
   ;; BLOCK-TIMER
   (setf (gethash "block-timer-durable" *visual-hash*) (make-rect 0))
   (setf (gethash "block-timer"         *visual-hash*) (make-rect 5))

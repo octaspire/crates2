@@ -227,15 +227,7 @@ This is similar to 'test' but runs much slower."
   (let ((az (crate-z a))
         (bz (crate-z b)))
     (if (= az bz)
-        (progn
-          (when (eq (type-of a) 'player)
-            (return-from compare-crate t))
-          (when (eq (type-of b) 'player)
-            (return-from compare-crate nil))
-          (when (and (subtypep (type-of a) 'moving)
-                     (not (eq (type-of b) 'player)))
-            (return-from compare-crate t))
-          nil)
+        (subtypep (type-of a) 'moving)
         (< az bz))))
 
 (defun sort-level (level)

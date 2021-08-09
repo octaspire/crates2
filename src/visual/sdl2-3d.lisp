@@ -151,7 +151,7 @@
   (setf (gethash "wall-idle-02" *visual-hash*) (make-cube 2 nil 2 2 2 2))
   (setf (gethash "wall-idle-03" *visual-hash*) (make-cube 3 nil 3 3 3 3))
   ;; PUSHED
-  (setf (gethash "pushed-idle" *visual-hash*) (make-cube 0 0 0 0 0 0))
+  (setf (gethash "pushed-idle" *visual-hash*) (make-cube 1016 1016 1016 1016 1016 1016 0.39))
   ;; BLOCK-TIMER
   (setf (gethash "block-timer-durable" *visual-hash*) (make-cube 0 0 0 0 0 0))
   (setf (gethash "block-timer"         *visual-hash*) (make-cube 5 5 5 5 5 5))

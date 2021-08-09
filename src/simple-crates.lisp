@@ -39,6 +39,9 @@
   (setf (velocity self) (on-which-side-i-am self target))
   (setf (velocity target) :zero))
 
+(defmethod collide ((self pushed) (target crate))
+  (setf (velocity self) :zero))
+
 (defmethod visual ((self pushed))
   (list "pushed-idle"))
 

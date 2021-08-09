@@ -50,3 +50,5 @@
       (progn
         (setf (crate-state self) :activated-pass)
         (crates2-ui:ui-play-sound :exit-ok))))
+
+(defmethod collide ((self exit) (target crate)))
