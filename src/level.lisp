@@ -21,6 +21,8 @@
       (attach-created)
       (loop for crate in self
             do (update crate))
+      (attach-and-update-new-updatables)
+      (remove-marked-updatables)
       (purge-lamented)))
 
 (defmethod render ((self list))
@@ -58,6 +60,19 @@
              (when (typep crate 'crates2:updatable)
                (crates2:add-updatable crate))))
   (setf *created* nil))
+
+(defun attach-and-update-new-updatables ()
+  (loop for crate in *level-updatables-addlist*
+        do (update crate))
+  (setf *level-updatables* (append *level-updatables* *level-updatables-addlist*))
+  (setf *level-updatables-addlist* nil))
+
+(defun remove-marked-updatables ()
+  (setf *level-updatables*
+        (delete-if
+         #'(lambda (crate) (find crate *level-updatables-removelist*))
+         *level-updatables*))
+  (setf *level-updatables-removelist* nil))
 
 (defun request-attaching (crate)
   (setf *created* (cons crate *created*)))

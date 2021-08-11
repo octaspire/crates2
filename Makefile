@@ -15,7 +15,7 @@
 
 #### Enable these for SBCL ##########
 LISP      ?= sbcl
-FLAGS     ?= --noinform --noprint
+FLAGS     ?= --noinform --noprint --disable-debugger
 
 #### Enable these for CCL64 #########
 #LISP     ?= ccl64
@@ -33,6 +33,7 @@ level     ?= 0
 FFIDIR    ?= src/ffi/
 VISUALDIR ?= src/visual/
 CLHEXDUMP ?= etc/script/cl-hexdump.sh
+COMMONDIR ?= common/
 GENERATED ?= generated/ending.lisp          \
              generated/special.lisp         \
              generated/hit-wall.lisp        \
@@ -110,19 +111,19 @@ generated/texture64.lisp: etc/assets/texture/texture64.png Makefile $(CLHEXDUMP)
 generated/IBMPlexMono-Bold.lisp: etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf Makefile $(CLHEXDUMP)
 	@$(CLHEXDUMP) $< $@
 
-crates2-text: Makefile crates2-text.asd src/*.lisp $(VISUALDIR)textual-common.lisp $(VISUALDIR)textual-plain.lisp etc/*.*
+crates2-text: Makefile crates2-text.asd src/*.lisp $(VISUALDIR)textual-common.lisp $(VISUALDIR)textual-plain.lisp etc/*.* $(COMMONDIR)/*.lisp
 	@$(LISP) $(FLAGS) $(EVAL) "(progn (declaim $(DECLAIM))                          \
                                           (ql:quickload :crates2-text :silent t)        \
                                           (asdf:make :crates2-text)                     \
                                           (quit))"
 
-crates2-charms: Makefile crates2-charms.asd src/*.lisp $(VISUALDIR)textual-common.lisp $(VISUALDIR)textual-charms.lisp etc/*.*
+crates2-charms: Makefile crates2-charms.asd src/*.lisp $(VISUALDIR)textual-common.lisp $(VISUALDIR)textual-charms.lisp etc/*.* $(COMMONDIR)/*.lisp
 	@$(LISP) $(FLAGS) $(EVAL) "(progn (declaim $(DECLAIM))                          \
                                           (ql:quickload :crates2-charms :silent t)      \
                                           (asdf:make :crates2-charms)                   \
                                           (quit))"
 
-crates2-sdl2: $(GENERATED) Makefile crates2-sdl2.asd src/*.lisp $(FFIDIR)octaspire-cl-sdl2.lisp $(VISUALDIR)sdl2-common.lisp $(VISUALDIR)sdl2-2d.lisp etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf etc/assets/texture/texture32.png
+crates2-sdl2: $(GENERATED) Makefile crates2-sdl2.asd src/*.lisp $(FFIDIR)octaspire-cl-sdl2.lisp $(VISUALDIR)sdl2-common.lisp $(VISUALDIR)sdl2-2d.lisp etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf etc/assets/texture/texture32.png $(COMMONDIR)/*.lisp
 	@$(LISP) $(FLAGS) $(EVAL) "(progn (declaim $(DECLAIM))                          \
                                           (ql:quickload :crates2-sdl2 :silent t)        \
                                           (asdf:make :crates2-sdl2)                     \
@@ -134,7 +135,7 @@ profile-sdl2: crates2-sdl2
 profile-sdl2-opengl: crates2-sdl2-opengl
 	@$(LISP) $(FLAGS) $(LOAD) etc/profile-sdl2-opengl.lisp > generated/profile.txt
 
-crates2-sdl2-opengl: $(GENERATED) Makefile crates2-sdl2-opengl.asd src/*.lisp $(FFIDIR)octaspire-cl-sdl2.lisp $(VISUALDIR)sdl2-common.lisp $(VISUALDIR)sdl2-3d.lisp etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf etc/assets/texture/texture32.png
+crates2-sdl2-opengl: $(GENERATED) Makefile crates2-sdl2-opengl.asd src/*.lisp $(FFIDIR)octaspire-cl-sdl2.lisp $(VISUALDIR)sdl2-common.lisp $(VISUALDIR)sdl2-3d.lisp etc/assets/font/IBM/Plex/IBMPlexMono-Bold.ttf etc/assets/texture/texture32.png $(COMMONDIR)/*.lisp
 	@$(LISP) $(FLAGS) $(EVAL) "(progn (declaim $(DECLAIM))                          \
                                           (ql:quickload :crates2-sdl2-opengl :silent t) \
                                           (asdf:make :crates2-sdl2-opengl)              \
