@@ -121,9 +121,15 @@
  '(list (list
          "Introducing Pushed Crates"
          "Push them around")
-   (list
-    nil nil
-    :east nil nil nil nil nil nil nil)
+   (list nil nil
+    :south nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil
+    nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil
+    nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil
+    :north nil nil nil nil nil nil nil
+    :west nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil
+    nil nil nil
+    :east nil nil nil nil nil nil nil
+    :south nil nil nil nil nil nil nil nil nil nil nil)
    (list
     (make-player       6  8)
     (make-wall         2  2)
@@ -183,52 +189,52 @@
          "The Ways Of the Heart")
    (list nil nil
     :east nil nil nil nil nil nil
-    :north nil nil nil nil nil nil nil nil
-    :east nil nil nil
-    :north nil nil
-    :west nil nil
+    :north nil nil nil nil nil nil nil
+    :east nil nil
+    :north nil nil nil
+    :west nil nil nil nil
     :south nil nil nil nil
     :west nil nil nil nil
-    :north nil nil nil nil nil
-    :east nil nil nil
-    :north nil nil
-    :east nil nil nil nil nil nil
-    :south nil nil nil
-    :west nil nil nil nil
-    :south nil nil nil nil nil
-    :west nil nil nil nil
-    :south nil nil nil
-    :west nil nil nil nil
-    :south nil nil
-    :west nil nil nil
-    :north nil nil nil
-    :west nil nil
-    :north nil nil
-    :west nil nil
     :north nil nil nil nil nil nil nil
-    :east nil nil nil nil
-    :south nil nil nil
     :east nil nil
-    :south nil nil nil nil nil
-    :north nil nil nil nil
-    :east nil nil nil nil
+    :north nil nil
+    :east nil nil nil nil nil
+    :south nil nil nil
+    :west nil nil
+    :south nil nil nil nil
+    :west nil nil nil
+    :south nil nil
+    :west nil nil
+    :south nil nil
+    :west nil nil nil
     :north nil nil
     :west nil nil nil
+    :north nil nil
+    :west nil
     :north nil nil nil nil nil nil
-    :south nil nil nil nil nil nil nil
-    :west nil nil
+    :east nil nil nil nil
+    :south nil nil
+    :east nil nil nil
+    :south nil nil nil nil nil
     :north nil nil nil nil
-    :west nil nil nil nil nil    ; this takes us out from the heart to (0,5)
-    :east nil
+    :east nil nil nil nil nil nil
+    :north nil
+    :west nil nil nil
+    :north nil nil nil nil nil nil nil nil
+    :south nil nil nil nil nil nil
+    :west nil nil nil
+    :north nil nil nil nil
+    :west nil nil nil nil nil
+    :east nil nil
     :south nil nil
     :east nil nil
-    :south nil nil nil
+    :south nil nil
     :east nil nil nil nil nil
-    :north nil nil
+    :north nil nil nil
     :east nil nil
     :north nil nil
-    :east nil nil nil nil nil
-    :east)
+    :east nil nil nil nil nil nil nil
+    :east nil nil nil nil nil)
    (list
     (make-wall        1  0)
     (make-wall        6  1)
@@ -1893,12 +1899,12 @@
          "Rubber Band Twist"
          "Just Keep Jumping")
    (list
-    :north   nil nil nil nil nil
-    :action1 nil nil nil nil nil nil nil nil nil
-    :action1 nil nil nil nil nil nil nil nil nil
-    :action1 nil nil nil nil nil nil nil nil nil
-    :action1 nil nil nil nil nil nil nil nil nil
-    :action1 nil nil nil nil nil nil nil nil nil
+    :north   nil nil nil nil nil nil
+    :action1 nil nil nil nil nil nil nil nil nil nil
+    :action1 nil nil nil nil nil nil nil nil nil nil
+    :action1 nil nil nil nil nil nil nil nil nil nil
+    :action1 nil nil nil nil nil nil nil nil nil nil
+    :action1 nil nil nil nil nil nil nil nil nil nil
     :action1 nil nil nil nil nil nil)
    (list
     (make-player       0  8)

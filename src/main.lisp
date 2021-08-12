@@ -69,7 +69,7 @@
 (defun autoplay-parser (x)
   (setf *test-run* t)
   (let ((num (parse-integer x)))
-    (setf *level-number* num)
+    (setf *level-number* (1- num))
     (setf *next-level* nil)
     (setf *frame-duration* 0.05)))
 

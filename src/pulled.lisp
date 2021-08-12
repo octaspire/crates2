@@ -43,8 +43,10 @@
     (:pulled
      (let* ((puller (pulled-puller self))
             (puller-velocity (velocity puller))
+            (puller-side (on-which-side-is-other self puller 1))
             (pulled-a-side (pulled-activation-side self)))
-       (unless (or (eq puller-velocity :zero) (eq puller-velocity pulled-a-side))
+       (unless (and (eq pulled-a-side puller-side)
+                    (or (eq puller-velocity :zero) (eq puller-velocity pulled-a-side)))
          (pulled-set-pull-on self puller nil))))
     (:lamented nil))
   (call-next-method))
