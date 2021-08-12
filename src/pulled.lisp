@@ -40,52 +40,18 @@
   (ecase (crate-state self)
     (:idle
      nil)
-    (:attached
-     (let* ((puller (pulled-puller self))
-            (side (on-which-side-is-other self puller 1)))
-       (ecase side
-         (:east
-          (let ((on (and (pulled-east self) (eq (velocity puller) side))))
-            (when on
-              (setf (crate-state self) :pulled))))
-         (:west
-          (let ((on (and (pulled-west self) (eq (velocity puller) side))))
-            (when on
-              (setf (crate-state self) :pulled))))
-         (:north
-          (let ((on (and (pulled-north self) (eq (velocity puller) side))))
-            (when on
-              (setf (crate-state self) :pulled))))
-         (:south
-          (let ((on (and (pulled-south self) (eq (velocity puller) side))))
-            (when on
-              (setf (crate-state self) :pulled))))
-         (:zero
-          (pulled-set-pull-on self puller nil)))))
     (:pulled
      (let* ((puller (pulled-puller self))
-            (side (on-which-side-is-other self puller 1)))
-       (ecase side
-         (:east
-          (let ((on (and (pulled-east self) (eq (velocity puller) side))))
-            (pulled-set-pull-on self puller on)))
-         (:west
-          (let ((on (and (pulled-west self) (eq (velocity puller) side))))
-            (pulled-set-pull-on self puller on)))
-         (:north
-          (let ((on (and (pulled-north self) (eq (velocity puller) side))))
-            (pulled-set-pull-on self puller on)))
-         (:south
-          (let ((on (and (pulled-south self) (eq (velocity puller) side))))
-            (pulled-set-pull-on self puller on)))
-         (:zero
-          (pulled-set-pull-on self puller nil)))))
+            (puller-velocity (velocity puller))
+            (pulled-a-side (pulled-activation-side self)))
+       (unless (or (eq puller-velocity :zero) (eq puller-velocity pulled-a-side))
+         (pulled-set-pull-on self puller nil))))
     (:lamented nil))
   (call-next-method))
 
 (defmethod visual ((self pulled))
   (let ((result (list "pulled-idle"))
-        (side   (on-which-side-is-other self (pulled-puller self) 1)))
+        (side   (pulled-activation-side self)))
     ;; EAST
     (if (pulled-east self)
         (nconc result (list (if (eq side :east)
@@ -115,33 +81,30 @@
 (defmethod pulled-set-pull-on ((self pulled) (puller moving) on)
   (when (and on (eq (crate-state self) :idle))
     (crates2-ui:ui-play-sound :pulled-activate)
-    (crates2:add-updatable self))
-  (setf (crate-state self)
-        (if on
-            (if (eq (crate-state self) :pulled)
-                :pulled
-                :attached)
-            :idle))
-  (when (and (not (eq (crate-state self) :idle)) (not on))
-    (crates2:remove-updatable self))
-  (setf (pulled-puller self) (if on puller nil))
-  (let ((side (on-which-side-is-other self puller 1)))
-    (setf (velocity self) side)))
+    (crates2:add-updatable self)
+    (setf (pulled-activation-side self) (on-which-side-is-other self puller 1))
+    (setf (velocity self) (pulled-activation-side self))
+    (setf (pulled-puller self) puller)
+    (setf (crate-state self) :pulled))
+  (when (and (eq (crate-state self) :pulled) (not on))
+    (crates2:remove-updatable self)
+    (setf (velocity self) :zero)
+    (setf (pulled-activation-side self) :zero)
+    (setf (pulled-puller self) nil)
+    (setf (crate-state self) :idle)
+    (crates2-ui:ui-play-sound :pulled-activate)))
 
 (defmethod collide ((self pulled) (target player))
   (when (eq (crate-state self) :idle)
     (let ((side (on-which-side-is-other self target)))
       (ecase side
         (:east (if (pulled-east self)
-                   (pulled-set-pull-on self target t)
-                   (crates2-ui:ui-play-sound :hit-wall)))
+                   (pulled-set-pull-on self target t)))
         (:west (if (pulled-west self)
                    (pulled-set-pull-on self target t)
                    (crates2-ui:ui-play-sound :hit-wall)))
         (:north (if (pulled-north self)
-                    (pulled-set-pull-on self target t)
-                    (crates2-ui:ui-play-sound :hit-wall)))
+                    (pulled-set-pull-on self target t)))
         (:south (if (pulled-south self)
-                    (pulled-set-pull-on self target t)
-                    (crates2-ui:ui-play-sound :hit-wall)))
+                    (pulled-set-pull-on self target t)))
         (:zero nil)))))

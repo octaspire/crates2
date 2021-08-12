@@ -181,6 +181,8 @@
   ((puller :initarg :puller
            :accessor pulled-puller
            :initform nil)
+   (activation-side :initform nil
+                    :accessor pulled-activation-side)
    (east :initarg :east
            :accessor pulled-east
          :initform nil)
